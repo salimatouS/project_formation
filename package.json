@@ -1,0 +1,9 @@
+{
+  "name": "nestjs-quasar-monorepo-formation",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@git2.iorga.com:iorga-formations/nestjs-quasar-prisma.git",
+  "author": "salimatouS <sackomaty@yahoo.fr>",
+  "license": "MIT",
+  "packageManager": "yarn@3.5.0"
+}
