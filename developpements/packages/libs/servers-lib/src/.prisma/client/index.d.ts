@@ -3959,13 +3959,13 @@ export namespace Prisma {
   export type ProduitCreateWithoutOffresInput = {
     code: string
     libelle: string
-    commentaires?: string
+    commentaires: string
   }
 
   export type ProduitUncheckedCreateWithoutOffresInput = {
     code: string
     libelle: string
-    commentaires?: string
+    commentaires: string
   }
 
   export type ProduitCreateOrConnectWithoutOffresInput = {

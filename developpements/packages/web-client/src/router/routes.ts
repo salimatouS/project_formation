@@ -10,7 +10,7 @@ const routes: RouteRecordRaw[] = [
       //{ path: 'productDetail', component: () => import('pages/productDetailPage.vue') },
       { path: 'refs', children: [
           { path: 'products', component: () => import('pages/ProductPage.vue') },
-          //{ path: 'produits/:code', component: () => import('pages/productDetailPage.vue') },
+          { path: 'productList', component: () => import('pages/productList.vue') },
           { path: 'produits/:code', component: () => import('pages/productDetailPage.vue') },
         ]
       }

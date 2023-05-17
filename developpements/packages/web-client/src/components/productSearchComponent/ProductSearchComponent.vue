@@ -15,6 +15,16 @@
               stack-label
               @update:model-value="doOnFormChanged"
             />
+            <q-input
+              v-model="form.codeLike"
+              :lazy-rules="true"
+              :rules="[textValidatorToFixed3]"
+              class="col-12 col-md-4"
+              hint="Contient (min: 3)"
+              label="code"
+              stack-label
+              @update:model-value="doOnFormChanged"
+            />
             <!--lazy-rules permet de valider le formulaire seulement lorsque l'utilisateur aura soumis le formulaire-->
           </div>
 
@@ -46,7 +56,7 @@
         :rows="searchAllResponse"
         binary-state-sort
         row-key="code"
-        style="with: 100%"
+        style="width: 100%"
         title="Liste des produits"
         @request="doPagination"
         @row-click="onRowClick"
@@ -70,6 +80,7 @@
                   id="libelle"
                   label="libelle"
                 />
+              
                 <q-input
                   v-model="product.commentaires"
                   id="commentaires"

@@ -25,7 +25,11 @@ export class RefsApiService extends AbstractApiService {
     return this.doGet('/products', searchCriterias)
   }
 
-  public async getProducts(): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
+ /*  public async getProducts(): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
+    return this.doGet('/productsList')
+  } */
+
+  public async getListProduits(): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
     return this.doGet('/productsList')
   }
 

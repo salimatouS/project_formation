@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import {
   IPaginatedListDto,
   IPagination,
@@ -71,6 +72,7 @@ export default defineComponent({
     // Define the initial state of the form
     const initialFormState: SearchProductDto = {
       labelLike: '',
+      codeLike:''
     };
 
     const initialPagination: IPagination = {
@@ -96,6 +98,7 @@ export default defineComponent({
 
     let currentSearchParams: SearchProductDto = {
       labelLike: '',
+      codeLike:''
     };
 
     const columns = [
@@ -114,6 +117,15 @@ export default defineComponent({
         label: 'Libellé',
         align: 'left',
         field: (row: ProductDto) => row.libelle,
+        format: (val: string) => `${val}`,
+        sortable: true,
+      },
+      {
+        name: 'nombreOffre',
+        required: true,
+        label: 'nbreOffre',
+        align: 'rigth',
+        field: (row:any) => row._count.offres,//recuperation de la valeur de l'offre
         format: (val: string) => `${val}`,
         sortable: true,
       },
@@ -142,6 +154,8 @@ export default defineComponent({
       const searchAllParams: ISearchDto<SearchProductDto> = {
         criterias: {
           labelLike: form.labelLike,
+          codeLike:form.codeLike
+        
         },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         pagination: initialPagination,
@@ -164,7 +178,7 @@ export default defineComponent({
     }
 
     function doCheckForSearch(searchAllParams: ISearchDto<SearchProductDto>) {
-      return !!searchAllParams.criterias?.labelLike;
+      return !!searchAllParams.criterias?.labelLike || !!searchAllParams.criterias?.codeLike;
     }
 
     async function _doSearchAll(
@@ -206,6 +220,8 @@ export default defineComponent({
       //this.confirm = false;
 
     } */
+
+    
 
     return {
       doSearchAll,

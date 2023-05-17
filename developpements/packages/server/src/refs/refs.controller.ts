@@ -20,7 +20,7 @@ import {
   Query
 } from '@nestjs/common'
 import { RefsService } from './refs.service'
-import { ApiBody } from '@nestjs/swagger'
+import { ApiBody, ApiQuery } from '@nestjs/swagger'
 
 @Controller('refs')
 export class RefsController extends AbstractController {
@@ -56,7 +56,8 @@ export class RefsController extends AbstractController {
   }
 
   @Get('/products')
-  async getProductListByCriterias(@Query() searchCriterias?: ISearchDto<SearchProductDto>): Promise<WorkDone<ProductDto[]>> {
+  //@ApiQuery({})
+  async getProductListByCriterias(@Query() searchCriterias?: ISearchDto<SearchProductDto>): Promise<WorkDone <ProductDto[]>> {
     const criterias = AbstractController.parseSearchDtoFromQuery<SearchProductDto>(searchCriterias)
     return this.refsService.getProductListByCriterias(criterias)
 
@@ -84,5 +85,10 @@ export class RefsController extends AbstractController {
   @Delete('produits/:code')
   async deleteProduit(@Param('code') code: string): Promise<WorkDone<string>> {
     return this.refsService.deleteProduit(code);
+  }
+
+  @Get('/listProduits')
+  async getListProduits(): Promise<WorkDone<ProductDto[]>> {
+    return this.refsService.getListProduits()
   }
 }

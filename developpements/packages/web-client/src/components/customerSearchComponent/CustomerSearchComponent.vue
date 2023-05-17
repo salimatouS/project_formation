@@ -176,7 +176,7 @@
           :rows="searchAllResponse.list"
           binary-state-sort
           row-key="chronoClient"
-          style="with: 100%"
+          style="width: 100%"
           title="Liste des clients"
           @request="doPagination"
       >

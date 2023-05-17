@@ -60,7 +60,7 @@ export class CustomersService {
     )
   }
 
-  async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
+ // async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
 
     //FIXME must be dynamic
     // searchDto.pagination.sortBy = (searchDto.pagination.sortBy === 'nom') ? 'LB_NOM'
@@ -106,6 +106,40 @@ export class CustomersService {
     //     pagination: searchDto.pagination,
     //     rowMapper: toCustomerSearchResultDtoRowMapper
     //   })
+   /*  return WorkDone.buildOk({
+      rowsNumber: 2, list: [
+        {
+          codeFichierPartenaire: '001',
+          chronoClient: '11111111',
+          nom: 'Doe',
+          prenom: 'John',
+          codePostal: '34130',
+          ville: 'Mauguio',
+          dateDerniereCommande: null
+        },
+        {
+          codeFichierPartenaire: '001',
+          chronoClient: '22222222',
+          nom: 'Durand',
+          prenom: 'Michel',
+          codePostal: '34000',
+          ville: 'Montpellier',
+          dateDerniereCommande: new Date()
+        }
+      ]
+    })
+  } */
+
+  async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<CustomerSearchResultDto>> {
+    const dbCustomers= await this.prismaService.partenaire.findMany{
+      where:{
+        chronoClient:{
+          contains:
+        }
+
+      }
+    }
+    
     return WorkDone.buildOk({
       rowsNumber: 2, list: [
         {
@@ -129,4 +163,5 @@ export class CustomersService {
       ]
     })
   }
+
 }

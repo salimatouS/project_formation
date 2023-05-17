@@ -6,7 +6,7 @@
   "scripts": {
     "servers-lib:build": "nest build",
     "servers-lib:build-dev": "nest build --watch",
-    "prisma:build": "npx prisma generate",
+    "pri((sma:build": "npx prisma generate",
     "prisma:build-dev": "npx prisma generate --watch",
     "prisma:push-dev": "npx prisma db push"
   },

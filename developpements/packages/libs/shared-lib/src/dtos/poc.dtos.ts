@@ -48,5 +48,6 @@ export interface ProductDto{
 
 export interface SearchProductDto{
   labelLike: string
+
   
 }

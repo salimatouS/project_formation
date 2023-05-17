@@ -126,7 +126,7 @@ export class RefsService {
     return WorkDone.buildOk(offreReference);
   }
 
-  async getProducts(searchTerm: string): Promise<WorkDone<ProductDto[]>> {
+  /* async getProducts(searchTerm: string): Promise<WorkDone<ProductDto[]>> {
     //const filter = '%voile%'
     const dbProducts = await this.prismaService.produit.findMany({
       where: {
@@ -139,8 +139,7 @@ export class RefsService {
         libelle: 'asc',
       },
     });
-    //const dbProducts : ProductDto[] = produits;
-
+    
 
     if (!dbProducts) {
       return WorkDone.buildError(
@@ -148,7 +147,7 @@ export class RefsService {
       );
     }
     return WorkDone.buildOk(dbProducts);
-  }
+  } */
 
   async getProduitByCode(code: string): Promise<WorkDone<ProductDto>> {
     const dbProducts = await this.prismaService.produit.findUnique({
@@ -228,35 +227,46 @@ export class RefsService {
           contains: searchCriterias.criterias.labelLike,
           mode: 'insensitive',
         },
+
+        code: {
+          startsWith: searchCriterias.criterias.codeLike,
+          mode: 'insensitive',
+        },
+      },
+
+      include: {
+        _count: true
       },
       orderBy: {
         libelle: 'asc',
       },
       take: 10,
     });
+
     return WorkDone.buildOk(dbProducts);
   }
 
-  /* async getProductListByCriterias(searchCriterias: ISearchDto<SearchProductDto>): Promise<WorkDone<ProductDto[]>> {
-    
-    const criterias = typeof searchCriterias.criterias === 'string' ? JSON.parse(searchCriterias.criterias) : (searchCriterias.criterias || {})
+  async getListProduits(): Promise<WorkDone<ProductDto[]>> {
 
-    const filter = `%${criterias.labelLike}%`
-    
     const dbProducts = await this.prismaService.produit.findMany({
-      where: {
-        libelle: {
-          contains: filter,
-          mode: 'insensitive'
-        },
-      },
       orderBy: {
-        libelle: 'asc'
+        libelle: 'asc',
       },
-      take:10
-    })
-    return WorkDone.buildOk(dbProducts)
-  
+    });
+
+
+    if (!dbProducts) {
+      return WorkDone.buildError(
+        'une erreur est survenue durant la recuperation des produits',
+      );
+    }
+    return WorkDone.buildOk(dbProducts);
   }
-} */
 }
+
+/* SELECT p.code, p.libelle, COUNT(o.code) AS nombre_offres
+FROM ref_produits p
+LEFT JOIN ref_offres o ON p.code = o.code_produit
+GROUP BY p.code, p.libelle; */
+
+

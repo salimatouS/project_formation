@@ -30,8 +30,15 @@ export class CustomersController extends AbstractController {
     return this.customersService.findOne(codeFichierPartenaire, chronoClient)
   }
 
-  @Get('/search/multi-criterias')
+ /*  @Get('/search/multi-criterias')
   async searchCustomer (@Query() queryParams: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
+    const criterias = CustomersController.parseSearchDtoFromQuery<SearchCustomerDto>(queryParams)
+    this.logger.debug(JSON.stringify(criterias))
+    return this.customersService.searchCustomer(criterias)
+  } */
+
+  @Get('/search/multi-criterias')
+  async searchCustomer (@Query() queryParams: ISearchDto<SearchCustomerDto>): Promise<WorkDone<CustomerSearchResultDto>> {
     const criterias = CustomersController.parseSearchDtoFromQuery<SearchCustomerDto>(queryParams)
     this.logger.debug(JSON.stringify(criterias))
     return this.customersService.searchCustomer(criterias)

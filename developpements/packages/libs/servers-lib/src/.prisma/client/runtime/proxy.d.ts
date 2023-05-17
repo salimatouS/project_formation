@@ -1265,7 +1265,7 @@ declare namespace sqlTemplateTag {
 declare namespace Transaction {
     export {
         Options,
-        Info
+        Infoprisma.schema
     }
 }
 
