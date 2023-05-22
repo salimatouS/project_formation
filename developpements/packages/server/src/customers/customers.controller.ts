@@ -38,9 +38,9 @@ export class CustomersController extends AbstractController {
   } */
 
   @Get('/search/multi-criterias')
-  async searchCustomer (@Query() queryParams: ISearchDto<SearchCustomerDto>): Promise<WorkDone<CustomerSearchResultDto>> {
+  async searchCustomer (@Query() queryParams: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
     const criterias = CustomersController.parseSearchDtoFromQuery<SearchCustomerDto>(queryParams)
-    this.logger.debug(JSON.stringify(criterias))
+    //this.logger.debug(JSON.stringify(criterias))
     return this.customersService.searchCustomer(criterias)
   }
 }

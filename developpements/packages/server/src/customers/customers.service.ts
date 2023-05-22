@@ -130,38 +130,39 @@ export class CustomersService {
     })
   } */
 
-  async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<CustomerSearchResultDto>> {
-    const dbCustomers= await this.prismaService.partenaire.findMany{
-      where:{
+ async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
+  const dbCustomer= await this.prismaService.clients.findMany({
+    where:{
+      codeFichierPartenaire:{
+        contains:searchDto.criterias.codeFichierPartenaire,
+      },
         chronoClient:{
-          contains:
-        }
+        contains:searchDto.criterias.chronoClient,
+        mode:'insensitive'      },
+      nom:{
+        contains:searchDto.criterias.nom,
+        mode:'insensitive'
+      },
+      prenom:{
+        contains:searchDto.criterias.prenom,
+        mode:'insensitive'
+      },
+      codePostal:{
+        contains:searchDto.criterias.codePostal,
+        mode:'insensitive'
+      },
+      
+    },
+   /*  include: {
+      ref_partenaires: true
+    } */
 
-      }
-    }
-    
-    return WorkDone.buildOk({
-      rowsNumber: 2, list: [
-        {
-          codeFichierPartenaire: '001',
-          chronoClient: '11111111',
-          nom: 'Doe',
-          prenom: 'John',
-          codePostal: '34130',
-          ville: 'Mauguio',
-          dateDerniereCommande: null
-        },
-        {
-          codeFichierPartenaire: '001',
-          chronoClient: '22222222',
-          nom: 'Durand',
-          prenom: 'Michel',
-          codePostal: '34000',
-          ville: 'Montpellier',
-          dateDerniereCommande: new Date()
-        }
-      ]
-    })
+  });
+
+  const dbCustomerPaginated : IPaginatedListDto<CustomerSearchResultDto> = {list : dbCustomer, rowsNumber : 100}
+
+ /*  let searchDtoReturn : SearchCustomerDto */
+    return WorkDone.buildOk<IPaginatedListDto<CustomerSearchResultDto>>(dbCustomerPaginated)
   }
 
 }

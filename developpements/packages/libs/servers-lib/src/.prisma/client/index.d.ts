@@ -28,7 +28,7 @@ export type Partenaire = {
 export type Produit = {
   code: string
   libelle: string
-  commentaires: string
+  commentaires: string | null
 }
 
 /**
@@ -38,8 +38,22 @@ export type Produit = {
 export type Offre = {
   code: string
   libelle: string
-  codeProduit: string
   dateDerniereModification: Date | null
+  codeProduit: string
+}
+
+/**
+ * Model Clients
+ * 
+ */
+export type Clients = {
+  chronoClient: string
+  prenom: string | null
+  nom: string | null
+  codePostal: string | null
+  ville: string | null
+  dateDerniereCommande: Date | null
+  codeFichierPartenaire: string | null
 }
 
 
@@ -212,6 +226,16 @@ export class PrismaClient<
     * ```
     */
   get offre(): Prisma.OffreDelegate<GlobalReject>;
+
+  /**
+   * `prisma.clients`: Exposes CRUD operations for the **Clients** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Clients
+    * const clients = await prisma.clients.findMany()
+    * ```
+    */
+  get clients(): Prisma.ClientsDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -630,7 +654,8 @@ export namespace Prisma {
   export const ModelName: {
     Partenaire: 'Partenaire',
     Produit: 'Produit',
-    Offre: 'Offre'
+    Offre: 'Offre',
+    Clients: 'Clients'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -786,6 +811,55 @@ export namespace Prisma {
   /**
    * Count Types
    */
+
+
+  /**
+   * Count Type PartenaireCountOutputType
+   */
+
+
+  export type PartenaireCountOutputType = {
+    clients: number
+  }
+
+  export type PartenaireCountOutputTypeSelect = {
+    clients?: boolean
+  }
+
+  export type PartenaireCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | PartenaireCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? PartenaireCountOutputType
+    : S extends undefined
+    ? never
+    : S extends PartenaireCountOutputTypeArgs
+    ?'include' extends U
+    ? PartenaireCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof PartenaireCountOutputType ? PartenaireCountOutputType[P] : never
+  } 
+    : PartenaireCountOutputType
+  : PartenaireCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * PartenaireCountOutputType without action
+   */
+  export type PartenaireCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the PartenaireCountOutputType
+     * 
+    **/
+    select?: PartenaireCountOutputTypeSelect | null
+  }
+
 
 
   /**
@@ -988,6 +1062,13 @@ export namespace Prisma {
   export type PartenaireSelect = {
     code?: boolean
     libelle?: boolean
+    clients?: boolean | ClientsFindManyArgs
+    _count?: boolean | PartenaireCountOutputTypeArgs
+  }
+
+  export type PartenaireInclude = {
+    clients?: boolean | ClientsFindManyArgs
+    _count?: boolean | PartenaireCountOutputTypeArgs
   }
 
   export type PartenaireGetPayload<
@@ -999,11 +1080,16 @@ export namespace Prisma {
     ? never
     : S extends PartenaireArgs | PartenaireFindManyArgs
     ?'include' extends U
-    ? Partenaire 
+    ? Partenaire  & {
+    [P in TrueKeys<S['include']>]:
+        P extends 'clients' ? Array < ClientsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? PartenaireCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-    P extends keyof Partenaire ? Partenaire[P] : never
+        P extends 'clients' ? Array < ClientsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? PartenaireCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Partenaire ? Partenaire[P] : never
   } 
     : Partenaire
   : Partenaire
@@ -1343,6 +1429,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    clients<T extends ClientsFindManyArgs = {}>(args?: Subset<T, ClientsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Clients>>, PrismaPromise<Array<ClientsGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -1379,6 +1466,11 @@ export namespace Prisma {
     **/
     select?: PartenaireSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: PartenaireInclude | null
+    /**
      * Throw an Error if a Partenaire can't be found
      * 
     **/
@@ -1400,6 +1492,11 @@ export namespace Prisma {
      * 
     **/
     select?: PartenaireSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: PartenaireInclude | null
     /**
      * Throw an Error if a Partenaire can't be found
      * 
@@ -1458,6 +1555,11 @@ export namespace Prisma {
     **/
     select?: PartenaireSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: PartenaireInclude | null
+    /**
      * Filter, which Partenaires to fetch.
      * 
     **/
@@ -1504,6 +1606,11 @@ export namespace Prisma {
     **/
     select?: PartenaireSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: PartenaireInclude | null
+    /**
      * The data needed to create a Partenaire.
      * 
     **/
@@ -1533,6 +1640,11 @@ export namespace Prisma {
      * 
     **/
     select?: PartenaireSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: PartenaireInclude | null
     /**
      * The data needed to update a Partenaire.
      * 
@@ -1573,6 +1685,11 @@ export namespace Prisma {
     **/
     select?: PartenaireSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: PartenaireInclude | null
+    /**
      * The filter to search for the Partenaire to update in case it exists.
      * 
     **/
@@ -1599,6 +1716,11 @@ export namespace Prisma {
      * 
     **/
     select?: PartenaireSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: PartenaireInclude | null
     /**
      * Filter which Partenaire to delete.
      * 
@@ -1628,6 +1750,11 @@ export namespace Prisma {
      * 
     **/
     select?: PartenaireSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: PartenaireInclude | null
   }
 
 
@@ -1763,7 +1890,7 @@ export namespace Prisma {
   export type ProduitGroupByOutputType = {
     code: string
     libelle: string
-    commentaires: string
+    commentaires: string | null
     _count: ProduitCountAggregateOutputType | null
     _min: ProduitMinAggregateOutputType | null
     _max: ProduitMaxAggregateOutputType | null
@@ -2498,22 +2625,22 @@ export namespace Prisma {
   export type OffreMinAggregateOutputType = {
     code: string | null
     libelle: string | null
-    codeProduit: string | null
     dateDerniereModification: Date | null
+    codeProduit: string | null
   }
 
   export type OffreMaxAggregateOutputType = {
     code: string | null
     libelle: string | null
-    codeProduit: string | null
     dateDerniereModification: Date | null
+    codeProduit: string | null
   }
 
   export type OffreCountAggregateOutputType = {
     code: number
     libelle: number
-    codeProduit: number
     dateDerniereModification: number
+    codeProduit: number
     _all: number
   }
 
@@ -2521,22 +2648,22 @@ export namespace Prisma {
   export type OffreMinAggregateInputType = {
     code?: true
     libelle?: true
-    codeProduit?: true
     dateDerniereModification?: true
+    codeProduit?: true
   }
 
   export type OffreMaxAggregateInputType = {
     code?: true
     libelle?: true
-    codeProduit?: true
     dateDerniereModification?: true
+    codeProduit?: true
   }
 
   export type OffreCountAggregateInputType = {
     code?: true
     libelle?: true
-    codeProduit?: true
     dateDerniereModification?: true
+    codeProduit?: true
     _all?: true
   }
 
@@ -2621,8 +2748,8 @@ export namespace Prisma {
   export type OffreGroupByOutputType = {
     code: string
     libelle: string
-    codeProduit: string
     dateDerniereModification: Date | null
+    codeProduit: string
     _count: OffreCountAggregateOutputType | null
     _min: OffreMinAggregateOutputType | null
     _max: OffreMaxAggregateOutputType | null
@@ -2645,9 +2772,9 @@ export namespace Prisma {
   export type OffreSelect = {
     code?: boolean
     libelle?: boolean
+    dateDerniereModification?: boolean
     codeProduit?: boolean
     produit?: boolean | ProduitArgs
-    dateDerniereModification?: boolean
   }
 
   export type OffreInclude = {
@@ -3341,6 +3468,886 @@ export namespace Prisma {
 
 
   /**
+   * Model Clients
+   */
+
+
+  export type AggregateClients = {
+    _count: ClientsCountAggregateOutputType | null
+    _min: ClientsMinAggregateOutputType | null
+    _max: ClientsMaxAggregateOutputType | null
+  }
+
+  export type ClientsMinAggregateOutputType = {
+    chronoClient: string | null
+    prenom: string | null
+    nom: string | null
+    codePostal: string | null
+    ville: string | null
+    dateDerniereCommande: Date | null
+    codeFichierPartenaire: string | null
+  }
+
+  export type ClientsMaxAggregateOutputType = {
+    chronoClient: string | null
+    prenom: string | null
+    nom: string | null
+    codePostal: string | null
+    ville: string | null
+    dateDerniereCommande: Date | null
+    codeFichierPartenaire: string | null
+  }
+
+  export type ClientsCountAggregateOutputType = {
+    chronoClient: number
+    prenom: number
+    nom: number
+    codePostal: number
+    ville: number
+    dateDerniereCommande: number
+    codeFichierPartenaire: number
+    _all: number
+  }
+
+
+  export type ClientsMinAggregateInputType = {
+    chronoClient?: true
+    prenom?: true
+    nom?: true
+    codePostal?: true
+    ville?: true
+    dateDerniereCommande?: true
+    codeFichierPartenaire?: true
+  }
+
+  export type ClientsMaxAggregateInputType = {
+    chronoClient?: true
+    prenom?: true
+    nom?: true
+    codePostal?: true
+    ville?: true
+    dateDerniereCommande?: true
+    codeFichierPartenaire?: true
+  }
+
+  export type ClientsCountAggregateInputType = {
+    chronoClient?: true
+    prenom?: true
+    nom?: true
+    codePostal?: true
+    ville?: true
+    dateDerniereCommande?: true
+    codeFichierPartenaire?: true
+    _all?: true
+  }
+
+  export type ClientsAggregateArgs = {
+    /**
+     * Filter which Clients to aggregate.
+     * 
+    **/
+    where?: ClientsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ClientsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: ClientsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Clients
+    **/
+    _count?: true | ClientsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ClientsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ClientsMaxAggregateInputType
+  }
+
+  export type GetClientsAggregateType<T extends ClientsAggregateArgs> = {
+        [P in keyof T & keyof AggregateClients]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateClients[P]>
+      : GetScalarType<T[P], AggregateClients[P]>
+  }
+
+
+
+
+  export type ClientsGroupByArgs = {
+    where?: ClientsWhereInput
+    orderBy?: Enumerable<ClientsOrderByWithAggregationInput>
+    by: Array<ClientsScalarFieldEnum>
+    having?: ClientsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ClientsCountAggregateInputType | true
+    _min?: ClientsMinAggregateInputType
+    _max?: ClientsMaxAggregateInputType
+  }
+
+
+  export type ClientsGroupByOutputType = {
+    chronoClient: string
+    prenom: string | null
+    nom: string | null
+    codePostal: string | null
+    ville: string | null
+    dateDerniereCommande: Date | null
+    codeFichierPartenaire: string | null
+    _count: ClientsCountAggregateOutputType | null
+    _min: ClientsMinAggregateOutputType | null
+    _max: ClientsMaxAggregateOutputType | null
+  }
+
+  type GetClientsGroupByPayload<T extends ClientsGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<ClientsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof ClientsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], ClientsGroupByOutputType[P]>
+            : GetScalarType<T[P], ClientsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type ClientsSelect = {
+    chronoClient?: boolean
+    prenom?: boolean
+    nom?: boolean
+    codePostal?: boolean
+    ville?: boolean
+    dateDerniereCommande?: boolean
+    codeFichierPartenaire?: boolean
+    ref_partenaires?: boolean | PartenaireArgs
+  }
+
+  export type ClientsInclude = {
+    ref_partenaires?: boolean | PartenaireArgs
+  }
+
+  export type ClientsGetPayload<
+    S extends boolean | null | undefined | ClientsArgs,
+    U = keyof S
+      > = S extends true
+        ? Clients
+    : S extends undefined
+    ? never
+    : S extends ClientsArgs | ClientsFindManyArgs
+    ?'include' extends U
+    ? Clients  & {
+    [P in TrueKeys<S['include']>]:
+        P extends 'ref_partenaires' ? PartenaireGetPayload<S['include'][P]> | null :  never
+  } 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+        P extends 'ref_partenaires' ? PartenaireGetPayload<S['select'][P]> | null :  P extends keyof Clients ? Clients[P] : never
+  } 
+    : Clients
+  : Clients
+
+
+  type ClientsCountArgs = Merge<
+    Omit<ClientsFindManyArgs, 'select' | 'include'> & {
+      select?: ClientsCountAggregateInputType | true
+    }
+  >
+
+  export interface ClientsDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one Clients that matches the filter.
+     * @param {ClientsFindUniqueArgs} args - Arguments to find a Clients
+     * @example
+     * // Get one Clients
+     * const clients = await prisma.clients.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ClientsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ClientsFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Clients'> extends True ? CheckSelect<T, Prisma__ClientsClient<Clients>, Prisma__ClientsClient<ClientsGetPayload<T>>> : CheckSelect<T, Prisma__ClientsClient<Clients | null >, Prisma__ClientsClient<ClientsGetPayload<T> | null >>
+
+    /**
+     * Find the first Clients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientsFindFirstArgs} args - Arguments to find a Clients
+     * @example
+     * // Get one Clients
+     * const clients = await prisma.clients.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ClientsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ClientsFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Clients'> extends True ? CheckSelect<T, Prisma__ClientsClient<Clients>, Prisma__ClientsClient<ClientsGetPayload<T>>> : CheckSelect<T, Prisma__ClientsClient<Clients | null >, Prisma__ClientsClient<ClientsGetPayload<T> | null >>
+
+    /**
+     * Find zero or more Clients that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientsFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Clients
+     * const clients = await prisma.clients.findMany()
+     * 
+     * // Get first 10 Clients
+     * const clients = await prisma.clients.findMany({ take: 10 })
+     * 
+     * // Only select the `chronoClient`
+     * const clientsWithChronoClientOnly = await prisma.clients.findMany({ select: { chronoClient: true } })
+     * 
+    **/
+    findMany<T extends ClientsFindManyArgs>(
+      args?: SelectSubset<T, ClientsFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<Clients>>, PrismaPromise<Array<ClientsGetPayload<T>>>>
+
+    /**
+     * Create a Clients.
+     * @param {ClientsCreateArgs} args - Arguments to create a Clients.
+     * @example
+     * // Create one Clients
+     * const Clients = await prisma.clients.create({
+     *   data: {
+     *     // ... data to create a Clients
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ClientsCreateArgs>(
+      args: SelectSubset<T, ClientsCreateArgs>
+    ): CheckSelect<T, Prisma__ClientsClient<Clients>, Prisma__ClientsClient<ClientsGetPayload<T>>>
+
+    /**
+     * Create many Clients.
+     *     @param {ClientsCreateManyArgs} args - Arguments to create many Clients.
+     *     @example
+     *     // Create many Clients
+     *     const clients = await prisma.clients.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ClientsCreateManyArgs>(
+      args?: SelectSubset<T, ClientsCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Clients.
+     * @param {ClientsDeleteArgs} args - Arguments to delete one Clients.
+     * @example
+     * // Delete one Clients
+     * const Clients = await prisma.clients.delete({
+     *   where: {
+     *     // ... filter to delete one Clients
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ClientsDeleteArgs>(
+      args: SelectSubset<T, ClientsDeleteArgs>
+    ): CheckSelect<T, Prisma__ClientsClient<Clients>, Prisma__ClientsClient<ClientsGetPayload<T>>>
+
+    /**
+     * Update one Clients.
+     * @param {ClientsUpdateArgs} args - Arguments to update one Clients.
+     * @example
+     * // Update one Clients
+     * const clients = await prisma.clients.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ClientsUpdateArgs>(
+      args: SelectSubset<T, ClientsUpdateArgs>
+    ): CheckSelect<T, Prisma__ClientsClient<Clients>, Prisma__ClientsClient<ClientsGetPayload<T>>>
+
+    /**
+     * Delete zero or more Clients.
+     * @param {ClientsDeleteManyArgs} args - Arguments to filter Clients to delete.
+     * @example
+     * // Delete a few Clients
+     * const { count } = await prisma.clients.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ClientsDeleteManyArgs>(
+      args?: SelectSubset<T, ClientsDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Clients
+     * const clients = await prisma.clients.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ClientsUpdateManyArgs>(
+      args: SelectSubset<T, ClientsUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Clients.
+     * @param {ClientsUpsertArgs} args - Arguments to update or create a Clients.
+     * @example
+     * // Update or create a Clients
+     * const clients = await prisma.clients.upsert({
+     *   create: {
+     *     // ... data to create a Clients
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Clients we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ClientsUpsertArgs>(
+      args: SelectSubset<T, ClientsUpsertArgs>
+    ): CheckSelect<T, Prisma__ClientsClient<Clients>, Prisma__ClientsClient<ClientsGetPayload<T>>>
+
+    /**
+     * Count the number of Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientsCountArgs} args - Arguments to filter Clients to count.
+     * @example
+     * // Count the number of Clients
+     * const count = await prisma.clients.count({
+     *   where: {
+     *     // ... the filter for the Clients we want to count
+     *   }
+     * })
+    **/
+    count<T extends ClientsCountArgs>(
+      args?: Subset<T, ClientsCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ClientsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ClientsAggregateArgs>(args: Subset<T, ClientsAggregateArgs>): PrismaPromise<GetClientsAggregateType<T>>
+
+    /**
+     * Group by Clients.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ClientsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ClientsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ClientsGroupByArgs['orderBy'] }
+        : { orderBy?: ClientsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ClientsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetClientsGroupByPayload<T> : PrismaPromise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Clients.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ClientsClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    ref_partenaires<T extends PartenaireArgs = {}>(args?: Subset<T, PartenaireArgs>): CheckSelect<T, Prisma__PartenaireClient<Partenaire | null >, Prisma__PartenaireClient<PartenaireGetPayload<T> | null >>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * Clients findUnique
+   */
+  export type ClientsFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the Clients
+     * 
+    **/
+    select?: ClientsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ClientsInclude | null
+    /**
+     * Throw an Error if a Clients can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Clients to fetch.
+     * 
+    **/
+    where: ClientsWhereUniqueInput
+  }
+
+
+  /**
+   * Clients findFirst
+   */
+  export type ClientsFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the Clients
+     * 
+    **/
+    select?: ClientsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ClientsInclude | null
+    /**
+     * Throw an Error if a Clients can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which Clients to fetch.
+     * 
+    **/
+    where?: ClientsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ClientsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Clients.
+     * 
+    **/
+    cursor?: ClientsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Clients.
+     * 
+    **/
+    distinct?: Enumerable<ClientsScalarFieldEnum>
+  }
+
+
+  /**
+   * Clients findMany
+   */
+  export type ClientsFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the Clients
+     * 
+    **/
+    select?: ClientsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ClientsInclude | null
+    /**
+     * Filter, which Clients to fetch.
+     * 
+    **/
+    where?: ClientsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Clients to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ClientsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Clients.
+     * 
+    **/
+    cursor?: ClientsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Clients from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Clients.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<ClientsScalarFieldEnum>
+  }
+
+
+  /**
+   * Clients create
+   */
+  export type ClientsCreateArgs = {
+    /**
+     * Select specific fields to fetch from the Clients
+     * 
+    **/
+    select?: ClientsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ClientsInclude | null
+    /**
+     * The data needed to create a Clients.
+     * 
+    **/
+    data: XOR<ClientsCreateInput, ClientsUncheckedCreateInput>
+  }
+
+
+  /**
+   * Clients createMany
+   */
+  export type ClientsCreateManyArgs = {
+    /**
+     * The data used to create many Clients.
+     * 
+    **/
+    data: Enumerable<ClientsCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * Clients update
+   */
+  export type ClientsUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the Clients
+     * 
+    **/
+    select?: ClientsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ClientsInclude | null
+    /**
+     * The data needed to update a Clients.
+     * 
+    **/
+    data: XOR<ClientsUpdateInput, ClientsUncheckedUpdateInput>
+    /**
+     * Choose, which Clients to update.
+     * 
+    **/
+    where: ClientsWhereUniqueInput
+  }
+
+
+  /**
+   * Clients updateMany
+   */
+  export type ClientsUpdateManyArgs = {
+    /**
+     * The data used to update Clients.
+     * 
+    **/
+    data: XOR<ClientsUpdateManyMutationInput, ClientsUncheckedUpdateManyInput>
+    /**
+     * Filter which Clients to update
+     * 
+    **/
+    where?: ClientsWhereInput
+  }
+
+
+  /**
+   * Clients upsert
+   */
+  export type ClientsUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the Clients
+     * 
+    **/
+    select?: ClientsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ClientsInclude | null
+    /**
+     * The filter to search for the Clients to update in case it exists.
+     * 
+    **/
+    where: ClientsWhereUniqueInput
+    /**
+     * In case the Clients found by the `where` argument doesn't exist, create a new Clients with this data.
+     * 
+    **/
+    create: XOR<ClientsCreateInput, ClientsUncheckedCreateInput>
+    /**
+     * In case the Clients was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<ClientsUpdateInput, ClientsUncheckedUpdateInput>
+  }
+
+
+  /**
+   * Clients delete
+   */
+  export type ClientsDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the Clients
+     * 
+    **/
+    select?: ClientsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ClientsInclude | null
+    /**
+     * Filter which Clients to delete.
+     * 
+    **/
+    where: ClientsWhereUniqueInput
+  }
+
+
+  /**
+   * Clients deleteMany
+   */
+  export type ClientsDeleteManyArgs = {
+    /**
+     * Filter which Clients to delete
+     * 
+    **/
+    where?: ClientsWhereInput
+  }
+
+
+  /**
+   * Clients without action
+   */
+  export type ClientsArgs = {
+    /**
+     * Select specific fields to fetch from the Clients
+     * 
+    **/
+    select?: ClientsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ClientsInclude | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -3367,11 +4374,24 @@ export namespace Prisma {
   export const OffreScalarFieldEnum: {
     code: 'code',
     libelle: 'libelle',
-    codeProduit: 'codeProduit',
-    dateDerniereModification: 'dateDerniereModification'
+    dateDerniereModification: 'dateDerniereModification',
+    codeProduit: 'codeProduit'
   };
 
   export type OffreScalarFieldEnum = (typeof OffreScalarFieldEnum)[keyof typeof OffreScalarFieldEnum]
+
+
+  export const ClientsScalarFieldEnum: {
+    chronoClient: 'chronoClient',
+    prenom: 'prenom',
+    nom: 'nom',
+    codePostal: 'codePostal',
+    ville: 'ville',
+    dateDerniereCommande: 'dateDerniereCommande',
+    codeFichierPartenaire: 'codeFichierPartenaire'
+  };
+
+  export type ClientsScalarFieldEnum = (typeof ClientsScalarFieldEnum)[keyof typeof ClientsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -3401,11 +4421,13 @@ export namespace Prisma {
     NOT?: Enumerable<PartenaireWhereInput>
     code?: StringFilter | string
     libelle?: StringFilter | string
+    clients?: ClientsListRelationFilter
   }
 
   export type PartenaireOrderByWithRelationInput = {
     code?: SortOrder
     libelle?: SortOrder
+    clients?: ClientsOrderByRelationAggregateInput
   }
 
   export type PartenaireWhereUniqueInput = {
@@ -3434,7 +4456,7 @@ export namespace Prisma {
     NOT?: Enumerable<ProduitWhereInput>
     code?: StringFilter | string
     libelle?: StringFilter | string
-    commentaires?: StringFilter | string
+    commentaires?: StringNullableFilter | string | null
     offres?: OffreListRelationFilter
   }
 
@@ -3464,7 +4486,7 @@ export namespace Prisma {
     NOT?: Enumerable<ProduitScalarWhereWithAggregatesInput>
     code?: StringWithAggregatesFilter | string
     libelle?: StringWithAggregatesFilter | string
-    commentaires?: StringWithAggregatesFilter | string
+    commentaires?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type OffreWhereInput = {
@@ -3473,17 +4495,17 @@ export namespace Prisma {
     NOT?: Enumerable<OffreWhereInput>
     code?: StringFilter | string
     libelle?: StringFilter | string
+    dateDerniereModification?: DateTimeNullableFilter | Date | string | null
     codeProduit?: StringFilter | string
     produit?: XOR<ProduitRelationFilter, ProduitWhereInput>
-    dateDerniereModification?: DateTimeNullableFilter | Date | string | null
   }
 
   export type OffreOrderByWithRelationInput = {
     code?: SortOrder
     libelle?: SortOrder
+    dateDerniereModification?: SortOrder
     codeProduit?: SortOrder
     produit?: ProduitOrderByWithRelationInput
-    dateDerniereModification?: SortOrder
   }
 
   export type OffreWhereUniqueInput = {
@@ -3493,8 +4515,8 @@ export namespace Prisma {
   export type OffreOrderByWithAggregationInput = {
     code?: SortOrder
     libelle?: SortOrder
-    codeProduit?: SortOrder
     dateDerniereModification?: SortOrder
+    codeProduit?: SortOrder
     _count?: OffreCountOrderByAggregateInput
     _max?: OffreMaxOrderByAggregateInput
     _min?: OffreMinOrderByAggregateInput
@@ -3506,28 +4528,87 @@ export namespace Prisma {
     NOT?: Enumerable<OffreScalarWhereWithAggregatesInput>
     code?: StringWithAggregatesFilter | string
     libelle?: StringWithAggregatesFilter | string
-    codeProduit?: StringWithAggregatesFilter | string
     dateDerniereModification?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    codeProduit?: StringWithAggregatesFilter | string
+  }
+
+  export type ClientsWhereInput = {
+    AND?: Enumerable<ClientsWhereInput>
+    OR?: Enumerable<ClientsWhereInput>
+    NOT?: Enumerable<ClientsWhereInput>
+    chronoClient?: StringFilter | string
+    prenom?: StringNullableFilter | string | null
+    nom?: StringNullableFilter | string | null
+    codePostal?: StringNullableFilter | string | null
+    ville?: StringNullableFilter | string | null
+    dateDerniereCommande?: DateTimeNullableFilter | Date | string | null
+    codeFichierPartenaire?: StringNullableFilter | string | null
+    ref_partenaires?: XOR<PartenaireRelationFilter, PartenaireWhereInput> | null
+  }
+
+  export type ClientsOrderByWithRelationInput = {
+    chronoClient?: SortOrder
+    prenom?: SortOrder
+    nom?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    dateDerniereCommande?: SortOrder
+    codeFichierPartenaire?: SortOrder
+    ref_partenaires?: PartenaireOrderByWithRelationInput
+  }
+
+  export type ClientsWhereUniqueInput = {
+    chronoClient?: string
+  }
+
+  export type ClientsOrderByWithAggregationInput = {
+    chronoClient?: SortOrder
+    prenom?: SortOrder
+    nom?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    dateDerniereCommande?: SortOrder
+    codeFichierPartenaire?: SortOrder
+    _count?: ClientsCountOrderByAggregateInput
+    _max?: ClientsMaxOrderByAggregateInput
+    _min?: ClientsMinOrderByAggregateInput
+  }
+
+  export type ClientsScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ClientsScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ClientsScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ClientsScalarWhereWithAggregatesInput>
+    chronoClient?: StringWithAggregatesFilter | string
+    prenom?: StringNullableWithAggregatesFilter | string | null
+    nom?: StringNullableWithAggregatesFilter | string | null
+    codePostal?: StringNullableWithAggregatesFilter | string | null
+    ville?: StringNullableWithAggregatesFilter | string | null
+    dateDerniereCommande?: DateTimeNullableWithAggregatesFilter | Date | string | null
+    codeFichierPartenaire?: StringNullableWithAggregatesFilter | string | null
   }
 
   export type PartenaireCreateInput = {
     code: string
     libelle: string
+    clients?: ClientsCreateNestedManyWithoutRef_partenairesInput
   }
 
   export type PartenaireUncheckedCreateInput = {
     code: string
     libelle: string
+    clients?: ClientsUncheckedCreateNestedManyWithoutRef_partenairesInput
   }
 
   export type PartenaireUpdateInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
+    clients?: ClientsUpdateManyWithoutRef_partenairesInput
   }
 
   export type PartenaireUncheckedUpdateInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
+    clients?: ClientsUncheckedUpdateManyWithoutRef_partenairesInput
   }
 
   export type PartenaireCreateManyInput = {
@@ -3548,82 +4629,82 @@ export namespace Prisma {
   export type ProduitCreateInput = {
     code: string
     libelle: string
-    commentaires?: string
+    commentaires?: string | null
     offres?: OffreCreateNestedManyWithoutProduitInput
   }
 
   export type ProduitUncheckedCreateInput = {
     code: string
     libelle: string
-    commentaires: string
+    commentaires?: string | null
     offres?: OffreUncheckedCreateNestedManyWithoutProduitInput
   }
 
   export type ProduitUpdateInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    commentaires?: StringFieldUpdateOperationsInput | string
+    commentaires?: NullableStringFieldUpdateOperationsInput | string | null
     offres?: OffreUpdateManyWithoutProduitInput
   }
 
   export type ProduitUncheckedUpdateInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    commentaires?: StringFieldUpdateOperationsInput | string
+    commentaires?: NullableStringFieldUpdateOperationsInput | string | null
     offres?: OffreUncheckedUpdateManyWithoutProduitInput
   }
 
   export type ProduitCreateManyInput = {
     code: string
     libelle: string
-    commentaires: string
+    commentaires?: string | null
   }
 
   export type ProduitUpdateManyMutationInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    commentaires?: StringFieldUpdateOperationsInput | string
+    commentaires?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProduitUncheckedUpdateManyInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    commentaires?: StringFieldUpdateOperationsInput | string
+    commentaires?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type OffreCreateInput = {
     code: string
     libelle: string
-    produit: ProduitCreateNestedOneWithoutOffresInput
     dateDerniereModification?: Date | string | null
+    produit: ProduitCreateNestedOneWithoutOffresInput
   }
 
   export type OffreUncheckedCreateInput = {
     code: string
     libelle: string
-    codeProduit: string
     dateDerniereModification?: Date | string | null
+    codeProduit: string
   }
 
   export type OffreUpdateInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    produit?: ProduitUpdateOneRequiredWithoutOffresInput
     dateDerniereModification?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    produit?: ProduitUpdateOneRequiredWithoutOffresInput
   }
 
   export type OffreUncheckedUpdateInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    codeProduit?: StringFieldUpdateOperationsInput | string
     dateDerniereModification?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codeProduit?: StringFieldUpdateOperationsInput | string
   }
 
   export type OffreCreateManyInput = {
     code: string
     libelle: string
-    codeProduit: string
     dateDerniereModification?: Date | string | null
+    codeProduit: string
   }
 
   export type OffreUpdateManyMutationInput = {
@@ -3635,8 +4716,77 @@ export namespace Prisma {
   export type OffreUncheckedUpdateManyInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    codeProduit?: StringFieldUpdateOperationsInput | string
     dateDerniereModification?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codeProduit?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClientsCreateInput = {
+    chronoClient: string
+    prenom?: string | null
+    nom?: string | null
+    codePostal?: string | null
+    ville?: string | null
+    dateDerniereCommande?: Date | string | null
+    ref_partenaires?: PartenaireCreateNestedOneWithoutClientsInput
+  }
+
+  export type ClientsUncheckedCreateInput = {
+    chronoClient: string
+    prenom?: string | null
+    nom?: string | null
+    codePostal?: string | null
+    ville?: string | null
+    dateDerniereCommande?: Date | string | null
+    codeFichierPartenaire?: string | null
+  }
+
+  export type ClientsUpdateInput = {
+    chronoClient?: StringFieldUpdateOperationsInput | string
+    prenom?: NullableStringFieldUpdateOperationsInput | string | null
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    ref_partenaires?: PartenaireUpdateOneWithoutClientsInput
+  }
+
+  export type ClientsUncheckedUpdateInput = {
+    chronoClient?: StringFieldUpdateOperationsInput | string
+    prenom?: NullableStringFieldUpdateOperationsInput | string | null
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codeFichierPartenaire?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ClientsCreateManyInput = {
+    chronoClient: string
+    prenom?: string | null
+    nom?: string | null
+    codePostal?: string | null
+    ville?: string | null
+    dateDerniereCommande?: Date | string | null
+    codeFichierPartenaire?: string | null
+  }
+
+  export type ClientsUpdateManyMutationInput = {
+    chronoClient?: StringFieldUpdateOperationsInput | string
+    prenom?: NullableStringFieldUpdateOperationsInput | string | null
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ClientsUncheckedUpdateManyInput = {
+    chronoClient?: StringFieldUpdateOperationsInput | string
+    prenom?: NullableStringFieldUpdateOperationsInput | string | null
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    codeFichierPartenaire?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type StringFilter = {
@@ -3652,6 +4802,16 @@ export namespace Prisma {
     endsWith?: string
     mode?: QueryMode
     not?: NestedStringFilter | string
+  }
+
+  export type ClientsListRelationFilter = {
+    every?: ClientsWhereInput
+    some?: ClientsWhereInput
+    none?: ClientsWhereInput
+  }
+
+  export type ClientsOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type PartenaireCountOrderByAggregateInput = {
@@ -3687,6 +4847,21 @@ export namespace Prisma {
     _max?: NestedStringFilter
   }
 
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableFilter | string | null
+  }
+
   export type OffreListRelationFilter = {
     every?: OffreWhereInput
     some?: OffreWhereInput
@@ -3715,9 +4890,22 @@ export namespace Prisma {
     commentaires?: SortOrder
   }
 
-  export type ProduitRelationFilter = {
-    is?: ProduitWhereInput
-    isNot?: ProduitWhereInput
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
   }
 
   export type DateTimeNullableFilter = {
@@ -3731,25 +4919,30 @@ export namespace Prisma {
     not?: NestedDateTimeNullableFilter | Date | string | null
   }
 
+  export type ProduitRelationFilter = {
+    is?: ProduitWhereInput
+    isNot?: ProduitWhereInput
+  }
+
   export type OffreCountOrderByAggregateInput = {
     code?: SortOrder
     libelle?: SortOrder
-    codeProduit?: SortOrder
     dateDerniereModification?: SortOrder
+    codeProduit?: SortOrder
   }
 
   export type OffreMaxOrderByAggregateInput = {
     code?: SortOrder
     libelle?: SortOrder
-    codeProduit?: SortOrder
     dateDerniereModification?: SortOrder
+    codeProduit?: SortOrder
   }
 
   export type OffreMinOrderByAggregateInput = {
     code?: SortOrder
     libelle?: SortOrder
-    codeProduit?: SortOrder
     dateDerniereModification?: SortOrder
+    codeProduit?: SortOrder
   }
 
   export type DateTimeNullableWithAggregatesFilter = {
@@ -3766,8 +4959,85 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter
   }
 
+  export type PartenaireRelationFilter = {
+    is?: PartenaireWhereInput | null
+    isNot?: PartenaireWhereInput | null
+  }
+
+  export type ClientsCountOrderByAggregateInput = {
+    chronoClient?: SortOrder
+    prenom?: SortOrder
+    nom?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    dateDerniereCommande?: SortOrder
+    codeFichierPartenaire?: SortOrder
+  }
+
+  export type ClientsMaxOrderByAggregateInput = {
+    chronoClient?: SortOrder
+    prenom?: SortOrder
+    nom?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    dateDerniereCommande?: SortOrder
+    codeFichierPartenaire?: SortOrder
+  }
+
+  export type ClientsMinOrderByAggregateInput = {
+    chronoClient?: SortOrder
+    prenom?: SortOrder
+    nom?: SortOrder
+    codePostal?: SortOrder
+    ville?: SortOrder
+    dateDerniereCommande?: SortOrder
+    codeFichierPartenaire?: SortOrder
+  }
+
+  export type ClientsCreateNestedManyWithoutRef_partenairesInput = {
+    create?: XOR<Enumerable<ClientsCreateWithoutRef_partenairesInput>, Enumerable<ClientsUncheckedCreateWithoutRef_partenairesInput>>
+    connectOrCreate?: Enumerable<ClientsCreateOrConnectWithoutRef_partenairesInput>
+    createMany?: ClientsCreateManyRef_partenairesInputEnvelope
+    connect?: Enumerable<ClientsWhereUniqueInput>
+  }
+
+  export type ClientsUncheckedCreateNestedManyWithoutRef_partenairesInput = {
+    create?: XOR<Enumerable<ClientsCreateWithoutRef_partenairesInput>, Enumerable<ClientsUncheckedCreateWithoutRef_partenairesInput>>
+    connectOrCreate?: Enumerable<ClientsCreateOrConnectWithoutRef_partenairesInput>
+    createMany?: ClientsCreateManyRef_partenairesInputEnvelope
+    connect?: Enumerable<ClientsWhereUniqueInput>
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type ClientsUpdateManyWithoutRef_partenairesInput = {
+    create?: XOR<Enumerable<ClientsCreateWithoutRef_partenairesInput>, Enumerable<ClientsUncheckedCreateWithoutRef_partenairesInput>>
+    connectOrCreate?: Enumerable<ClientsCreateOrConnectWithoutRef_partenairesInput>
+    upsert?: Enumerable<ClientsUpsertWithWhereUniqueWithoutRef_partenairesInput>
+    createMany?: ClientsCreateManyRef_partenairesInputEnvelope
+    set?: Enumerable<ClientsWhereUniqueInput>
+    disconnect?: Enumerable<ClientsWhereUniqueInput>
+    delete?: Enumerable<ClientsWhereUniqueInput>
+    connect?: Enumerable<ClientsWhereUniqueInput>
+    update?: Enumerable<ClientsUpdateWithWhereUniqueWithoutRef_partenairesInput>
+    updateMany?: Enumerable<ClientsUpdateManyWithWhereWithoutRef_partenairesInput>
+    deleteMany?: Enumerable<ClientsScalarWhereInput>
+  }
+
+  export type ClientsUncheckedUpdateManyWithoutRef_partenairesInput = {
+    create?: XOR<Enumerable<ClientsCreateWithoutRef_partenairesInput>, Enumerable<ClientsUncheckedCreateWithoutRef_partenairesInput>>
+    connectOrCreate?: Enumerable<ClientsCreateOrConnectWithoutRef_partenairesInput>
+    upsert?: Enumerable<ClientsUpsertWithWhereUniqueWithoutRef_partenairesInput>
+    createMany?: ClientsCreateManyRef_partenairesInputEnvelope
+    set?: Enumerable<ClientsWhereUniqueInput>
+    disconnect?: Enumerable<ClientsWhereUniqueInput>
+    delete?: Enumerable<ClientsWhereUniqueInput>
+    connect?: Enumerable<ClientsWhereUniqueInput>
+    update?: Enumerable<ClientsUpdateWithWhereUniqueWithoutRef_partenairesInput>
+    updateMany?: Enumerable<ClientsUpdateManyWithWhereWithoutRef_partenairesInput>
+    deleteMany?: Enumerable<ClientsScalarWhereInput>
   }
 
   export type OffreCreateNestedManyWithoutProduitInput = {
@@ -3782,6 +5052,10 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<OffreCreateOrConnectWithoutProduitInput>
     createMany?: OffreCreateManyProduitInputEnvelope
     connect?: Enumerable<OffreWhereUniqueInput>
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type OffreUpdateManyWithoutProduitInput = {
@@ -3818,6 +5092,10 @@ export namespace Prisma {
     connect?: ProduitWhereUniqueInput
   }
 
+  export type NullableDateTimeFieldUpdateOperationsInput = {
+    set?: Date | string | null
+  }
+
   export type ProduitUpdateOneRequiredWithoutOffresInput = {
     create?: XOR<ProduitCreateWithoutOffresInput, ProduitUncheckedCreateWithoutOffresInput>
     connectOrCreate?: ProduitCreateOrConnectWithoutOffresInput
@@ -3826,8 +5104,20 @@ export namespace Prisma {
     update?: XOR<ProduitUpdateWithoutOffresInput, ProduitUncheckedUpdateWithoutOffresInput>
   }
 
-  export type NullableDateTimeFieldUpdateOperationsInput = {
-    set?: Date | string | null
+  export type PartenaireCreateNestedOneWithoutClientsInput = {
+    create?: XOR<PartenaireCreateWithoutClientsInput, PartenaireUncheckedCreateWithoutClientsInput>
+    connectOrCreate?: PartenaireCreateOrConnectWithoutClientsInput
+    connect?: PartenaireWhereUniqueInput
+  }
+
+  export type PartenaireUpdateOneWithoutClientsInput = {
+    create?: XOR<PartenaireCreateWithoutClientsInput, PartenaireUncheckedCreateWithoutClientsInput>
+    connectOrCreate?: PartenaireCreateOrConnectWithoutClientsInput
+    upsert?: PartenaireUpsertWithoutClientsInput
+    disconnect?: boolean
+    delete?: boolean
+    connect?: PartenaireWhereUniqueInput
+    update?: XOR<PartenaireUpdateWithoutClientsInput, PartenaireUncheckedUpdateWithoutClientsInput>
   }
 
   export type NestedStringFilter = {
@@ -3872,6 +5162,48 @@ export namespace Prisma {
     not?: NestedIntFilter | number
   }
 
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
+  }
+
   export type NestedDateTimeNullableFilter = {
     equals?: Date | string | null
     in?: Enumerable<Date> | Enumerable<string> | null
@@ -3897,15 +5229,61 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter
   }
 
-  export type NestedIntNullableFilter = {
-    equals?: number | null
-    in?: Enumerable<number> | null
-    notIn?: Enumerable<number> | null
-    lt?: number
-    lte?: number
-    gt?: number
-    gte?: number
-    not?: NestedIntNullableFilter | number | null
+  export type ClientsCreateWithoutRef_partenairesInput = {
+    chronoClient: string
+    prenom?: string | null
+    nom?: string | null
+    codePostal?: string | null
+    ville?: string | null
+    dateDerniereCommande?: Date | string | null
+  }
+
+  export type ClientsUncheckedCreateWithoutRef_partenairesInput = {
+    chronoClient: string
+    prenom?: string | null
+    nom?: string | null
+    codePostal?: string | null
+    ville?: string | null
+    dateDerniereCommande?: Date | string | null
+  }
+
+  export type ClientsCreateOrConnectWithoutRef_partenairesInput = {
+    where: ClientsWhereUniqueInput
+    create: XOR<ClientsCreateWithoutRef_partenairesInput, ClientsUncheckedCreateWithoutRef_partenairesInput>
+  }
+
+  export type ClientsCreateManyRef_partenairesInputEnvelope = {
+    data: Enumerable<ClientsCreateManyRef_partenairesInput>
+    skipDuplicates?: boolean
+  }
+
+  export type ClientsUpsertWithWhereUniqueWithoutRef_partenairesInput = {
+    where: ClientsWhereUniqueInput
+    update: XOR<ClientsUpdateWithoutRef_partenairesInput, ClientsUncheckedUpdateWithoutRef_partenairesInput>
+    create: XOR<ClientsCreateWithoutRef_partenairesInput, ClientsUncheckedCreateWithoutRef_partenairesInput>
+  }
+
+  export type ClientsUpdateWithWhereUniqueWithoutRef_partenairesInput = {
+    where: ClientsWhereUniqueInput
+    data: XOR<ClientsUpdateWithoutRef_partenairesInput, ClientsUncheckedUpdateWithoutRef_partenairesInput>
+  }
+
+  export type ClientsUpdateManyWithWhereWithoutRef_partenairesInput = {
+    where: ClientsScalarWhereInput
+    data: XOR<ClientsUpdateManyMutationInput, ClientsUncheckedUpdateManyWithoutClientsInput>
+  }
+
+  export type ClientsScalarWhereInput = {
+    AND?: Enumerable<ClientsScalarWhereInput>
+    OR?: Enumerable<ClientsScalarWhereInput>
+    NOT?: Enumerable<ClientsScalarWhereInput>
+    chronoClient?: StringFilter | string
+    prenom?: StringNullableFilter | string | null
+    nom?: StringNullableFilter | string | null
+    codePostal?: StringNullableFilter | string | null
+    ville?: StringNullableFilter | string | null
+    dateDerniereCommande?: DateTimeNullableFilter | Date | string | null
+    codeFichierPartenaire?: StringNullableFilter | string | null
   }
 
   export type OffreCreateWithoutProduitInput = {
@@ -3952,20 +5330,20 @@ export namespace Prisma {
     NOT?: Enumerable<OffreScalarWhereInput>
     code?: StringFilter | string
     libelle?: StringFilter | string
-    codeProduit?: StringFilter | string
     dateDerniereModification?: DateTimeNullableFilter | Date | string | null
+    codeProduit?: StringFilter | string
   }
 
   export type ProduitCreateWithoutOffresInput = {
     code: string
     libelle: string
-    commentaires: string
+    commentaires?: string | null
   }
 
   export type ProduitUncheckedCreateWithoutOffresInput = {
     code: string
     libelle: string
-    commentaires: string
+    commentaires?: string | null
   }
 
   export type ProduitCreateOrConnectWithoutOffresInput = {
@@ -3981,13 +5359,79 @@ export namespace Prisma {
   export type ProduitUpdateWithoutOffresInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    commentaires?: StringFieldUpdateOperationsInput | string
+    commentaires?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ProduitUncheckedUpdateWithoutOffresInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
-    commentaires?: StringFieldUpdateOperationsInput | string
+    commentaires?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type PartenaireCreateWithoutClientsInput = {
+    code: string
+    libelle: string
+  }
+
+  export type PartenaireUncheckedCreateWithoutClientsInput = {
+    code: string
+    libelle: string
+  }
+
+  export type PartenaireCreateOrConnectWithoutClientsInput = {
+    where: PartenaireWhereUniqueInput
+    create: XOR<PartenaireCreateWithoutClientsInput, PartenaireUncheckedCreateWithoutClientsInput>
+  }
+
+  export type PartenaireUpsertWithoutClientsInput = {
+    update: XOR<PartenaireUpdateWithoutClientsInput, PartenaireUncheckedUpdateWithoutClientsInput>
+    create: XOR<PartenaireCreateWithoutClientsInput, PartenaireUncheckedCreateWithoutClientsInput>
+  }
+
+  export type PartenaireUpdateWithoutClientsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    libelle?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type PartenaireUncheckedUpdateWithoutClientsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    libelle?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ClientsCreateManyRef_partenairesInput = {
+    chronoClient: string
+    prenom?: string | null
+    nom?: string | null
+    codePostal?: string | null
+    ville?: string | null
+    dateDerniereCommande?: Date | string | null
+  }
+
+  export type ClientsUpdateWithoutRef_partenairesInput = {
+    chronoClient?: StringFieldUpdateOperationsInput | string
+    prenom?: NullableStringFieldUpdateOperationsInput | string | null
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ClientsUncheckedUpdateWithoutRef_partenairesInput = {
+    chronoClient?: StringFieldUpdateOperationsInput | string
+    prenom?: NullableStringFieldUpdateOperationsInput | string | null
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type ClientsUncheckedUpdateManyWithoutClientsInput = {
+    chronoClient?: StringFieldUpdateOperationsInput | string
+    prenom?: NullableStringFieldUpdateOperationsInput | string | null
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    codePostal?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   }
 
   export type OffreCreateManyProduitInput = {

@@ -24,4 +24,6 @@ export class CustomersApiService extends AbstractApiService {
   public async getCustomerListByCriterias (searchCriterias?: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
     return this.doGet('/search/multi-criterias', searchCriterias)
   }
+
+ 
 }

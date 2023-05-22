@@ -176,6 +176,15 @@ export default defineComponent({
         field: (row: CustomerSearchResultDto) => row.dateDerniereCommande,
         format: (val: string) => `${!!val ? formatDate(val, 'DD/MM/YYYY') : '---'}`,
         sortable: true
+      },
+      {
+        name: 'codeFichierPartenaire',
+        required: false,
+        label: 'Code Partenaire',
+        align: 'center',
+        field: (row: CustomerSearchResultDto) => row.codeFichierPartenaire,
+        format: (val: string) => `${val}`,
+        sortable: true
       }
     ]
 
@@ -184,7 +193,10 @@ export default defineComponent({
       pagination.value = props.pagination
 
       // get all rows if "All" (0) is selected
-      pagination.value.rowsPerPage = pagination.value.rowsPerPage === 0 ? pagination.value.rowsNumber : pagination.value.rowsPerPage
+      pagination.value.rowsPerPage = 
+        pagination.value.rowsPerPage === 0 
+          ? pagination.value.rowsNumber 
+          : pagination.value.rowsPerPage
 
       const searchAllParams = {
         criterias: currentSearchParams,

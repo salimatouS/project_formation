@@ -1,46 +1,53 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider        = "prisma-client-js"
+  output          = "../src/.prisma/client"
+  previewFeatures = ["filterJson"]
+  binaryTargets   = ["native", "linux-musl"]
+}
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-  previewFeatures = ["filterJson"]
-  binaryTargets = ["native", "linux-musl"]
-  output   = "../src/.prisma/client"
-}
-
 model Partenaire {
-    code  String @db.VarChar @id
-    libelle String @db.VarChar
+  code    String    @id @db.VarChar
+  libelle String    @db.VarChar
+  clients Clients[] @relation("ref_clientsToref_partenaires")
 
-    @@map(name: "ref_partenaires")
+  @@map("ref_partenaires")
 }
 
 model Produit {
+  code         String  @id @db.VarChar
+  libelle      String  @db.VarChar
+  commentaires String? @db.VarChar(255)
+  offres       Offre[] @relation("offre_produits")
 
-    code String @db.VarChar @id
-    libelle String @db.VarChar
-    commentaires String @db.VarChar
-
-    offres Offre[] @relation("offre_produits")
-
-    @@map(name: "ref_produits")
+  @@map("ref_produits")
 }
 
 model Offre {
+  code                     String    @id @db.VarChar
+  libelle                  String    @db.VarChar
+  dateDerniereModification DateTime? @map("date_derniere_modification") @db.Timestamptz(0)
+  codeProduit              String    @map("code_produit") @db.VarChar
+  produit                  Produit   @relation("offre_produits", fields: [codeProduit], references: [code], onDelete: Cascade, onUpdate: Restrict)
 
-    code String @db.VarChar @id
-    libelle String @db.VarChar
+  @@index([codeProduit])
+  @@map("ref_offres")
+}
 
-    codeProduit  String @db.VarChar @map(name: "code_produit")
-    produit   Produit @relation("offre_produits", fields: [codeProduit], references: [code], onDelete: Cascade, onUpdate: Restrict)
+model Clients {
+  chronoClient         String      @map("chronoclient") @id @db.VarChar(15)
+  prenom               String?     @db.VarChar(100)
+  nom                  String?     @db.VarChar(100)
+  codePostal           String?     @map("codepostal") @db.VarChar(6)
+  ville                String?     @db.VarChar(100)
+  dateDerniereCommande DateTime?   @map("datedernierecommande") @db.Date
+  codeFichierPartenaire      String?     @map("code_partenaire") @db.VarChar(10)
+  ref_partenaires      Partenaire? @relation("ref_clientsToref_partenaires", fields: [codeFichierPartenaire], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "fk_partenaire")
 
-    dateDerniereModification DateTime? @db.Timestamptz(0) @map(name: "date_derniere_modification")
-
-    @@map(name: "ref_offres")
-    @@index(codeProduit)
+  
+  @@map("ref_clients")
 }
