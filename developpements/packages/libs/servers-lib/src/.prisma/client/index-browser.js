@@ -101,7 +101,8 @@ exports.Prisma.ClientsScalarFieldEnum = makeEnum({
   codePostal: 'codePostal',
   ville: 'ville',
   dateDerniereCommande: 'dateDerniereCommande',
-  codeFichierPartenaire: 'codeFichierPartenaire'
+  codeFichierPartenaire: 'codeFichierPartenaire',
+  actif: 'actif'
 });
 
 exports.Prisma.SortOrder = makeEnum({

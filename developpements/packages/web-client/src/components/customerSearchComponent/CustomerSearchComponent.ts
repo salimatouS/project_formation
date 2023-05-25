@@ -27,6 +27,7 @@ import {
   NotificationStatusEnum
 } from '../../services/common/notification.service'
 import formatDate = date.formatDate
+import { isBoolean } from 'lodash'
 
 /**
  * Composant permettant la détection des changement dans les form afin de gérer l'accès à certaine partie (ex: bouton rechercher)
@@ -83,7 +84,8 @@ export default defineComponent({
       prenom: '',
       codePostal: '',
       ville: '',
-      dateDerniereCommande: new Date()
+      dateDerniereCommande: new Date(),
+      actif: true
       
     });
 
@@ -150,7 +152,8 @@ export default defineComponent({
         align: 'left',
         field: (row: CustomerSearchResultDto) => row.prenom,
         format: (val: string) => `${val}`,
-        sortable: true
+        sortable: true,
+        /* 'sort-method': 'sortData' */
       },
       {
         name: 'nom',
@@ -159,7 +162,8 @@ export default defineComponent({
         align: 'left',
         field: (row: CustomerSearchResultDto) => row.nom,
         format: (val: string) => `${val}`,
-        sortable: true
+        sortable: true,
+       /*  'sort-method': 'sortData' */
       },
       {
         name: 'codePostal',
@@ -196,6 +200,21 @@ export default defineComponent({
         field: (row: CustomerSearchResultDto) => row.codeFichierPartenaire,
         format: (val: string) => `${val}`,
         sortable: true
+      },
+      {
+        name: 'actif',
+        required: false,
+        label: 'Actif',
+        align: 'center',
+       /*  field: (row: CustomerSearchResultDto) => {
+          return {
+            value: row.actif,
+            classes: row.actif ? 'text-negative' : ''
+          };
+        }, */
+        field: (row: CustomerSearchResultDto) => String(row.actif), 
+        format: (val: boolean)=> val.toString(),
+        sortable: true
       }
     ]
 
@@ -228,7 +247,8 @@ export default defineComponent({
           codePostal: form.codePostal,
           ville: form.ville,
           dateDerniereCommandeFrom: form.dateDerniereCommandeFrom,
-          dateDerniereCommandeTo: form.dateDerniereCommandeTo
+          dateDerniereCommandeTo: form.dateDerniereCommandeTo,
+          actif:form.actif
         },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         pagination: initialPagination
@@ -248,7 +268,9 @@ export default defineComponent({
     }
 
     function doCheckForSearch(searchAllParams: ISearchDto<SearchCustomerDto>) {
-      if (!!searchAllParams.criterias?.chronoClient || !!searchAllParams.criterias?.nom || !!searchAllParams.criterias?.prenom || !!searchAllParams.criterias?.codePostal || !!searchAllParams.criterias?.ville || !!searchAllParams.criterias?.dateDerniereCommandeTo || !!searchAllParams.criterias?.dateDerniereCommandeFrom) {
+      //le if est une condition logique utilisée pour vérifier si au moins l'un des critères de recherche est défini dans l'objet 
+      //!! à l'avant de l'expression est utilisé pour convertir la valeur en un boolean. Ainsi, cette partie de l'expression évalue à true si searchAllParams.criterias?.chronoClient existe et a une valeur non nulle, sinon elle évalue à false. Le !! est utilisé pour convertir la valeur en un boolean avant de la passer à la fonction isBoolean(). Ainsi, cette partie de l'expression évaluera à true si searchAllParams.criterias?.actif est un boolean, sinon elle évaluera à false.
+      if (!!searchAllParams.criterias?.chronoClient || !!searchAllParams.criterias?.nom || !!searchAllParams.criterias?.prenom || !!searchAllParams.criterias?.codePostal || !!searchAllParams.criterias?.ville || !!searchAllParams.criterias?.dateDerniereCommandeTo || !!searchAllParams.criterias?.dateDerniereCommandeFrom || isBoolean(!!searchAllParams.criterias?.actif)) {
         return true
       }
       return false
@@ -331,6 +353,23 @@ export default defineComponent({
       this.confirm = false;
 
     },
+
+    /* sortData(column: any, ascending: boolean) {
+      const { field } = column;
+    
+      return this.searchAllResponse.list.sort((a: CustomerSearchResultDto, b: CustomerSearchResultDto) => {
+        const valueA = field(a);
+        const valueB = field(b);
+    
+        if (valueA < valueB) {
+          return ascending ? -1 : 1;
+        } else if (valueA > valueB) {
+          return ascending ? 1 : -1;
+        } else {
+          return 0;
+        }
+      });
+    } */
   },
   computed: {
     formattedDate: {

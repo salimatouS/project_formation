@@ -39,14 +39,15 @@ model Offre {
 }
 
 model Clients {
-  chronoClient         String      @map("chronoclient") @id @db.VarChar(15)
-  prenom               String?     @db.VarChar(100)
-  nom                  String?     @db.VarChar(100)
-  codePostal           String?     @map("codepostal") @db.VarChar(6)
-  ville                String?     @db.VarChar(100)
-  dateDerniereCommande DateTime?   @map("datedernierecommande") @db.Date
-  codeFichierPartenaire      String?     @map("code_partenaire") @db.VarChar(10)
-  ref_partenaires      Partenaire? @relation("ref_clientsToref_partenaires", fields: [codeFichierPartenaire], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "fk_partenaire")
-  
+  chronoClient          String      @id @map("chronoclient") @db.VarChar(15)
+  prenom                String?     @db.VarChar(100)
+  nom                   String?     @db.VarChar(100)
+  codePostal            String?     @map("codepostal") @db.VarChar(6)
+  ville                 String?     @db.VarChar(100)
+  dateDerniereCommande  DateTime?   @map("datedernierecommande") @db.Date
+  codeFichierPartenaire String?     @map("code_partenaire") @db.VarChar(10)
+  actif                 Boolean?    @default(true)
+  ref_partenaires       Partenaire? @relation("ref_clientsToref_partenaires", fields: [codeFichierPartenaire], references: [code], onDelete: NoAction, onUpdate: NoAction, map: "fk_partenaire")
+
   @@map("ref_clients")
 }

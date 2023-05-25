@@ -153,6 +153,7 @@ export default defineComponent({
       ville: '',
       dateDerniereCommande: new Date(),
       codeFichierPartenaire: '',
+      actif: true
     });
 
     async function modifClient() {

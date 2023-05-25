@@ -59,6 +59,26 @@
               stack-label
               @update:model-value="doOnFormChanged"
             />
+            <q-toggle
+              v-model="form.actif"
+              @change="doOnFormChanged"
+              label="Actif"
+              stack-label
+              hint="Commence par (min: 2) - Format: 99999"
+              :true-value="true"
+              :false-value="false"
+            />
+            <!-- <q-input
+              v-model="form.actif"
+              :lazy-rules="true"
+              :rules="[textValidatorToFixed2]"
+              class="col-12 col-md-2"
+              hint="Commence par (min: 2) - Format: 99999"
+              label="Actif"
+              mask="#####"
+              stack-label
+              @update:model-value="doOnFormChanged"
+            /> -->
           </div>
           <q-list bordered class="q-my-md rounded-borders">
             <q-expansion-item
@@ -173,8 +193,9 @@
           </q-list>
 
           <div class="row justify-end">
+            <!--:disable="!isFormChanged()"-->
             <q-btn
-              :disable="!isFormChanged()"
+            
               color="primary"
               icon="fa fa-search"
               label="Rechercher"
@@ -206,6 +227,14 @@
         @request="doPagination"
         @row-click="onRowClickClient"
       >
+      <template v-slot:body-cell-actif="props">
+      <q-td :props="props">
+        <div :class="{ 'bg-green': props.row.actif, 'bg-red': !props.row.actif }">
+          {{ props.row.actif }}
+        </div>
+      </q-td>
+    </template>
+     
       </q-table>
     </div>
   </div>
@@ -225,12 +254,19 @@
             <q-input v-model="client.nom" id="nom" label="nom" />
             <q-input v-model="client.codePostal" id="cp" label="cp" />
             <q-input v-model="client.ville" id="ville" label="ville" />
-            <q-input v-model="formattedDate" type="date" id="dateDerniereCommande" label="Date derniere commande" /> 
-            <q-input v-model="client.codeFichierPartenaire"
+            <q-input
+              v-model="formattedDate"
+              type="date"
+              id="dateDerniereCommande"
+              label="Date derniere commande"
+            />
+            <q-input
+              v-model="client.codeFichierPartenaire"
               t
               id="codeFichierPartenaire"
               label="code Partenaire"
             />
+            <q-toggle v-model="client.actif" id="actif" label="actif" />
             <q-btn
               flat
               type="submit"

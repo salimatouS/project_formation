@@ -12,6 +12,7 @@ export interface SearchCustomerDto {
   nom?: string,
   prenom?: string,
   ville?: string,
+  actif?:boolean,
  
 }
 
@@ -23,6 +24,7 @@ export interface CustomerSearchResultDto {
   nom: string,
   prenom: string,
   ville: string,
+  actif:boolean,
 }
 
 export interface CodeLabelResultDto {
@@ -47,7 +49,6 @@ export interface ProductDto{
 }
 
 export interface SearchProductDto{
-  labelLike: string
-
-  
+  labelLike: string,
+  codeLike:string 
 }

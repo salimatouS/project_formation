@@ -45,14 +45,55 @@ export class CustomersService {
         prenom: 'John',
         codePostal: '34130',
         ville: 'Mauguio',
-        dateDerniereCommande: null
+        dateDerniereCommande: null,
+        actif:true
       }
     )
   }
 
- 
+   async searchCustomer(searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
+    const whereClause: any = {
+      codeFichierPartenaire: {
+        contains: searchDto.criterias.codeFichierPartenaire,
+      },
+      chronoClient: {
+        contains: searchDto.criterias.chronoClient,
+        mode: 'insensitive',
+      },
+      nom: {
+        contains: searchDto.criterias.nom,
+        mode: 'insensitive',
+      },
+      prenom: {
+        contains: searchDto.criterias.prenom,
+        mode: 'insensitive',
+      },
+      codePostal: {
+        contains: searchDto.criterias.codePostal,
+        mode: 'insensitive',
+      },
+      actif:{
+        equals:searchDto.criterias.actif}
+    };
 
- async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
+    const dbCustomer = await this.prismaService.clients.findMany({
+      where: whereClause,
+    });
+  
+    const dbCustomerWithBackground = dbCustomer.map((customer) => ({
+      ...customer,
+      background: customer.actif ? 'green' : 'red',
+    }));
+
+    const dbCustomerPaginated: IPaginatedListDto<CustomerSearchResultDto> = {
+      list: dbCustomerWithBackground,
+      rowsNumber: dbCustomer.length,
+    };
+  
+    return WorkDone.buildOk<IPaginatedListDto<CustomerSearchResultDto>>(dbCustomerPaginated);
+  } 
+
+  /* async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
   const dbCustomer= await this.prismaService.clients.findMany({
     where:{
       codeFichierPartenaire:{
@@ -73,15 +114,15 @@ export class CustomersService {
         contains:searchDto.criterias.codePostal,
         mode:'insensitive'
       },
-      
+     actif:searchDto.criterias.actif,                                    
     }
   });
 
-  const dbCustomerPaginated : IPaginatedListDto<CustomerSearchResultDto> = {list : dbCustomer, rowsNumber : 100}
+  const dbCustomerPaginated : IPaginatedListDto<CustomerSearchResultDto> = {list : dbCustomer, rowsNumber : 100} 
 
- /*  let searchDtoReturn : SearchCustomerDto */
+
     return WorkDone.buildOk<IPaginatedListDto<CustomerSearchResultDto>>(dbCustomerPaginated)
-  }
+  } */
 
   async createClient(client:CustomerSearchResultDto): Promise<WorkDone<string>> {
     //check if client with same code already exists

@@ -54,6 +54,7 @@ export type Clients = {
   ville: string | null
   dateDerniereCommande: Date | null
   codeFichierPartenaire: string | null
+  actif: boolean | null
 }
 
 
@@ -3486,6 +3487,7 @@ export namespace Prisma {
     ville: string | null
     dateDerniereCommande: Date | null
     codeFichierPartenaire: string | null
+    actif: boolean | null
   }
 
   export type ClientsMaxAggregateOutputType = {
@@ -3496,6 +3498,7 @@ export namespace Prisma {
     ville: string | null
     dateDerniereCommande: Date | null
     codeFichierPartenaire: string | null
+    actif: boolean | null
   }
 
   export type ClientsCountAggregateOutputType = {
@@ -3506,6 +3509,7 @@ export namespace Prisma {
     ville: number
     dateDerniereCommande: number
     codeFichierPartenaire: number
+    actif: number
     _all: number
   }
 
@@ -3518,6 +3522,7 @@ export namespace Prisma {
     ville?: true
     dateDerniereCommande?: true
     codeFichierPartenaire?: true
+    actif?: true
   }
 
   export type ClientsMaxAggregateInputType = {
@@ -3528,6 +3533,7 @@ export namespace Prisma {
     ville?: true
     dateDerniereCommande?: true
     codeFichierPartenaire?: true
+    actif?: true
   }
 
   export type ClientsCountAggregateInputType = {
@@ -3538,6 +3544,7 @@ export namespace Prisma {
     ville?: true
     dateDerniereCommande?: true
     codeFichierPartenaire?: true
+    actif?: true
     _all?: true
   }
 
@@ -3627,6 +3634,7 @@ export namespace Prisma {
     ville: string | null
     dateDerniereCommande: Date | null
     codeFichierPartenaire: string | null
+    actif: boolean | null
     _count: ClientsCountAggregateOutputType | null
     _min: ClientsMinAggregateOutputType | null
     _max: ClientsMaxAggregateOutputType | null
@@ -3654,6 +3662,7 @@ export namespace Prisma {
     ville?: boolean
     dateDerniereCommande?: boolean
     codeFichierPartenaire?: boolean
+    actif?: boolean
     ref_partenaires?: boolean | PartenaireArgs
   }
 
@@ -4388,7 +4397,8 @@ export namespace Prisma {
     codePostal: 'codePostal',
     ville: 'ville',
     dateDerniereCommande: 'dateDerniereCommande',
-    codeFichierPartenaire: 'codeFichierPartenaire'
+    codeFichierPartenaire: 'codeFichierPartenaire',
+    actif: 'actif'
   };
 
   export type ClientsScalarFieldEnum = (typeof ClientsScalarFieldEnum)[keyof typeof ClientsScalarFieldEnum]
@@ -4543,6 +4553,7 @@ export namespace Prisma {
     ville?: StringNullableFilter | string | null
     dateDerniereCommande?: DateTimeNullableFilter | Date | string | null
     codeFichierPartenaire?: StringNullableFilter | string | null
+    actif?: BoolNullableFilter | boolean | null
     ref_partenaires?: XOR<PartenaireRelationFilter, PartenaireWhereInput> | null
   }
 
@@ -4554,6 +4565,7 @@ export namespace Prisma {
     ville?: SortOrder
     dateDerniereCommande?: SortOrder
     codeFichierPartenaire?: SortOrder
+    actif?: SortOrder
     ref_partenaires?: PartenaireOrderByWithRelationInput
   }
 
@@ -4569,6 +4581,7 @@ export namespace Prisma {
     ville?: SortOrder
     dateDerniereCommande?: SortOrder
     codeFichierPartenaire?: SortOrder
+    actif?: SortOrder
     _count?: ClientsCountOrderByAggregateInput
     _max?: ClientsMaxOrderByAggregateInput
     _min?: ClientsMinOrderByAggregateInput
@@ -4585,6 +4598,7 @@ export namespace Prisma {
     ville?: StringNullableWithAggregatesFilter | string | null
     dateDerniereCommande?: DateTimeNullableWithAggregatesFilter | Date | string | null
     codeFichierPartenaire?: StringNullableWithAggregatesFilter | string | null
+    actif?: BoolNullableWithAggregatesFilter | boolean | null
   }
 
   export type PartenaireCreateInput = {
@@ -4727,6 +4741,7 @@ export namespace Prisma {
     codePostal?: string | null
     ville?: string | null
     dateDerniereCommande?: Date | string | null
+    actif?: boolean | null
     ref_partenaires?: PartenaireCreateNestedOneWithoutClientsInput
   }
 
@@ -4738,6 +4753,7 @@ export namespace Prisma {
     ville?: string | null
     dateDerniereCommande?: Date | string | null
     codeFichierPartenaire?: string | null
+    actif?: boolean | null
   }
 
   export type ClientsUpdateInput = {
@@ -4747,6 +4763,7 @@ export namespace Prisma {
     codePostal?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actif?: NullableBoolFieldUpdateOperationsInput | boolean | null
     ref_partenaires?: PartenaireUpdateOneWithoutClientsInput
   }
 
@@ -4758,6 +4775,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codeFichierPartenaire?: NullableStringFieldUpdateOperationsInput | string | null
+    actif?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type ClientsCreateManyInput = {
@@ -4768,6 +4786,7 @@ export namespace Prisma {
     ville?: string | null
     dateDerniereCommande?: Date | string | null
     codeFichierPartenaire?: string | null
+    actif?: boolean | null
   }
 
   export type ClientsUpdateManyMutationInput = {
@@ -4777,6 +4796,7 @@ export namespace Prisma {
     codePostal?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actif?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type ClientsUncheckedUpdateManyInput = {
@@ -4787,6 +4807,7 @@ export namespace Prisma {
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     codeFichierPartenaire?: NullableStringFieldUpdateOperationsInput | string | null
+    actif?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type StringFilter = {
@@ -4959,6 +4980,11 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter
   }
 
+  export type BoolNullableFilter = {
+    equals?: boolean | null
+    not?: NestedBoolNullableFilter | boolean | null
+  }
+
   export type PartenaireRelationFilter = {
     is?: PartenaireWhereInput | null
     isNot?: PartenaireWhereInput | null
@@ -4972,6 +4998,7 @@ export namespace Prisma {
     ville?: SortOrder
     dateDerniereCommande?: SortOrder
     codeFichierPartenaire?: SortOrder
+    actif?: SortOrder
   }
 
   export type ClientsMaxOrderByAggregateInput = {
@@ -4982,6 +5009,7 @@ export namespace Prisma {
     ville?: SortOrder
     dateDerniereCommande?: SortOrder
     codeFichierPartenaire?: SortOrder
+    actif?: SortOrder
   }
 
   export type ClientsMinOrderByAggregateInput = {
@@ -4992,6 +5020,15 @@ export namespace Prisma {
     ville?: SortOrder
     dateDerniereCommande?: SortOrder
     codeFichierPartenaire?: SortOrder
+    actif?: SortOrder
+  }
+
+  export type BoolNullableWithAggregatesFilter = {
+    equals?: boolean | null
+    not?: NestedBoolNullableWithAggregatesFilter | boolean | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedBoolNullableFilter
+    _max?: NestedBoolNullableFilter
   }
 
   export type ClientsCreateNestedManyWithoutRef_partenairesInput = {
@@ -5108,6 +5145,10 @@ export namespace Prisma {
     create?: XOR<PartenaireCreateWithoutClientsInput, PartenaireUncheckedCreateWithoutClientsInput>
     connectOrCreate?: PartenaireCreateOrConnectWithoutClientsInput
     connect?: PartenaireWhereUniqueInput
+  }
+
+  export type NullableBoolFieldUpdateOperationsInput = {
+    set?: boolean | null
   }
 
   export type PartenaireUpdateOneWithoutClientsInput = {
@@ -5229,6 +5270,19 @@ export namespace Prisma {
     _max?: NestedDateTimeNullableFilter
   }
 
+  export type NestedBoolNullableFilter = {
+    equals?: boolean | null
+    not?: NestedBoolNullableFilter | boolean | null
+  }
+
+  export type NestedBoolNullableWithAggregatesFilter = {
+    equals?: boolean | null
+    not?: NestedBoolNullableWithAggregatesFilter | boolean | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedBoolNullableFilter
+    _max?: NestedBoolNullableFilter
+  }
+
   export type ClientsCreateWithoutRef_partenairesInput = {
     chronoClient: string
     prenom?: string | null
@@ -5236,6 +5290,7 @@ export namespace Prisma {
     codePostal?: string | null
     ville?: string | null
     dateDerniereCommande?: Date | string | null
+    actif?: boolean | null
   }
 
   export type ClientsUncheckedCreateWithoutRef_partenairesInput = {
@@ -5245,6 +5300,7 @@ export namespace Prisma {
     codePostal?: string | null
     ville?: string | null
     dateDerniereCommande?: Date | string | null
+    actif?: boolean | null
   }
 
   export type ClientsCreateOrConnectWithoutRef_partenairesInput = {
@@ -5284,6 +5340,7 @@ export namespace Prisma {
     ville?: StringNullableFilter | string | null
     dateDerniereCommande?: DateTimeNullableFilter | Date | string | null
     codeFichierPartenaire?: StringNullableFilter | string | null
+    actif?: BoolNullableFilter | boolean | null
   }
 
   export type OffreCreateWithoutProduitInput = {
@@ -5405,6 +5462,7 @@ export namespace Prisma {
     codePostal?: string | null
     ville?: string | null
     dateDerniereCommande?: Date | string | null
+    actif?: boolean | null
   }
 
   export type ClientsUpdateWithoutRef_partenairesInput = {
@@ -5414,6 +5472,7 @@ export namespace Prisma {
     codePostal?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actif?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type ClientsUncheckedUpdateWithoutRef_partenairesInput = {
@@ -5423,6 +5482,7 @@ export namespace Prisma {
     codePostal?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actif?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type ClientsUncheckedUpdateManyWithoutClientsInput = {
@@ -5432,6 +5492,7 @@ export namespace Prisma {
     codePostal?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     dateDerniereCommande?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    actif?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
   export type OffreCreateManyProduitInput = {
