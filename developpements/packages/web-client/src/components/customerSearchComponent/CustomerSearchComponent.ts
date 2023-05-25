@@ -32,18 +32,18 @@ import formatDate = date.formatDate
  * Composant permettant la détection des changement dans les form afin de gérer l'accès à certaine partie (ex: bouton rechercher)
  * @returns {{doOnFormChanged: (newValue: any) => void, resetFormChangedStatus: () => void, isFormChanged: () => boolean}}
  */
-function defineFormChangedManager (): { doOnFormChanged: (newValue: any) => void; resetFormChangedStatus: () => void; isFormChanged: () => boolean } {
+function defineFormChangedManager(): { doOnFormChanged: (newValue: any) => void; resetFormChangedStatus: () => void; isFormChanged: () => boolean } {
   const formChanged = ref(false)
 
-  function doOnFormChanged (newValue: any) {
+  function doOnFormChanged(newValue: any) {
     formChanged.value = true
   }
 
-  function isFormChanged () {
+  function isFormChanged() {
     return formChanged.value
   }
 
-  function resetFormChangedStatus () {
+  function resetFormChangedStatus() {
     formChanged.value = false
   }
 
@@ -62,7 +62,7 @@ export default defineComponent({
       required: true
     }
   },
-  setup () {
+  setup() {
     const formChangedManager = { ...defineFormChangedManager() }
 
     let allFichierPartenaires: CodeLabelResultDto[] = []
@@ -75,6 +75,17 @@ export default defineComponent({
         allFichierPartenaires = []
       }
     })
+
+    const client = ref<CustomerSearchResultDto>({
+      codeFichierPartenaire: '',
+      chronoClient: '',
+      nom: '',
+      prenom: '',
+      codePostal: '',
+      ville: '',
+      dateDerniereCommande: new Date()
+      
+    });
 
     const searchAllResponse = ref<IPaginatedListDto<CustomerSearchResultDto>>({ list: [], rowsNumber: 0 })
 
@@ -188,14 +199,14 @@ export default defineComponent({
       }
     ]
 
-    async function doPagination (props: any) {
+    async function doPagination(props: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       pagination.value = props.pagination
 
       // get all rows if "All" (0) is selected
-      pagination.value.rowsPerPage = 
-        pagination.value.rowsPerPage === 0 
-          ? pagination.value.rowsNumber 
+      pagination.value.rowsPerPage =
+        pagination.value.rowsPerPage === 0
+          ? pagination.value.rowsNumber
           : pagination.value.rowsPerPage
 
       const searchAllParams = {
@@ -207,7 +218,7 @@ export default defineComponent({
       await _doSearchAll(searchAllParams)
     }
 
-    async function doSearchAll () {
+    async function doSearchAll() {
       const searchAllParams: ISearchDto<SearchCustomerDto> = {
         criterias: {
           codeFichierPartenaire: form.codeFichierPartenaire,
@@ -236,14 +247,14 @@ export default defineComponent({
       }
     }
 
-    function doCheckForSearch (searchAllParams: ISearchDto<SearchCustomerDto>) {
+    function doCheckForSearch(searchAllParams: ISearchDto<SearchCustomerDto>) {
       if (!!searchAllParams.criterias?.chronoClient || !!searchAllParams.criterias?.nom || !!searchAllParams.criterias?.prenom || !!searchAllParams.criterias?.codePostal || !!searchAllParams.criterias?.ville || !!searchAllParams.criterias?.dateDerniereCommandeTo || !!searchAllParams.criterias?.dateDerniereCommandeFrom) {
         return true
       }
       return false
     }
 
-    async function _doSearchAll (searchAllParams: ISearchDto<SearchCustomerDto>): Promise<WorkDone<boolean>> {
+    async function _doSearchAll(searchAllParams: ISearchDto<SearchCustomerDto>): Promise<WorkDone<boolean>> {
 
       loading.value = true
       const wd = await customersApiService.getCustomerListByCriterias(searchAllParams)
@@ -259,13 +270,13 @@ export default defineComponent({
     }
 
     // Reset the form to it's initial state
-    function resetForm () {
+    function resetForm() {
       Object.assign(form, initialFormState)
     }
 
     const fichPartOptions = ref(allFichierPartenaires)
 
-    function filterFichPart (val: string, update: any) {
+    function filterFichPart(val: string, update: any) {
       if (val === '') {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-call
         update(() => {
@@ -277,7 +288,7 @@ export default defineComponent({
       update(() => {
         const needle = val.toLowerCase()
         fichPartOptions.value = allFichierPartenaires.filter(v => v.label.toLowerCase()
-                                                                   .indexOf(needle) > -1)
+          .indexOf(needle) > -1)
       })
     }
 
@@ -291,12 +302,46 @@ export default defineComponent({
       searchAllResponse,
       form,
       columns,
+      confirm: ref(false),
       rows,
+      client,
       loading,
       pagination,
       fichPartOptions,
       filterFichPart,
       ...formChangedManager
+    }
+  },
+
+  methods: {
+
+    onRowClickClient(evt: any, row: CustomerSearchResultDto) {
+      void this.$router.push(`customers/client/${row.chronoClient}`);
+    
+    },   
+
+    async creerClient() {
+
+      const wd = await customersApiService.createClient(this.client);
+      console.log(wd)
+
+      if (wd.isOk) {
+        console.log('Client a créé');
+      }
+      this.confirm = false;
+
+    },
+  },
+  computed: {
+    formattedDate: {
+      get() {
+        // Convert the Date object to a string representation
+        return this.client.dateDerniereCommande.toISOString();
+      },
+      set(value:string) {
+        // Convert the string back to a Date object
+        this.client.dateDerniereCommande = new Date(value);
+      }
     }
   }
 })

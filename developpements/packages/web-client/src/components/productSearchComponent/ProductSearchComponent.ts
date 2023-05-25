@@ -206,22 +206,7 @@ export default defineComponent({
     // Reset the form to it's initial state
     function resetForm() {
       Object.assign(form, initialFormState);
-    }
-
-    /*  async function creerProduit(code: string, libelle: string) {
-      
-      //const product = ref<ProductDto>({ code: '', libelle: '', commentaires: '' })
-      //product.value.code = code
-      //product.value.libelle = libelle
-      const wd = await refsApiService.createProduit({ code, libelle, commentaires: '' });
-      if (wd.isOk) {
-        console.log('Produit créé');
-      }
-      //this.confirm = false;
-
-    } */
-
-    
+    }    
 
     return {
       doSearchAll,

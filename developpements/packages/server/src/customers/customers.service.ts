@@ -26,6 +26,7 @@ import { Injectable } from '@nestjs/common'
 @Injectable()
 export class CustomersService {
 
+
   constructor (
     private readonly logger: LoggerService,
     private readonly prismaService: PrismaService,
@@ -34,21 +35,10 @@ export class CustomersService {
   }
 
   async findOne (codeFichierPartenaire: string, chronoClient: string): Promise<WorkDone<CustomerSearchResultDto>> {
-
-    // const wd = await this.oracleDbService.executeQuery<CustomerSearchResultDto>(
-    //   `SELECT cli.CD_FICHPART, cli.NM_CHROCLIE, cli.LB_PREN, cli.LB_NOM, cli.CD_POST, cli.LB_COMM, com.DT_COMM
-    //             FROM ADLMASTER_OWNER.VS_CLIENT cli
-    //                 LEFT OUTER JOIN ADLMASTER_OWNER.VS_COMMANDE com
-    //                             ON com.CD_FICHPART = cli.CD_FICHPART AND com.NM_CHROCLIE = cli.NM_CHROCLIE
-    //                                 AND NOT EXISTS (SELECT 1 FROM ADLMASTER_OWNER.VS_COMMANDE com2
-    //                                                 WHERE com2.CD_FICHPART = com.CD_FICHPART AND com2.NM_CHROCLIE = com.NM_CHROCLIE AND com2.ID_COMM >
-    // com.ID_COMM) WHERE cli.CD_FICHPART = :cdFichPart AND cli.NM_CHROCLIE = :nmChroClie `, { cdFichPart: codeFichierPartenaire, queryBindings: { cdFichPart:
-    // { dir: ORACLE_BIND_IN, type: ORACLE_STRING, val: codeFichierPartenaire }, nmChroClie: { dir: ORACLE_BIND_IN, type: ORACLE_STRING, val: chronoClient },
-    // }, rowMapper: toCustomerSearchResultDtoRowMapper })  if (wd.isOk && wd.data) { return (wd.data.length > 0) ? WorkDone.buildOk(wd.data[0]) :
-    // WorkDone.buildError(`Customer with ChronoClient ${chronoClient} not found in fichPart ${codeFichierPartenaire} !`) } else { return WorkDone.toError(wd)
-    // }
+   
     return WorkDone.buildOk(
       {
+        
         codeFichierPartenaire: '001',
         chronoClient: '11111111',
         nom: 'Doe',
@@ -60,75 +50,7 @@ export class CustomersService {
     )
   }
 
- // async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
-
-    //FIXME must be dynamic
-    // searchDto.pagination.sortBy = (searchDto.pagination.sortBy === 'nom') ? 'LB_NOM'
-    //   : (searchDto.pagination.sortBy === 'prenom') ? 'LB_PREN'
-    //     : (searchDto.pagination.sortBy === 'chronoClient') ? 'NM_CHROCLIE'
-    //       : (searchDto.pagination.sortBy === 'codePostal') ? 'CD_POST'
-    //         : (searchDto.pagination.sortBy === 'ville') ? 'LB_COMM'
-    //           : (searchDto.pagination.sortBy === 'dateDerniereCommande') ? 'DT_COMM'
-    //             : null
-    //
-    // return this.oracleDbService.executeQueryWithPaging<CustomerSearchResultDto>(
-    //   `SELECT cli.CD_FICHPART, cli.NM_CHROCLIE, cli.LB_PREN, cli.LB_NOM, cli.CD_POST, cli.LB_COMM, com.DT_COMM
-    //    FROM ADLMASTER_OWNER.VS_CLIENT cli
-    //             LEFT OUTER JOIN ADLMASTER_OWNER.VS_COMMANDE com
-    //                             ON com.CD_FICHPART = cli.CD_FICHPART AND com.NM_CHROCLIE = cli.NM_CHROCLIE
-    //                                 AND NOT EXISTS(SELECT 1
-    //                                                FROM ADLMASTER_OWNER.VS_COMMANDE com2
-    //                                                WHERE com2.CD_FICHPART = com.CD_FICHPART
-    //                                                  AND com2.NM_CHROCLIE = com.NM_CHROCLIE
-    //                                                  AND com2.ID_COMM > com.ID_COMM)
-    //    WHERE cli.CD_FICHPART = :cdFichPart
-    //      AND (:hasNmChroClie = 0 OR cli.NM_CHROCLIE = :nmChroClie)
-    //      AND (:hasLbNom = 0 OR cli.LB_NOM LIKE :lbNom)
-    //      AND (:hasLbPren = 0 OR cli.LB_PREN LIKE :lbPren)
-    //      AND (:hasCdPost = 0 OR cli.CD_POST LIKE :cdPost)
-    //      AND (:hasLbComm = 0 OR cli.LB_COMM LIKE :lbComm)
-    //   `,
-    //   {
-    //     cdFichPart: searchDto.criterias.codeFichierPartenaire,
-    //     queryBindings: {
-    //       cdFichPart: { dir: ORACLE_BIND_IN, type: ORACLE_STRING, val: searchDto.criterias.codeFichierPartenaire },
-    //       hasNmChroClie: { dir: ORACLE_BIND_IN, type: DB_TYPE_NUMBER, val: !!searchDto.criterias.chronoClient ? 1 : 0 },
-    //       nmChroClie: { dir: ORACLE_BIND_IN, type: ORACLE_STRING, val: searchDto.criterias.chronoClient },
-    //       hasLbNom: { dir: ORACLE_BIND_IN, type: DB_TYPE_NUMBER, val: !!searchDto.criterias.nom ? 1 : 0 },
-    //       lbNom: { dir: ORACLE_BIND_IN, type: ORACLE_STRING, val: searchDto.criterias.nom + '%' },
-    //       hasLbPren: { dir: ORACLE_BIND_IN, type: DB_TYPE_NUMBER, val: !!searchDto.criterias.prenom ? 1 : 0 },
-    //       lbPren: { dir: ORACLE_BIND_IN, type: ORACLE_STRING, val: searchDto.criterias.prenom + '%' },
-    //       hasCdPost: { dir: ORACLE_BIND_IN, type: DB_TYPE_NUMBER, val: !!searchDto.criterias.codePostal ? 1 : 0 },
-    //       cdPost: { dir: ORACLE_BIND_IN, type: ORACLE_STRING, val: searchDto.criterias.codePostal + '%' },
-    //       hasLbComm: { dir: ORACLE_BIND_IN, type: DB_TYPE_NUMBER, val: !!searchDto.criterias.ville ? 1 : 0 },
-    //       lbComm: { dir: ORACLE_BIND_IN, type: ORACLE_STRING, val: searchDto.criterias.ville + '%' }
-    //     },
-    //     pagination: searchDto.pagination,
-    //     rowMapper: toCustomerSearchResultDtoRowMapper
-    //   })
-   /*  return WorkDone.buildOk({
-      rowsNumber: 2, list: [
-        {
-          codeFichierPartenaire: '001',
-          chronoClient: '11111111',
-          nom: 'Doe',
-          prenom: 'John',
-          codePostal: '34130',
-          ville: 'Mauguio',
-          dateDerniereCommande: null
-        },
-        {
-          codeFichierPartenaire: '001',
-          chronoClient: '22222222',
-          nom: 'Durand',
-          prenom: 'Michel',
-          codePostal: '34000',
-          ville: 'Montpellier',
-          dateDerniereCommande: new Date()
-        }
-      ]
-    })
-  } */
+ 
 
  async searchCustomer (searchDto: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
   const dbCustomer= await this.prismaService.clients.findMany({
@@ -152,11 +74,7 @@ export class CustomersService {
         mode:'insensitive'
       },
       
-    },
-   /*  include: {
-      ref_partenaires: true
-    } */
-
+    }
   });
 
   const dbCustomerPaginated : IPaginatedListDto<CustomerSearchResultDto> = {list : dbCustomer, rowsNumber : 100}
@@ -164,5 +82,79 @@ export class CustomersService {
  /*  let searchDtoReturn : SearchCustomerDto */
     return WorkDone.buildOk<IPaginatedListDto<CustomerSearchResultDto>>(dbCustomerPaginated)
   }
+
+  async createClient(client:CustomerSearchResultDto): Promise<WorkDone<string>> {
+    //check if client with same code already exists
+    console.log('creer client',client)
+    if ((await this.getClientById(client.chronoClient)).isOk) {
+      
+      return WorkDone.buildError(
+        `un client avec le code ${client.chronoClient} existe deja`)
+    }
+    this.logger.info(`creating:${JSON.stringify(client)}...`);
+    const dbClients = await this.prismaService.clients.create({data:client});
+    console.log(dbClients)
+    if (!dbClients) {
+      return WorkDone.buildError("Aucun client n'a cette reference");
+    }
+    this.logger.info(dbClients);
+
+    return WorkDone.buildOk('Le client a été créé'); 
+  }
+
+  async getClientById(chronoClient:string):Promise<WorkDone<CustomerSearchResultDto>> {
+    const dbClients= await this.prismaService.clients.findUnique({
+      where: {
+        chronoClient: chronoClient,
+      }
+    });
+
+    if (!dbClients) {
+      return WorkDone.buildError("Aucun produit n'a cette reference");
+    }
+    return WorkDone.buildOk(dbClients);
+  }
+
+  async updateProduit(
+    chronoClient: string,
+    client:CustomerSearchResultDto)
+  : Promise<WorkDone<CustomerSearchResultDto>> {
+    //check if product with same code already exists
+    //this.logger.info(code, product)
+    const wd = await this.getClientById(chronoClient);
+    if (!wd.isOk) {
+      return wd;
+    }
+    this.logger.info(`modifying:${JSON.stringify(client)}...`);
+    const dbClients = await this.prismaService.clients.update({
+      where: { chronoClient: chronoClient },
+      data: { prenom: client.prenom,
+              nom:client.nom,
+              codePostal:client.codePostal,
+              ville:client.ville,
+              dateDerniereCommande:client.dateDerniereCommande,
+              codeFichierPartenaire:client.codeFichierPartenaire
+      },
+    });
+    if (!dbClients) {
+      return WorkDone.buildError("le produit n'a pas pu être modifié");
+    }
+    return WorkDone.buildOk(dbClients);
+  }
+
+  async deleteClient(chronoClient: string): Promise<WorkDone<string>> {
+    //check if product with same code already exists
+    const wd = await this.getClientById(chronoClient);
+    if (!wd.isOk) {
+      return WorkDone.buildError(wd.error.message);
+    }
+    this.logger.info(`deleting:${chronoClient}`);
+    await this.prismaService.clients.delete({
+      where: { chronoClient: chronoClient },
+    });
+
+    return WorkDone.buildOk('le produit a bien été supprimé');
+  }
+ 
 
 }

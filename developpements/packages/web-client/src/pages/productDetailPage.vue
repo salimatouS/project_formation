@@ -36,6 +36,7 @@
             />
             <q-input
               v-model="product.libelle"
+              label="libellé"
               type="text"
               id="libelle"
               class="bg-grey-3"
@@ -53,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, onBeforeMount, reactive} from 'vue';
+import { defineComponent, onBeforeMount, reactive } from 'vue';
 import { refsApiService } from 'src/boot/api';
 import { useRoute, useRouter } from 'vue-router';
 
@@ -61,10 +62,9 @@ export default defineComponent({
   name: 'ProductDetailPage',
 
   setup() {
-
     const router = useRouter();
     const product = reactive({ code: '', libelle: '', commentaires: '' });
-    
+
     async function modifProduct() {
       const wd = await refsApiService.updateProduit(product);
       if (wd.isOk && wd.data) {
@@ -73,18 +73,23 @@ export default defineComponent({
     }
 
     async function supProduct() {
-      const wd = await refsApiService.deleteProduit(product.code);
+      const confirmed = window.confirm(
+        'Êtes-vous sûr de vouloir supprimer ce produit ?',
+      );
+      if (confirmed) {
+        const wd = await refsApiService.deleteProduit(product.code);
 
-      if (wd.isOk) {
-        console.log('Produit supprimé');
-        router
-          .push({ path: '../products' })
-          .then(() => {
-            console.log('ok');
-          })
-          .catch(() => {
-            console.log('ko');
-          });
+        if (wd.isOk) {
+          console.log('Produit supprimé');
+          router
+            .push({ path: '../products' })
+            .then(() => {
+              console.log('ok');
+            })
+            .catch(() => {
+              console.log('ko');
+            });
+        }
       }
     }
 
@@ -106,7 +111,6 @@ export default defineComponent({
       product,
       modifProduct,
       supProduct,
-    
     };
   },
 });
@@ -118,4 +122,3 @@ export default defineComponent({
   max-width: 500px;
 }
 </style>
-

@@ -21,11 +21,12 @@ export class RefsApiService extends AbstractApiService {
     return this.doGet<CodeLabelResultDto[]>('/fichparts')
   }
 
+  //permet de faire la recherche par critères
   public async getProductListByCriterias (searchCriterias?: ISearchDto<SearchProductDto>): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
     return this.doGet('/products', searchCriterias)
   }
 
- /*  public async getProducts(): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
+  /* public async getProducts(): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
     return this.doGet('/productsList')
   } */
 
@@ -33,6 +34,7 @@ export class RefsApiService extends AbstractApiService {
     return this.doGet('/productsList')
   }
 
+  // permet de recuperer les parametres du produit et l'afficher dans la page detailproduit
   public async getProduitsByCode(code:string): Promise<WorkDone<ProductDto>> {
     return this.doGet(`/produits/${code}`)
   }

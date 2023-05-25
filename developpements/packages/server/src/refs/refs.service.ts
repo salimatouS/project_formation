@@ -75,31 +75,7 @@ export class RefsService {
         dateDerniereModification: new Date(),
       },
     ]);
-    // return this.oracleDbService.executeQuery<OffreReferenceResultDto>(
-    //   `SELECT CD_CAMP, CD_OFFRREFE, LB_OFFRREFE, CD_PROD, DT_MODI
-    //    FROM ADLMASTER_OWNER.OFFRE_REFERENCE
-    //    WHERE CD_CAMP = :codeCampagne
-    //      AND (:hasCodeOffre = 0 OR CD_OFFRREFE = :codeOffre)
-    //      AND (:hasCodeProduit = 0 OR CD_PROD = :codeProduit)
-    //    ORDER BY CD_CAMP, CD_OFFRREFE, CD_PROD`,
-    //   {
-    //     queryBindings: {
-    //       codeCampagne: { dir: ORACLE_BIND_IN, type: DB_TYPE_NUMBER, val: codeCampagne },
-    //       hasCodeOffre: { dir: ORACLE_BIND_IN, type: DB_TYPE_NUMBER, val: !!codeOffre ? 1 : 0 },
-    //       codeOffre: { dir: ORACLE_BIND_IN, type: DB_TYPE_VARCHAR, val: codeOffre },
-    //       hasCodeProduit: { dir: ORACLE_BIND_IN, type: DB_TYPE_NUMBER, val: !!codeProduit ? 1 : 0 },
-    //       codeProduit: { dir: ORACLE_BIND_IN, type: DB_TYPE_VARCHAR, val: codeProduit }
-    //     },
-    //     rowMapper: (row) => {
-    //       return {
-    //         codeCampagne: row.CD_CAMP,
-    //         codeOffre: row.CD_OFFRREFE,
-    //         libelleOffre: row.LB_OFFRREFE,
-    //         codeProduit: row.CD_PROD,
-    //         dateDerniereModification: row.DT_MODI
-    //       }
-    //     }
-    //   })
+    
   }
 
   async updateOffreReferenceDateDerniereModification(

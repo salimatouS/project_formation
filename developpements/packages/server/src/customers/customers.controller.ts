@@ -8,11 +8,19 @@ import {
   WorkDone
 } from '@formation/shared-lib'
 import {
+  Body,
   Controller,
+  Delete,
   Get,
+  Param,
+  Post,
+  Put,
   Query
 } from '@nestjs/common'
 import { CustomersService } from './customers.service'
+import { ApiBody } from '@nestjs/swagger'
+import { get } from 'lodash'
+
 
 @Controller('customers')
 export class CustomersController extends AbstractController {
@@ -29,6 +37,10 @@ export class CustomersController extends AbstractController {
   async findOne (@Query('codeFichierPartenaire') codeFichierPartenaire: string, @Query('chronoClient') chronoClient: string): Promise<WorkDone<CustomerSearchResultDto>> {
     return this.customersService.findOne(codeFichierPartenaire, chronoClient)
   }
+  @Get('client/:chronoClient')
+  async getClientById(@Param('chronoClient') chronoClient:string):Promise<WorkDone<CustomerSearchResultDto>> {
+    return this.customersService.getClientById(chronoClient)
+  }
 
  /*  @Get('/search/multi-criterias')
   async searchCustomer (@Query() queryParams: ISearchDto<SearchCustomerDto>): Promise<WorkDone<IPaginatedListDto<CustomerSearchResultDto>>> {
@@ -42,5 +54,24 @@ export class CustomersController extends AbstractController {
     const criterias = CustomersController.parseSearchDtoFromQuery<SearchCustomerDto>(queryParams)
     //this.logger.debug(JSON.stringify(criterias))
     return this.customersService.searchCustomer(criterias)
+  }
+  
+  @Post('/client')
+  @ApiBody({})
+  async createClient(@Body() client:CustomerSearchResultDto): Promise<WorkDone<string>>{
+    return this.customersService.createClient(client)
+  }
+
+  @Put('/client/:chronoClient')
+  @ApiBody({})
+  async updateProduit(@Param('chronoClient') chronoClient: string,
+    @Body() client:CustomerSearchResultDto): Promise<WorkDone<CustomerSearchResultDto>> {
+    //this.logger.info(product)
+    return this.customersService.updateProduit(chronoClient, client);
+  }
+
+  @Delete('/client/:chronoClient')
+  async deleteClient(@Param('chronoClient') chronoClient:string): Promise<WorkDone<string>>{
+    return this.customersService.deleteClient(chronoClient)
   }
 }

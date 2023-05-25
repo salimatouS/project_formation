@@ -8,6 +8,7 @@ import {
 } from '@formation/shared-lib'
 import { AxiosInstance } from 'axios'
 import { AbstractApiService } from './abstract-api.service'
+import { promises } from 'dns'
 
 export class CustomersApiService extends AbstractApiService {
 
@@ -25,5 +26,23 @@ export class CustomersApiService extends AbstractApiService {
     return this.doGet('/search/multi-criterias', searchCriterias)
   }
 
- 
+  public async getClientById(chronoClient:string):Promise<WorkDone<CustomerSearchResultDto>> {
+    return this.doGet(`/client/${chronoClient}`)
+  }
+
+  public async deleteClient(chronoClient:string): Promise<WorkDone<string>> {
+    return this.doDelete(`/client/${chronoClient}`)
+  }
+
+  public async createClient(client:SearchCustomerDto): Promise<WorkDone<string>> {
+    return this.doPost('/client',client)
+  }
+  public async updateClient(client:CustomerSearchResultDto): Promise<WorkDone<CustomerSearchResultDto>> {
+    return this.doPut(`/client/${client.chronoClient}`,{ prenom: client.prenom,
+      nom:client.nom,
+      codePostal:client.codePostal,
+      ville:client.ville,
+      dateDerniereCommande:client.dateDerniereCommande,
+      codeFichierPartenaire:client.codeFichierPartenaire})
+  }
 }

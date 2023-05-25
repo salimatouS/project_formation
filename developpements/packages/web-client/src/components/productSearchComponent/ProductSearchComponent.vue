@@ -78,7 +78,7 @@
                 <q-input
                   v-model="product.libelle"
                   id="libelle"
-                  label="libelle"
+                  
                 />
               
                 <q-input
