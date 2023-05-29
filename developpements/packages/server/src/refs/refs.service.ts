@@ -259,6 +259,11 @@ export class RefsService {
           startsWith: searchCriterias.criterias.codeLike,
           mode: 'insensitive',
         },
+
+        codepostal: {
+          startsWith: searchCriterias.criterias.codepostalLike,
+          mode: 'insensitive',
+        },
       },
 
       orderBy: {

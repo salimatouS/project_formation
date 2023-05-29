@@ -72,7 +72,8 @@ export default defineComponent({
     // Define the initial state of the form
     const initialFormState: SearchProductDto = {
       labelLike: '',
-      codeLike:''
+      codeLike:'',
+      codepostalLike:''
     };
 
     const initialPagination: IPagination = {
@@ -98,7 +99,8 @@ export default defineComponent({
 
     let currentSearchParams: SearchProductDto = {
       labelLike: '',
-      codeLike:''
+      codeLike:'',
+      codepostalLike:''
     };
 
     const columns = [
@@ -154,7 +156,8 @@ export default defineComponent({
       const searchAllParams: ISearchDto<SearchProductDto> = {
         criterias: {
           labelLike: form.labelLike,
-          codeLike:form.codeLike
+          codeLike:form.codeLike,
+          codepostalLike:form.codepostalLike
         
         },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
@@ -178,7 +181,7 @@ export default defineComponent({
     }
 
     function doCheckForSearch(searchAllParams: ISearchDto<SearchProductDto>) {
-      return !!searchAllParams.criterias?.labelLike || !!searchAllParams.criterias?.codeLike;
+      return !!searchAllParams.criterias?.labelLike || !!searchAllParams.criterias?.codeLike || !!searchAllParams.criterias?.codepostalLike;
     }
 
     async function _doSearchAll(

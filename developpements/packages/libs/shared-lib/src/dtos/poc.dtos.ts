@@ -50,11 +50,13 @@ export interface ProductDto{
 
 export interface SearchProductDto{
   labelLike: string,
-  codeLike:string 
+  codeLike:string,
+  codepostalLike:string 
 }
 export interface SearchShopDto {
   labelLike: string;
   codeLike: string;
+  codepostalLike:string
 }
 
 export interface ShopDto {

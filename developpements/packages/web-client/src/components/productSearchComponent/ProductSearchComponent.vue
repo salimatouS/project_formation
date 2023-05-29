@@ -25,6 +25,16 @@
               stack-label
               @update:model-value="doOnFormChanged"
             />
+            <q-input
+              v-model="form.codepostalLike"
+              :lazy-rules="true"
+              :rules="[textValidatorToFixed3]"
+              class="col-12 col-md-4"
+              hint="Contient (min: 3)"
+              label="Code Postal"
+              stack-label
+              @update:model-value="doOnFormChanged"
+            />
             <!--lazy-rules permet de valider le formulaire seulement lorsque l'utilisateur aura soumis le formulaire-->
           </div>
 
