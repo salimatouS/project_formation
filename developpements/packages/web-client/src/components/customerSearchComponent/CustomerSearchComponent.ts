@@ -64,8 +64,10 @@ export default defineComponent({
     }
   },
   setup() {
+    
+  
     const formChangedManager = { ...defineFormChangedManager() }
-
+    
     let allFichierPartenaires: CodeLabelResultDto[] = []
 
     onBeforeMount(async () => {
@@ -152,8 +154,7 @@ export default defineComponent({
         align: 'left',
         field: (row: CustomerSearchResultDto) => row.prenom,
         format: (val: string) => `${val}`,
-        sortable: true,
-        /* 'sort-method': 'sortData' */
+        sortable: true
       },
       {
         name: 'nom',
@@ -162,8 +163,7 @@ export default defineComponent({
         align: 'left',
         field: (row: CustomerSearchResultDto) => row.nom,
         format: (val: string) => `${val}`,
-        sortable: true,
-       /*  'sort-method': 'sortData' */
+        sortable: true
       },
       {
         name: 'codePostal',
@@ -217,11 +217,12 @@ export default defineComponent({
         sortable: true
       }
     ]
+    
 
     async function doPagination(props: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       pagination.value = props.pagination
-
+    
       // get all rows if "All" (0) is selected
       pagination.value.rowsPerPage =
         pagination.value.rowsPerPage === 0
@@ -234,10 +235,12 @@ export default defineComponent({
         pagination: pagination.value
       }
 
-      await _doSearchAll(searchAllParams)
+      await _doSearchAll(searchAllParams);
+      
     }
 
     async function doSearchAll() {
+      //pagination.value.page = 1
       const searchAllParams: ISearchDto<SearchCustomerDto> = {
         criterias: {
           codeFichierPartenaire: form.codeFichierPartenaire,
@@ -314,6 +317,8 @@ export default defineComponent({
       })
     }
 
+    
+
     return {
       doSearchAll,
       resetForm,
@@ -322,6 +327,7 @@ export default defineComponent({
       textValidatorToFixed3,
       doPagination,
       searchAllResponse,
+      descending:false,
       form,
       columns,
       confirm: ref(false),
@@ -331,11 +337,14 @@ export default defineComponent({
       pagination,
       fichPartOptions,
       filterFichPart,
-      ...formChangedManager
+      ...formChangedManager,
+
+      
     }
   },
 
   methods: {
+    
 
     onRowClickClient(evt: any, row: CustomerSearchResultDto) {
       void this.$router.push(`customers/client/${row.chronoClient}`);
@@ -353,23 +362,33 @@ export default defineComponent({
       this.confirm = false;
 
     },
+    
+    customSort(sortBy:string) {
+      const data = [...this.rows]
+    
+      if (sortBy) {
+        data.sort((a, b) => {
+          const x = this.descending ? b : a
+          const y = this.descending ? a : b
+    
+          if (sortBy === 'name') {
+            // Tri des chaînes de caractères
+            return x[sortBy] > y[sortBy] ? 1 : x[sortBy] < y[sortBy] ? -1 : 0
+          } else {
+            // Tri numérique
+            return parseFloat(x[sortBy]) - parseFloat(y[sortBy])
+          }
+        })
+      }
+      return data
+    }
 
-    /* sortData(column: any, ascending: boolean) {
-      const { field } = column;
+
+    /* sortData(columnName: string, descending: boolean) {
+      // Utilisez la fonction orderBy pour trier les données en fonction du nom de la colonne et de l'ordre de tri
+      this.rows = customSort(this.rows, columnName, descending );
+    }, */
     
-      return this.searchAllResponse.list.sort((a: CustomerSearchResultDto, b: CustomerSearchResultDto) => {
-        const valueA = field(a);
-        const valueB = field(b);
-    
-        if (valueA < valueB) {
-          return ascending ? -1 : 1;
-        } else if (valueA > valueB) {
-          return ascending ? 1 : -1;
-        } else {
-          return 0;
-        }
-      });
-    } */
   },
   computed: {
     formattedDate: {

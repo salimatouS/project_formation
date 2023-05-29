@@ -51,3 +51,12 @@ model Clients {
 
   @@map("ref_clients")
 }
+
+model Magasins {
+  code       String  @id @db.VarChar(10)
+  nom        String? @db.VarChar(255)
+  ville      String? @db.VarChar(255)
+  codepostal String? @db.VarChar(10)
+
+    @@map("ref_magasins")
+}

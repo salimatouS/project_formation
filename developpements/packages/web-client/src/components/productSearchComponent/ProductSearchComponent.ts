@@ -210,7 +210,6 @@ export default defineComponent({
 
     return {
       doSearchAll,
-      //creerProduit,
       resetForm,
       mandatoryValidator,
       textValidatorToFixed3,

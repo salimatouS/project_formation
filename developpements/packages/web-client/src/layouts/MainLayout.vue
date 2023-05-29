@@ -140,6 +140,13 @@ const formationRoutesList = [
     icon: 'warehouse',
     route: '/refs/products',
   },
+
+  {
+    title: 'Référentiel Magasins',
+    caption: null,
+    icon: 'warehouse',
+    route: '/refs/shop',
+  },
 ];
 
 export default defineComponent({

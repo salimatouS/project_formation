@@ -105,6 +105,13 @@ exports.Prisma.ClientsScalarFieldEnum = makeEnum({
   actif: 'actif'
 });
 
+exports.Prisma.MagasinsScalarFieldEnum = makeEnum({
+  code: 'code',
+  nom: 'nom',
+  ville: 'ville',
+  codepostal: 'codepostal'
+});
+
 exports.Prisma.SortOrder = makeEnum({
   asc: 'asc',
   desc: 'desc'
@@ -120,7 +127,8 @@ exports.Prisma.ModelName = makeEnum({
   Partenaire: 'Partenaire',
   Produit: 'Produit',
   Offre: 'Offre',
-  Clients: 'Clients'
+  Clients: 'Clients',
+  Magasins: 'Magasins'
 });
 
 /**

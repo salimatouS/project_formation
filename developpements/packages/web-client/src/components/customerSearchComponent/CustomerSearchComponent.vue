@@ -226,6 +226,8 @@
         title="Liste des clients"
         @request="doPagination"
         @row-click="onRowClickClient"
+        :sort-method="customSort"
+
       >
       <template v-slot:body-cell-actif="props">
       <q-td :props="props">
@@ -234,7 +236,18 @@
         </div>
       </q-td>
     </template>
-     
+   <!--  <template v-slot:[`top-right`]="props">
+  <q-th
+    v-for="column in columns"
+    :key="column.name"
+    :props="props"
+    @click="sortData('actif', 0)"
+  >
+    {{ column.label }}
+  </q-th>
+</template> -->
+
+
       </q-table>
     </div>
   </div>
@@ -284,3 +297,5 @@
 
 <script lang="ts" src="./CustomerSearchComponent.ts"></script>
 <style lang="scss" src="./CustomerSearchComponent.scss"></style>
+:sort-method="customSort"
+binary-state-sort

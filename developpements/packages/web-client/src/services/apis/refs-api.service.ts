@@ -4,6 +4,8 @@ import {
   ISearchDto,
   ProductDto,
   SearchProductDto,
+  SearchShopDto,
+  ShopDto,
   WorkDone
 } from '@formation/shared-lib'
 import { AxiosInstance } from 'axios'
@@ -26,13 +28,15 @@ export class RefsApiService extends AbstractApiService {
     return this.doGet('/products', searchCriterias)
   }
 
+ 
+
   /* public async getProducts(): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
     return this.doGet('/productsList')
   } */
 
-  public async getListProduits(): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
+ /*  public async getListProduits(): Promise<WorkDone<IPaginatedListDto<ProductDto>>> {
     return this.doGet('/productsList')
-  }
+  } */
 
   // permet de recuperer les parametres du produit et l'afficher dans la page detailproduit
   public async getProduitsByCode(code:string): Promise<WorkDone<ProductDto>> {
@@ -52,5 +56,27 @@ export class RefsApiService extends AbstractApiService {
     return this.doPost('/produits',product)
   }
 
+  //partie Magasins
+  
+  public async getShopListByCriterias (searchCriterias?: ISearchDto<SearchShopDto>): Promise<WorkDone<IPaginatedListDto<ShopDto>>> {
+    return this.doGet('/shop', searchCriterias)
+  }
 
+  public async getMagasinsByCode(code:string): Promise<WorkDone<ShopDto>> {
+    return this.doGet(`/magasins/${code}`)
+  }
+
+  public async createShop(shop:ShopDto): Promise<WorkDone<string>> {
+    return this.doPost('/magasins',shop)
+  }
+
+  public async updateShop(shop:ShopDto): Promise<WorkDone<ShopDto>> {
+    return this.doPut(`/magasins/${shop.code}`,{ code:shop.code, nom:shop.nom ,ville:shop.ville, codepostal:shop.codepostal})
+  }
+
+  public async deleteShop(code:string): Promise<WorkDone<string>> {
+    return this.doDelete(`/magasins/${code}`)
+  }
+
+ 
 }

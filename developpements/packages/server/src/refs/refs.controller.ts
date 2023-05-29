@@ -7,6 +7,8 @@ import {
   OffreReferenceResultDto,
   ProductDto,
   SearchProductDto,
+  SearchShopDto,
+  ShopDto,
   WorkDone
 } from '@formation/shared-lib'
 import {
@@ -54,7 +56,7 @@ export class RefsController extends AbstractController {
     @Query('codeProduit') codeProduit?: string): Promise<WorkDone<OffreReferenceResultDto[]>> {
     return this.refsService.searchOffreReference(parseInt(codeCampagne, 10), null, codeProduit)
   }
-
+//partie PRODUITS
   @Get('/products')
   //@ApiQuery({})
   async getProductListByCriterias(@Query() searchCriterias?: ISearchDto<SearchProductDto>): Promise<WorkDone <ProductDto[]>> {
@@ -87,8 +89,47 @@ export class RefsController extends AbstractController {
     return this.refsService.deleteProduit(code);
   }
 
-  @Get('/listProduits')
+  
+
+ /*  @Get('/listProduits')
   async getListProduits(): Promise<WorkDone<ProductDto[]>> {
     return this.refsService.getListProduits()
+  } */
+
+
+  //partie SHOP
+
+  @Get('/shop')
+  @ApiQuery({})
+  async getShopListByCriterias(@Query() searchCriterias?: ISearchDto<SearchShopDto>): Promise<WorkDone <ShopDto[]>> {
+    const criterias = AbstractController.parseSearchDtoFromQuery<SearchShopDto>(searchCriterias)
+    return this.refsService.getShopListByCriterias(criterias)
+
   }
+
+  @Get('magasins/:code')
+  async getShopByCode(@Param('code') code: string): Promise<WorkDone<ShopDto>> {
+    return this.refsService.getShopByCode(code)
+  }
+
+  @Post('/magasins')
+  @ApiBody({})
+  async createShop(@Body() shop: ShopDto): Promise<WorkDone<ShopDto>> {
+    return this.refsService.createShop(shop)
+  }
+
+  @Put('magasins/:code')
+  @ApiBody({})
+  async updateShop(@Param('code') code: string,
+    @Body() shop: ShopDto): Promise<WorkDone<ShopDto>> {
+    //this.logger.info(product)
+    return this.refsService.updateShop(code, shop);
+  }
+
+  @Delete('magasins/:code')
+  async deleteShop(@Param('code') code: string): Promise<WorkDone<string>> {
+    return this.refsService.deleteShop(code);
+  }
+
+  
 }

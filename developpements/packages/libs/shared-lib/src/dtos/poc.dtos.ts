@@ -52,3 +52,14 @@ export interface SearchProductDto{
   labelLike: string,
   codeLike:string 
 }
+export interface SearchShopDto {
+  labelLike: string;
+  codeLike: string;
+}
+
+export interface ShopDto {
+  code: string;
+  nom: string;
+  ville?: string;
+  codepostal?: string;
+}

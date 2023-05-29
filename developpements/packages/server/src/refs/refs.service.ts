@@ -10,6 +10,8 @@ import {
   OffreReferenceResultDto,
   ProductDto,
   SearchProductDto,
+  SearchShopDto,
+  ShopDto,
   WorkDone,
 } from '@formation/shared-lib';
 import { Body, Injectable } from '@nestjs/common';
@@ -122,7 +124,7 @@ export class RefsService {
         'une erreur est survenue durant la recuperation des produits',
       );
     }
-    return WorkDone.buildOk(dbProducts);
+    return WorkDonhypere.buildOk(dbProducts);
   } */
 
   async getProduitByCode(code: string): Promise<WorkDone<ProductDto>> {
@@ -222,7 +224,7 @@ export class RefsService {
     return WorkDone.buildOk(dbProducts);
   }
 
-  async getListProduits(): Promise<WorkDone<ProductDto[]>> {
+  /* async getListProduits(): Promise<WorkDone<ProductDto[]>> {
 
     const dbProducts = await this.prismaService.produit.findMany({
       orderBy: {
@@ -237,9 +239,125 @@ export class RefsService {
       );
     }
     return WorkDone.buildOk(dbProducts);
-  }
-}
+  } */
 
+  //Partie SHOP
+
+   async getShopListByCriterias(
+    searchCriterias: ISearchDto<SearchShopDto>,
+  ): Promise<WorkDone<ShopDto[]>> {
+    this.logger.info('test');
+    this.logger.info(searchCriterias);
+    const dbShops = await this.prismaService.magasins.findMany({
+      where: {
+        nom: {
+          contains: searchCriterias.criterias.labelLike,
+          mode: 'insensitive',
+        },
+
+        code: {
+          startsWith: searchCriterias.criterias.codeLike,
+          mode: 'insensitive',
+        },
+      },
+
+      orderBy: {
+        nom: 'asc',
+      },
+      take: 10,
+    });
+
+    return WorkDone.buildOk(dbShops);
+  }
+
+  async getShopByCode(code: string): Promise<WorkDone<ShopDto>> {
+    const dbShops = await this.prismaService.magasins.findUnique({
+      where: {
+        code: code,
+      },
+    });
+
+    if (!dbShops) {
+      return WorkDone.buildError("Aucun magasin n'a cette reference");
+    }
+    return WorkDone.buildOk(dbShops);
+  }
+
+  async createShop(shop: ShopDto): Promise<WorkDone<ShopDto>> {
+    
+    if ((await this.getShopByCode(shop.code)).isOk) {
+      return WorkDone.buildError(
+        `un magasin avec le code ${shop.code} existe déjà`,
+      );
+    }
+
+    this.logger.info(`creating:${JSON.stringify(shop)}...`);
+    const dbShops = await this.prismaService.magasins.create({
+      data: shop,
+    });
+    if (!dbShops) {
+      return WorkDone.buildError("Aucun magasin n'a cette reference");
+    }
+    this.logger.info(dbShops);
+    return WorkDone.buildOk(dbShops);
+  }
+
+  async updateShop(
+    code: string,
+    shop: ShopDto,
+  ): Promise<WorkDone<ShopDto>> {
+    //check if shop with same code already exists
+      this.logger.info(code, shop)
+    const wd = await this.getShopByCode(code);
+    if (!wd.isOk) {
+      return wd;
+    }
+    this.logger.info(`modifying:${JSON.stringify(shop)}...`);
+    const dbShops = await this.prismaService.magasins.update({
+      where: { code: code },
+      data: { nom:shop.nom,
+              codepostal:shop.codepostal,
+              ville:shop.ville
+      },
+    });
+    if (!dbShops) {
+      return WorkDone.buildError("le magasin n'a pas pu être modifié");
+    }
+    return WorkDone.buildOk(dbShops);
+  }
+
+  async deleteShop(code: string): Promise<WorkDone<string>> {
+    //check if shop with same code already exists
+    const wd = await this.getShopByCode(code);
+    if (!wd.isOk) {
+      return WorkDone.buildError(wd.error.message);
+    }
+    this.logger.info(`deleting:${code}`);
+    await this.prismaService.magasins.delete({
+      where: { code: code },
+    });
+
+    return WorkDone.buildOk('le magasin a bien été supprimé');
+  }
+
+  /* async getListMagasins(): Promise<WorkDone<ShopDto[]>> {
+
+    const dbShops = await this.prismaService.magasins.findMany({
+      orderBy: {
+        nom: 'asc',
+      },
+    }); 
+
+
+    if (!dbShops) {
+      return WorkDone.buildError(
+        'une erreur est survenue durant la recuperation des produits',
+      );
+    }
+    return WorkDone.buildOk(dbShops);
+  }*/
+}
+ 
 /* SELECT p.code, p.libelle, COUNT(o.code) AS nombre_offres
 FROM ref_produits p
 LEFT JOIN ref_offres o ON p.code = o.code_produit
