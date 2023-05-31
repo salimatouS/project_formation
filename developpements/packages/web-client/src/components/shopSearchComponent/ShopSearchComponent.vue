@@ -88,7 +88,11 @@
               <q-input v-model="shop.code" label="Code du magasin" />
               <q-input v-model="shop.nom" id="name" label="name" />
 
-              <q-input v-model="shop.codepostal" id="zip_code" label="zip_code" />
+              <q-input
+                v-model="shop.codepostal"
+                id="zip_code"
+                label="zip_code"
+              />
               <q-input v-model="shop.ville" id="city" label="city" />
 
               <q-btn

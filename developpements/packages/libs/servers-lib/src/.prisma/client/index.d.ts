@@ -68,6 +68,15 @@ export type Magasins = {
   codepostal: string | null
 }
 
+/**
+ * Model produits_magasins
+ * 
+ */
+export type produits_magasins = {
+  code: string
+  code_magasin: string
+}
+
 
 /**
  * ##  Prisma Client ʲˢ
@@ -258,6 +267,16 @@ export class PrismaClient<
     * ```
     */
   get magasins(): Prisma.MagasinsDelegate<GlobalReject>;
+
+  /**
+   * `prisma.produits_magasins`: Exposes CRUD operations for the **produits_magasins** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Produits_magasins
+    * const produits_magasins = await prisma.produits_magasins.findMany()
+    * ```
+    */
+  get produits_magasins(): Prisma.produits_magasinsDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
@@ -678,7 +697,8 @@ export namespace Prisma {
     Produit: 'Produit',
     Offre: 'Offre',
     Clients: 'Clients',
-    Magasins: 'Magasins'
+    Magasins: 'Magasins',
+    produits_magasins: 'produits_magasins'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -891,10 +911,12 @@ export namespace Prisma {
 
 
   export type ProduitCountOutputType = {
+    produits_magasins: number
     offres: number
   }
 
   export type ProduitCountOutputTypeSelect = {
+    produits_magasins?: boolean
     offres?: boolean
   }
 
@@ -930,6 +952,55 @@ export namespace Prisma {
      * 
     **/
     select?: ProduitCountOutputTypeSelect | null
+  }
+
+
+
+  /**
+   * Count Type MagasinsCountOutputType
+   */
+
+
+  export type MagasinsCountOutputType = {
+    produits_magasins: number
+  }
+
+  export type MagasinsCountOutputTypeSelect = {
+    produits_magasins?: boolean
+  }
+
+  export type MagasinsCountOutputTypeGetPayload<
+    S extends boolean | null | undefined | MagasinsCountOutputTypeArgs,
+    U = keyof S
+      > = S extends true
+        ? MagasinsCountOutputType
+    : S extends undefined
+    ? never
+    : S extends MagasinsCountOutputTypeArgs
+    ?'include' extends U
+    ? MagasinsCountOutputType 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+    P extends keyof MagasinsCountOutputType ? MagasinsCountOutputType[P] : never
+  } 
+    : MagasinsCountOutputType
+  : MagasinsCountOutputType
+
+
+
+
+  // Custom InputTypes
+
+  /**
+   * MagasinsCountOutputType without action
+   */
+  export type MagasinsCountOutputTypeArgs = {
+    /**
+     * Select specific fields to fetch from the MagasinsCountOutputType
+     * 
+    **/
+    select?: MagasinsCountOutputTypeSelect | null
   }
 
 
@@ -1937,11 +2008,13 @@ export namespace Prisma {
     code?: boolean
     libelle?: boolean
     commentaires?: boolean
+    produits_magasins?: boolean | produits_magasinsFindManyArgs
     offres?: boolean | OffreFindManyArgs
     _count?: boolean | ProduitCountOutputTypeArgs
   }
 
   export type ProduitInclude = {
+    produits_magasins?: boolean | produits_magasinsFindManyArgs
     offres?: boolean | OffreFindManyArgs
     _count?: boolean | ProduitCountOutputTypeArgs
   }
@@ -1957,12 +2030,14 @@ export namespace Prisma {
     ?'include' extends U
     ? Produit  & {
     [P in TrueKeys<S['include']>]:
+        P extends 'produits_magasins' ? Array < produits_magasinsGetPayload<S['include'][P]>>  :
         P extends 'offres' ? Array < OffreGetPayload<S['include'][P]>>  :
         P extends '_count' ? ProduitCountOutputTypeGetPayload<S['include'][P]> :  never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
+        P extends 'produits_magasins' ? Array < produits_magasinsGetPayload<S['select'][P]>>  :
         P extends 'offres' ? Array < OffreGetPayload<S['select'][P]>>  :
         P extends '_count' ? ProduitCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Produit ? Produit[P] : never
   } 
@@ -2303,6 +2378,8 @@ export namespace Prisma {
     private _requestPromise?;
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    produits_magasins<T extends produits_magasinsFindManyArgs = {}>(args?: Subset<T, produits_magasinsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<produits_magasins>>, PrismaPromise<Array<produits_magasinsGetPayload<T>>>>;
 
     offres<T extends OffreFindManyArgs = {}>(args?: Subset<T, OffreFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Offre>>, PrismaPromise<Array<OffreGetPayload<T>>>>;
 
@@ -4541,6 +4618,13 @@ export namespace Prisma {
     nom?: boolean
     ville?: boolean
     codepostal?: boolean
+    produits_magasins?: boolean | produits_magasinsFindManyArgs
+    _count?: boolean | MagasinsCountOutputTypeArgs
+  }
+
+  export type MagasinsInclude = {
+    produits_magasins?: boolean | produits_magasinsFindManyArgs
+    _count?: boolean | MagasinsCountOutputTypeArgs
   }
 
   export type MagasinsGetPayload<
@@ -4552,11 +4636,16 @@ export namespace Prisma {
     ? never
     : S extends MagasinsArgs | MagasinsFindManyArgs
     ?'include' extends U
-    ? Magasins 
+    ? Magasins  & {
+    [P in TrueKeys<S['include']>]:
+        P extends 'produits_magasins' ? Array < produits_magasinsGetPayload<S['include'][P]>>  :
+        P extends '_count' ? MagasinsCountOutputTypeGetPayload<S['include'][P]> :  never
+  } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]:
-    P extends keyof Magasins ? Magasins[P] : never
+        P extends 'produits_magasins' ? Array < produits_magasinsGetPayload<S['select'][P]>>  :
+        P extends '_count' ? MagasinsCountOutputTypeGetPayload<S['select'][P]> :  P extends keyof Magasins ? Magasins[P] : never
   } 
     : Magasins
   : Magasins
@@ -4896,6 +4985,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    produits_magasins<T extends produits_magasinsFindManyArgs = {}>(args?: Subset<T, produits_magasinsFindManyArgs>): CheckSelect<T, PrismaPromise<Array<produits_magasins>>, PrismaPromise<Array<produits_magasinsGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -4932,6 +5022,11 @@ export namespace Prisma {
     **/
     select?: MagasinsSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: MagasinsInclude | null
+    /**
      * Throw an Error if a Magasins can't be found
      * 
     **/
@@ -4953,6 +5048,11 @@ export namespace Prisma {
      * 
     **/
     select?: MagasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: MagasinsInclude | null
     /**
      * Throw an Error if a Magasins can't be found
      * 
@@ -5011,6 +5111,11 @@ export namespace Prisma {
     **/
     select?: MagasinsSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: MagasinsInclude | null
+    /**
      * Filter, which Magasins to fetch.
      * 
     **/
@@ -5057,6 +5162,11 @@ export namespace Prisma {
     **/
     select?: MagasinsSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: MagasinsInclude | null
+    /**
      * The data needed to create a Magasins.
      * 
     **/
@@ -5086,6 +5196,11 @@ export namespace Prisma {
      * 
     **/
     select?: MagasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: MagasinsInclude | null
     /**
      * The data needed to update a Magasins.
      * 
@@ -5126,6 +5241,11 @@ export namespace Prisma {
     **/
     select?: MagasinsSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: MagasinsInclude | null
+    /**
      * The filter to search for the Magasins to update in case it exists.
      * 
     **/
@@ -5152,6 +5272,11 @@ export namespace Prisma {
      * 
     **/
     select?: MagasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: MagasinsInclude | null
     /**
      * Filter which Magasins to delete.
      * 
@@ -5181,6 +5306,857 @@ export namespace Prisma {
      * 
     **/
     select?: MagasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: MagasinsInclude | null
+  }
+
+
+
+  /**
+   * Model produits_magasins
+   */
+
+
+  export type AggregateProduits_magasins = {
+    _count: Produits_magasinsCountAggregateOutputType | null
+    _min: Produits_magasinsMinAggregateOutputType | null
+    _max: Produits_magasinsMaxAggregateOutputType | null
+  }
+
+  export type Produits_magasinsMinAggregateOutputType = {
+    code: string | null
+    code_magasin: string | null
+  }
+
+  export type Produits_magasinsMaxAggregateOutputType = {
+    code: string | null
+    code_magasin: string | null
+  }
+
+  export type Produits_magasinsCountAggregateOutputType = {
+    code: number
+    code_magasin: number
+    _all: number
+  }
+
+
+  export type Produits_magasinsMinAggregateInputType = {
+    code?: true
+    code_magasin?: true
+  }
+
+  export type Produits_magasinsMaxAggregateInputType = {
+    code?: true
+    code_magasin?: true
+  }
+
+  export type Produits_magasinsCountAggregateInputType = {
+    code?: true
+    code_magasin?: true
+    _all?: true
+  }
+
+  export type Produits_magasinsAggregateArgs = {
+    /**
+     * Filter which produits_magasins to aggregate.
+     * 
+    **/
+    where?: produits_magasinsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of produits_magasins to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<produits_magasinsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: produits_magasinsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` produits_magasins from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` produits_magasins.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned produits_magasins
+    **/
+    _count?: true | Produits_magasinsCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: Produits_magasinsMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: Produits_magasinsMaxAggregateInputType
+  }
+
+  export type GetProduits_magasinsAggregateType<T extends Produits_magasinsAggregateArgs> = {
+        [P in keyof T & keyof AggregateProduits_magasins]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateProduits_magasins[P]>
+      : GetScalarType<T[P], AggregateProduits_magasins[P]>
+  }
+
+
+
+
+  export type Produits_magasinsGroupByArgs = {
+    where?: produits_magasinsWhereInput
+    orderBy?: Enumerable<produits_magasinsOrderByWithAggregationInput>
+    by: Array<Produits_magasinsScalarFieldEnum>
+    having?: produits_magasinsScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: Produits_magasinsCountAggregateInputType | true
+    _min?: Produits_magasinsMinAggregateInputType
+    _max?: Produits_magasinsMaxAggregateInputType
+  }
+
+
+  export type Produits_magasinsGroupByOutputType = {
+    code: string
+    code_magasin: string
+    _count: Produits_magasinsCountAggregateOutputType | null
+    _min: Produits_magasinsMinAggregateOutputType | null
+    _max: Produits_magasinsMaxAggregateOutputType | null
+  }
+
+  type GetProduits_magasinsGroupByPayload<T extends Produits_magasinsGroupByArgs> = PrismaPromise<
+    Array<
+      PickArray<Produits_magasinsGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof Produits_magasinsGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], Produits_magasinsGroupByOutputType[P]>
+            : GetScalarType<T[P], Produits_magasinsGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type produits_magasinsSelect = {
+    code?: boolean
+    code_magasin?: boolean
+    ref_produits?: boolean | ProduitArgs
+    ref_magasins?: boolean | MagasinsArgs
+  }
+
+  export type produits_magasinsInclude = {
+    ref_produits?: boolean | ProduitArgs
+    ref_magasins?: boolean | MagasinsArgs
+  }
+
+  export type produits_magasinsGetPayload<
+    S extends boolean | null | undefined | produits_magasinsArgs,
+    U = keyof S
+      > = S extends true
+        ? produits_magasins
+    : S extends undefined
+    ? never
+    : S extends produits_magasinsArgs | produits_magasinsFindManyArgs
+    ?'include' extends U
+    ? produits_magasins  & {
+    [P in TrueKeys<S['include']>]:
+        P extends 'ref_produits' ? ProduitGetPayload<S['include'][P]> :
+        P extends 'ref_magasins' ? MagasinsGetPayload<S['include'][P]> :  never
+  } 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]:
+        P extends 'ref_produits' ? ProduitGetPayload<S['select'][P]> :
+        P extends 'ref_magasins' ? MagasinsGetPayload<S['select'][P]> :  P extends keyof produits_magasins ? produits_magasins[P] : never
+  } 
+    : produits_magasins
+  : produits_magasins
+
+
+  type produits_magasinsCountArgs = Merge<
+    Omit<produits_magasinsFindManyArgs, 'select' | 'include'> & {
+      select?: Produits_magasinsCountAggregateInputType | true
+    }
+  >
+
+  export interface produits_magasinsDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one Produits_magasins that matches the filter.
+     * @param {produits_magasinsFindUniqueArgs} args - Arguments to find a Produits_magasins
+     * @example
+     * // Get one Produits_magasins
+     * const produits_magasins = await prisma.produits_magasins.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends produits_magasinsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, produits_magasinsFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'produits_magasins'> extends True ? CheckSelect<T, Prisma__produits_magasinsClient<produits_magasins>, Prisma__produits_magasinsClient<produits_magasinsGetPayload<T>>> : CheckSelect<T, Prisma__produits_magasinsClient<produits_magasins | null >, Prisma__produits_magasinsClient<produits_magasinsGetPayload<T> | null >>
+
+    /**
+     * Find the first Produits_magasins that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {produits_magasinsFindFirstArgs} args - Arguments to find a Produits_magasins
+     * @example
+     * // Get one Produits_magasins
+     * const produits_magasins = await prisma.produits_magasins.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends produits_magasinsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, produits_magasinsFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'produits_magasins'> extends True ? CheckSelect<T, Prisma__produits_magasinsClient<produits_magasins>, Prisma__produits_magasinsClient<produits_magasinsGetPayload<T>>> : CheckSelect<T, Prisma__produits_magasinsClient<produits_magasins | null >, Prisma__produits_magasinsClient<produits_magasinsGetPayload<T> | null >>
+
+    /**
+     * Find zero or more Produits_magasins that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {produits_magasinsFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Produits_magasins
+     * const produits_magasins = await prisma.produits_magasins.findMany()
+     * 
+     * // Get first 10 Produits_magasins
+     * const produits_magasins = await prisma.produits_magasins.findMany({ take: 10 })
+     * 
+     * // Only select the `code`
+     * const produits_magasinsWithCodeOnly = await prisma.produits_magasins.findMany({ select: { code: true } })
+     * 
+    **/
+    findMany<T extends produits_magasinsFindManyArgs>(
+      args?: SelectSubset<T, produits_magasinsFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<produits_magasins>>, PrismaPromise<Array<produits_magasinsGetPayload<T>>>>
+
+    /**
+     * Create a Produits_magasins.
+     * @param {produits_magasinsCreateArgs} args - Arguments to create a Produits_magasins.
+     * @example
+     * // Create one Produits_magasins
+     * const Produits_magasins = await prisma.produits_magasins.create({
+     *   data: {
+     *     // ... data to create a Produits_magasins
+     *   }
+     * })
+     * 
+    **/
+    create<T extends produits_magasinsCreateArgs>(
+      args: SelectSubset<T, produits_magasinsCreateArgs>
+    ): CheckSelect<T, Prisma__produits_magasinsClient<produits_magasins>, Prisma__produits_magasinsClient<produits_magasinsGetPayload<T>>>
+
+    /**
+     * Create many Produits_magasins.
+     *     @param {produits_magasinsCreateManyArgs} args - Arguments to create many Produits_magasins.
+     *     @example
+     *     // Create many Produits_magasins
+     *     const produits_magasins = await prisma.produits_magasins.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends produits_magasinsCreateManyArgs>(
+      args?: SelectSubset<T, produits_magasinsCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a Produits_magasins.
+     * @param {produits_magasinsDeleteArgs} args - Arguments to delete one Produits_magasins.
+     * @example
+     * // Delete one Produits_magasins
+     * const Produits_magasins = await prisma.produits_magasins.delete({
+     *   where: {
+     *     // ... filter to delete one Produits_magasins
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends produits_magasinsDeleteArgs>(
+      args: SelectSubset<T, produits_magasinsDeleteArgs>
+    ): CheckSelect<T, Prisma__produits_magasinsClient<produits_magasins>, Prisma__produits_magasinsClient<produits_magasinsGetPayload<T>>>
+
+    /**
+     * Update one Produits_magasins.
+     * @param {produits_magasinsUpdateArgs} args - Arguments to update one Produits_magasins.
+     * @example
+     * // Update one Produits_magasins
+     * const produits_magasins = await prisma.produits_magasins.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends produits_magasinsUpdateArgs>(
+      args: SelectSubset<T, produits_magasinsUpdateArgs>
+    ): CheckSelect<T, Prisma__produits_magasinsClient<produits_magasins>, Prisma__produits_magasinsClient<produits_magasinsGetPayload<T>>>
+
+    /**
+     * Delete zero or more Produits_magasins.
+     * @param {produits_magasinsDeleteManyArgs} args - Arguments to filter Produits_magasins to delete.
+     * @example
+     * // Delete a few Produits_magasins
+     * const { count } = await prisma.produits_magasins.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends produits_magasinsDeleteManyArgs>(
+      args?: SelectSubset<T, produits_magasinsDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Produits_magasins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {produits_magasinsUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Produits_magasins
+     * const produits_magasins = await prisma.produits_magasins.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends produits_magasinsUpdateManyArgs>(
+      args: SelectSubset<T, produits_magasinsUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one Produits_magasins.
+     * @param {produits_magasinsUpsertArgs} args - Arguments to update or create a Produits_magasins.
+     * @example
+     * // Update or create a Produits_magasins
+     * const produits_magasins = await prisma.produits_magasins.upsert({
+     *   create: {
+     *     // ... data to create a Produits_magasins
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Produits_magasins we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends produits_magasinsUpsertArgs>(
+      args: SelectSubset<T, produits_magasinsUpsertArgs>
+    ): CheckSelect<T, Prisma__produits_magasinsClient<produits_magasins>, Prisma__produits_magasinsClient<produits_magasinsGetPayload<T>>>
+
+    /**
+     * Count the number of Produits_magasins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {produits_magasinsCountArgs} args - Arguments to filter Produits_magasins to count.
+     * @example
+     * // Count the number of Produits_magasins
+     * const count = await prisma.produits_magasins.count({
+     *   where: {
+     *     // ... the filter for the Produits_magasins we want to count
+     *   }
+     * })
+    **/
+    count<T extends produits_magasinsCountArgs>(
+      args?: Subset<T, produits_magasinsCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], Produits_magasinsCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Produits_magasins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Produits_magasinsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends Produits_magasinsAggregateArgs>(args: Subset<T, Produits_magasinsAggregateArgs>): PrismaPromise<GetProduits_magasinsAggregateType<T>>
+
+    /**
+     * Group by Produits_magasins.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {Produits_magasinsGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends Produits_magasinsGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: Produits_magasinsGroupByArgs['orderBy'] }
+        : { orderBy?: Produits_magasinsGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, Produits_magasinsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetProduits_magasinsGroupByPayload<T> : PrismaPromise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for produits_magasins.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__produits_magasinsClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    ref_produits<T extends ProduitArgs = {}>(args?: Subset<T, ProduitArgs>): CheckSelect<T, Prisma__ProduitClient<Produit | null >, Prisma__ProduitClient<ProduitGetPayload<T> | null >>;
+
+    ref_magasins<T extends MagasinsArgs = {}>(args?: Subset<T, MagasinsArgs>): CheckSelect<T, Prisma__MagasinsClient<Magasins | null >, Prisma__MagasinsClient<MagasinsGetPayload<T> | null >>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * produits_magasins findUnique
+   */
+  export type produits_magasinsFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the produits_magasins
+     * 
+    **/
+    select?: produits_magasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: produits_magasinsInclude | null
+    /**
+     * Throw an Error if a produits_magasins can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which produits_magasins to fetch.
+     * 
+    **/
+    where: produits_magasinsWhereUniqueInput
+  }
+
+
+  /**
+   * produits_magasins findFirst
+   */
+  export type produits_magasinsFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the produits_magasins
+     * 
+    **/
+    select?: produits_magasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: produits_magasinsInclude | null
+    /**
+     * Throw an Error if a produits_magasins can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which produits_magasins to fetch.
+     * 
+    **/
+    where?: produits_magasinsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of produits_magasins to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<produits_magasinsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for produits_magasins.
+     * 
+    **/
+    cursor?: produits_magasinsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` produits_magasins from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` produits_magasins.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of produits_magasins.
+     * 
+    **/
+    distinct?: Enumerable<Produits_magasinsScalarFieldEnum>
+  }
+
+
+  /**
+   * produits_magasins findMany
+   */
+  export type produits_magasinsFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the produits_magasins
+     * 
+    **/
+    select?: produits_magasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: produits_magasinsInclude | null
+    /**
+     * Filter, which produits_magasins to fetch.
+     * 
+    **/
+    where?: produits_magasinsWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of produits_magasins to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<produits_magasinsOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing produits_magasins.
+     * 
+    **/
+    cursor?: produits_magasinsWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` produits_magasins from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` produits_magasins.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<Produits_magasinsScalarFieldEnum>
+  }
+
+
+  /**
+   * produits_magasins create
+   */
+  export type produits_magasinsCreateArgs = {
+    /**
+     * Select specific fields to fetch from the produits_magasins
+     * 
+    **/
+    select?: produits_magasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: produits_magasinsInclude | null
+    /**
+     * The data needed to create a produits_magasins.
+     * 
+    **/
+    data: XOR<produits_magasinsCreateInput, produits_magasinsUncheckedCreateInput>
+  }
+
+
+  /**
+   * produits_magasins createMany
+   */
+  export type produits_magasinsCreateManyArgs = {
+    /**
+     * The data used to create many produits_magasins.
+     * 
+    **/
+    data: Enumerable<produits_magasinsCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * produits_magasins update
+   */
+  export type produits_magasinsUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the produits_magasins
+     * 
+    **/
+    select?: produits_magasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: produits_magasinsInclude | null
+    /**
+     * The data needed to update a produits_magasins.
+     * 
+    **/
+    data: XOR<produits_magasinsUpdateInput, produits_magasinsUncheckedUpdateInput>
+    /**
+     * Choose, which produits_magasins to update.
+     * 
+    **/
+    where: produits_magasinsWhereUniqueInput
+  }
+
+
+  /**
+   * produits_magasins updateMany
+   */
+  export type produits_magasinsUpdateManyArgs = {
+    /**
+     * The data used to update produits_magasins.
+     * 
+    **/
+    data: XOR<produits_magasinsUpdateManyMutationInput, produits_magasinsUncheckedUpdateManyInput>
+    /**
+     * Filter which produits_magasins to update
+     * 
+    **/
+    where?: produits_magasinsWhereInput
+  }
+
+
+  /**
+   * produits_magasins upsert
+   */
+  export type produits_magasinsUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the produits_magasins
+     * 
+    **/
+    select?: produits_magasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: produits_magasinsInclude | null
+    /**
+     * The filter to search for the produits_magasins to update in case it exists.
+     * 
+    **/
+    where: produits_magasinsWhereUniqueInput
+    /**
+     * In case the produits_magasins found by the `where` argument doesn't exist, create a new produits_magasins with this data.
+     * 
+    **/
+    create: XOR<produits_magasinsCreateInput, produits_magasinsUncheckedCreateInput>
+    /**
+     * In case the produits_magasins was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<produits_magasinsUpdateInput, produits_magasinsUncheckedUpdateInput>
+  }
+
+
+  /**
+   * produits_magasins delete
+   */
+  export type produits_magasinsDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the produits_magasins
+     * 
+    **/
+    select?: produits_magasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: produits_magasinsInclude | null
+    /**
+     * Filter which produits_magasins to delete.
+     * 
+    **/
+    where: produits_magasinsWhereUniqueInput
+  }
+
+
+  /**
+   * produits_magasins deleteMany
+   */
+  export type produits_magasinsDeleteManyArgs = {
+    /**
+     * Filter which produits_magasins to delete
+     * 
+    **/
+    where?: produits_magasinsWhereInput
+  }
+
+
+  /**
+   * produits_magasins without action
+   */
+  export type produits_magasinsArgs = {
+    /**
+     * Select specific fields to fetch from the produits_magasins
+     * 
+    **/
+    select?: produits_magasinsSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: produits_magasinsInclude | null
   }
 
 
@@ -5241,6 +6217,14 @@ export namespace Prisma {
   };
 
   export type MagasinsScalarFieldEnum = (typeof MagasinsScalarFieldEnum)[keyof typeof MagasinsScalarFieldEnum]
+
+
+  export const Produits_magasinsScalarFieldEnum: {
+    code: 'code',
+    code_magasin: 'code_magasin'
+  };
+
+  export type Produits_magasinsScalarFieldEnum = (typeof Produits_magasinsScalarFieldEnum)[keyof typeof Produits_magasinsScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -5306,6 +6290,7 @@ export namespace Prisma {
     code?: StringFilter | string
     libelle?: StringFilter | string
     commentaires?: StringNullableFilter | string | null
+    produits_magasins?: Produits_magasinsListRelationFilter
     offres?: OffreListRelationFilter
   }
 
@@ -5313,6 +6298,7 @@ export namespace Prisma {
     code?: SortOrder
     libelle?: SortOrder
     commentaires?: SortOrder
+    produits_magasins?: produits_magasinsOrderByRelationAggregateInput
     offres?: OffreOrderByRelationAggregateInput
   }
 
@@ -5448,6 +6434,7 @@ export namespace Prisma {
     nom?: StringNullableFilter | string | null
     ville?: StringNullableFilter | string | null
     codepostal?: StringNullableFilter | string | null
+    produits_magasins?: Produits_magasinsListRelationFilter
   }
 
   export type MagasinsOrderByWithRelationInput = {
@@ -5455,6 +6442,7 @@ export namespace Prisma {
     nom?: SortOrder
     ville?: SortOrder
     codepostal?: SortOrder
+    produits_magasins?: produits_magasinsOrderByRelationAggregateInput
   }
 
   export type MagasinsWhereUniqueInput = {
@@ -5479,6 +6467,43 @@ export namespace Prisma {
     nom?: StringNullableWithAggregatesFilter | string | null
     ville?: StringNullableWithAggregatesFilter | string | null
     codepostal?: StringNullableWithAggregatesFilter | string | null
+  }
+
+  export type produits_magasinsWhereInput = {
+    AND?: Enumerable<produits_magasinsWhereInput>
+    OR?: Enumerable<produits_magasinsWhereInput>
+    NOT?: Enumerable<produits_magasinsWhereInput>
+    code?: StringFilter | string
+    code_magasin?: StringFilter | string
+    ref_produits?: XOR<ProduitRelationFilter, ProduitWhereInput>
+    ref_magasins?: XOR<MagasinsRelationFilter, MagasinsWhereInput>
+  }
+
+  export type produits_magasinsOrderByWithRelationInput = {
+    code?: SortOrder
+    code_magasin?: SortOrder
+    ref_produits?: ProduitOrderByWithRelationInput
+    ref_magasins?: MagasinsOrderByWithRelationInput
+  }
+
+  export type produits_magasinsWhereUniqueInput = {
+    code_magasin_code?: produits_magasinsCode_magasinCodeCompoundUniqueInput
+  }
+
+  export type produits_magasinsOrderByWithAggregationInput = {
+    code?: SortOrder
+    code_magasin?: SortOrder
+    _count?: produits_magasinsCountOrderByAggregateInput
+    _max?: produits_magasinsMaxOrderByAggregateInput
+    _min?: produits_magasinsMinOrderByAggregateInput
+  }
+
+  export type produits_magasinsScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<produits_magasinsScalarWhereWithAggregatesInput>
+    OR?: Enumerable<produits_magasinsScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<produits_magasinsScalarWhereWithAggregatesInput>
+    code?: StringWithAggregatesFilter | string
+    code_magasin?: StringWithAggregatesFilter | string
   }
 
   export type PartenaireCreateInput = {
@@ -5524,6 +6549,7 @@ export namespace Prisma {
     code: string
     libelle: string
     commentaires?: string | null
+    produits_magasins?: produits_magasinsCreateNestedManyWithoutRef_produitsInput
     offres?: OffreCreateNestedManyWithoutProduitInput
   }
 
@@ -5531,6 +6557,7 @@ export namespace Prisma {
     code: string
     libelle: string
     commentaires?: string | null
+    produits_magasins?: produits_magasinsUncheckedCreateNestedManyWithoutRef_produitsInput
     offres?: OffreUncheckedCreateNestedManyWithoutProduitInput
   }
 
@@ -5538,6 +6565,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
     commentaires?: NullableStringFieldUpdateOperationsInput | string | null
+    produits_magasins?: produits_magasinsUpdateManyWithoutRef_produitsInput
     offres?: OffreUpdateManyWithoutProduitInput
   }
 
@@ -5545,6 +6573,7 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
     commentaires?: NullableStringFieldUpdateOperationsInput | string | null
+    produits_magasins?: produits_magasinsUncheckedUpdateManyWithoutRef_produitsInput
     offres?: OffreUncheckedUpdateManyWithoutProduitInput
   }
 
@@ -5695,6 +6724,7 @@ export namespace Prisma {
     nom?: string | null
     ville?: string | null
     codepostal?: string | null
+    produits_magasins?: produits_magasinsCreateNestedManyWithoutRef_magasinsInput
   }
 
   export type MagasinsUncheckedCreateInput = {
@@ -5702,6 +6732,7 @@ export namespace Prisma {
     nom?: string | null
     ville?: string | null
     codepostal?: string | null
+    produits_magasins?: produits_magasinsUncheckedCreateNestedManyWithoutRef_magasinsInput
   }
 
   export type MagasinsUpdateInput = {
@@ -5709,6 +6740,7 @@ export namespace Prisma {
     nom?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     codepostal?: NullableStringFieldUpdateOperationsInput | string | null
+    produits_magasins?: produits_magasinsUpdateManyWithoutRef_magasinsInput
   }
 
   export type MagasinsUncheckedUpdateInput = {
@@ -5716,6 +6748,7 @@ export namespace Prisma {
     nom?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     codepostal?: NullableStringFieldUpdateOperationsInput | string | null
+    produits_magasins?: produits_magasinsUncheckedUpdateManyWithoutRef_magasinsInput
   }
 
   export type MagasinsCreateManyInput = {
@@ -5737,6 +6770,40 @@ export namespace Prisma {
     nom?: NullableStringFieldUpdateOperationsInput | string | null
     ville?: NullableStringFieldUpdateOperationsInput | string | null
     codepostal?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type produits_magasinsCreateInput = {
+    ref_produits: ProduitCreateNestedOneWithoutProduits_magasinsInput
+    ref_magasins: MagasinsCreateNestedOneWithoutProduits_magasinsInput
+  }
+
+  export type produits_magasinsUncheckedCreateInput = {
+    code: string
+    code_magasin: string
+  }
+
+  export type produits_magasinsUpdateInput = {
+    ref_produits?: ProduitUpdateOneRequiredWithoutProduits_magasinsInput
+    ref_magasins?: MagasinsUpdateOneRequiredWithoutProduits_magasinsInput
+  }
+
+  export type produits_magasinsUncheckedUpdateInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    code_magasin?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type produits_magasinsCreateManyInput = {
+    code: string
+    code_magasin: string
+  }
+
+  export type produits_magasinsUpdateManyMutationInput = {
+
+  }
+
+  export type produits_magasinsUncheckedUpdateManyInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    code_magasin?: StringFieldUpdateOperationsInput | string
   }
 
   export type StringFilter = {
@@ -5812,10 +6879,20 @@ export namespace Prisma {
     not?: NestedStringNullableFilter | string | null
   }
 
+  export type Produits_magasinsListRelationFilter = {
+    every?: produits_magasinsWhereInput
+    some?: produits_magasinsWhereInput
+    none?: produits_magasinsWhereInput
+  }
+
   export type OffreListRelationFilter = {
     every?: OffreWhereInput
     some?: OffreWhereInput
     none?: OffreWhereInput
+  }
+
+  export type produits_magasinsOrderByRelationAggregateInput = {
+    _count?: SortOrder
   }
 
   export type OffreOrderByRelationAggregateInput = {
@@ -5981,6 +7058,31 @@ export namespace Prisma {
     codepostal?: SortOrder
   }
 
+  export type MagasinsRelationFilter = {
+    is?: MagasinsWhereInput
+    isNot?: MagasinsWhereInput
+  }
+
+  export type produits_magasinsCode_magasinCodeCompoundUniqueInput = {
+    code_magasin: string
+    code: string
+  }
+
+  export type produits_magasinsCountOrderByAggregateInput = {
+    code?: SortOrder
+    code_magasin?: SortOrder
+  }
+
+  export type produits_magasinsMaxOrderByAggregateInput = {
+    code?: SortOrder
+    code_magasin?: SortOrder
+  }
+
+  export type produits_magasinsMinOrderByAggregateInput = {
+    code?: SortOrder
+    code_magasin?: SortOrder
+  }
+
   export type ClientsCreateNestedManyWithoutRef_partenairesInput = {
     create?: XOR<Enumerable<ClientsCreateWithoutRef_partenairesInput>, Enumerable<ClientsUncheckedCreateWithoutRef_partenairesInput>>
     connectOrCreate?: Enumerable<ClientsCreateOrConnectWithoutRef_partenairesInput>
@@ -6027,11 +7129,25 @@ export namespace Prisma {
     deleteMany?: Enumerable<ClientsScalarWhereInput>
   }
 
+  export type produits_magasinsCreateNestedManyWithoutRef_produitsInput = {
+    create?: XOR<Enumerable<produits_magasinsCreateWithoutRef_produitsInput>, Enumerable<produits_magasinsUncheckedCreateWithoutRef_produitsInput>>
+    connectOrCreate?: Enumerable<produits_magasinsCreateOrConnectWithoutRef_produitsInput>
+    createMany?: produits_magasinsCreateManyRef_produitsInputEnvelope
+    connect?: Enumerable<produits_magasinsWhereUniqueInput>
+  }
+
   export type OffreCreateNestedManyWithoutProduitInput = {
     create?: XOR<Enumerable<OffreCreateWithoutProduitInput>, Enumerable<OffreUncheckedCreateWithoutProduitInput>>
     connectOrCreate?: Enumerable<OffreCreateOrConnectWithoutProduitInput>
     createMany?: OffreCreateManyProduitInputEnvelope
     connect?: Enumerable<OffreWhereUniqueInput>
+  }
+
+  export type produits_magasinsUncheckedCreateNestedManyWithoutRef_produitsInput = {
+    create?: XOR<Enumerable<produits_magasinsCreateWithoutRef_produitsInput>, Enumerable<produits_magasinsUncheckedCreateWithoutRef_produitsInput>>
+    connectOrCreate?: Enumerable<produits_magasinsCreateOrConnectWithoutRef_produitsInput>
+    createMany?: produits_magasinsCreateManyRef_produitsInputEnvelope
+    connect?: Enumerable<produits_magasinsWhereUniqueInput>
   }
 
   export type OffreUncheckedCreateNestedManyWithoutProduitInput = {
@@ -6043,6 +7159,20 @@ export namespace Prisma {
 
   export type NullableStringFieldUpdateOperationsInput = {
     set?: string | null
+  }
+
+  export type produits_magasinsUpdateManyWithoutRef_produitsInput = {
+    create?: XOR<Enumerable<produits_magasinsCreateWithoutRef_produitsInput>, Enumerable<produits_magasinsUncheckedCreateWithoutRef_produitsInput>>
+    connectOrCreate?: Enumerable<produits_magasinsCreateOrConnectWithoutRef_produitsInput>
+    upsert?: Enumerable<produits_magasinsUpsertWithWhereUniqueWithoutRef_produitsInput>
+    createMany?: produits_magasinsCreateManyRef_produitsInputEnvelope
+    set?: Enumerable<produits_magasinsWhereUniqueInput>
+    disconnect?: Enumerable<produits_magasinsWhereUniqueInput>
+    delete?: Enumerable<produits_magasinsWhereUniqueInput>
+    connect?: Enumerable<produits_magasinsWhereUniqueInput>
+    update?: Enumerable<produits_magasinsUpdateWithWhereUniqueWithoutRef_produitsInput>
+    updateMany?: Enumerable<produits_magasinsUpdateManyWithWhereWithoutRef_produitsInput>
+    deleteMany?: Enumerable<produits_magasinsScalarWhereInput>
   }
 
   export type OffreUpdateManyWithoutProduitInput = {
@@ -6057,6 +7187,20 @@ export namespace Prisma {
     update?: Enumerable<OffreUpdateWithWhereUniqueWithoutProduitInput>
     updateMany?: Enumerable<OffreUpdateManyWithWhereWithoutProduitInput>
     deleteMany?: Enumerable<OffreScalarWhereInput>
+  }
+
+  export type produits_magasinsUncheckedUpdateManyWithoutRef_produitsInput = {
+    create?: XOR<Enumerable<produits_magasinsCreateWithoutRef_produitsInput>, Enumerable<produits_magasinsUncheckedCreateWithoutRef_produitsInput>>
+    connectOrCreate?: Enumerable<produits_magasinsCreateOrConnectWithoutRef_produitsInput>
+    upsert?: Enumerable<produits_magasinsUpsertWithWhereUniqueWithoutRef_produitsInput>
+    createMany?: produits_magasinsCreateManyRef_produitsInputEnvelope
+    set?: Enumerable<produits_magasinsWhereUniqueInput>
+    disconnect?: Enumerable<produits_magasinsWhereUniqueInput>
+    delete?: Enumerable<produits_magasinsWhereUniqueInput>
+    connect?: Enumerable<produits_magasinsWhereUniqueInput>
+    update?: Enumerable<produits_magasinsUpdateWithWhereUniqueWithoutRef_produitsInput>
+    updateMany?: Enumerable<produits_magasinsUpdateManyWithWhereWithoutRef_produitsInput>
+    deleteMany?: Enumerable<produits_magasinsScalarWhereInput>
   }
 
   export type OffreUncheckedUpdateManyWithoutProduitInput = {
@@ -6109,6 +7253,76 @@ export namespace Prisma {
     delete?: boolean
     connect?: PartenaireWhereUniqueInput
     update?: XOR<PartenaireUpdateWithoutClientsInput, PartenaireUncheckedUpdateWithoutClientsInput>
+  }
+
+  export type produits_magasinsCreateNestedManyWithoutRef_magasinsInput = {
+    create?: XOR<Enumerable<produits_magasinsCreateWithoutRef_magasinsInput>, Enumerable<produits_magasinsUncheckedCreateWithoutRef_magasinsInput>>
+    connectOrCreate?: Enumerable<produits_magasinsCreateOrConnectWithoutRef_magasinsInput>
+    createMany?: produits_magasinsCreateManyRef_magasinsInputEnvelope
+    connect?: Enumerable<produits_magasinsWhereUniqueInput>
+  }
+
+  export type produits_magasinsUncheckedCreateNestedManyWithoutRef_magasinsInput = {
+    create?: XOR<Enumerable<produits_magasinsCreateWithoutRef_magasinsInput>, Enumerable<produits_magasinsUncheckedCreateWithoutRef_magasinsInput>>
+    connectOrCreate?: Enumerable<produits_magasinsCreateOrConnectWithoutRef_magasinsInput>
+    createMany?: produits_magasinsCreateManyRef_magasinsInputEnvelope
+    connect?: Enumerable<produits_magasinsWhereUniqueInput>
+  }
+
+  export type produits_magasinsUpdateManyWithoutRef_magasinsInput = {
+    create?: XOR<Enumerable<produits_magasinsCreateWithoutRef_magasinsInput>, Enumerable<produits_magasinsUncheckedCreateWithoutRef_magasinsInput>>
+    connectOrCreate?: Enumerable<produits_magasinsCreateOrConnectWithoutRef_magasinsInput>
+    upsert?: Enumerable<produits_magasinsUpsertWithWhereUniqueWithoutRef_magasinsInput>
+    createMany?: produits_magasinsCreateManyRef_magasinsInputEnvelope
+    set?: Enumerable<produits_magasinsWhereUniqueInput>
+    disconnect?: Enumerable<produits_magasinsWhereUniqueInput>
+    delete?: Enumerable<produits_magasinsWhereUniqueInput>
+    connect?: Enumerable<produits_magasinsWhereUniqueInput>
+    update?: Enumerable<produits_magasinsUpdateWithWhereUniqueWithoutRef_magasinsInput>
+    updateMany?: Enumerable<produits_magasinsUpdateManyWithWhereWithoutRef_magasinsInput>
+    deleteMany?: Enumerable<produits_magasinsScalarWhereInput>
+  }
+
+  export type produits_magasinsUncheckedUpdateManyWithoutRef_magasinsInput = {
+    create?: XOR<Enumerable<produits_magasinsCreateWithoutRef_magasinsInput>, Enumerable<produits_magasinsUncheckedCreateWithoutRef_magasinsInput>>
+    connectOrCreate?: Enumerable<produits_magasinsCreateOrConnectWithoutRef_magasinsInput>
+    upsert?: Enumerable<produits_magasinsUpsertWithWhereUniqueWithoutRef_magasinsInput>
+    createMany?: produits_magasinsCreateManyRef_magasinsInputEnvelope
+    set?: Enumerable<produits_magasinsWhereUniqueInput>
+    disconnect?: Enumerable<produits_magasinsWhereUniqueInput>
+    delete?: Enumerable<produits_magasinsWhereUniqueInput>
+    connect?: Enumerable<produits_magasinsWhereUniqueInput>
+    update?: Enumerable<produits_magasinsUpdateWithWhereUniqueWithoutRef_magasinsInput>
+    updateMany?: Enumerable<produits_magasinsUpdateManyWithWhereWithoutRef_magasinsInput>
+    deleteMany?: Enumerable<produits_magasinsScalarWhereInput>
+  }
+
+  export type ProduitCreateNestedOneWithoutProduits_magasinsInput = {
+    create?: XOR<ProduitCreateWithoutProduits_magasinsInput, ProduitUncheckedCreateWithoutProduits_magasinsInput>
+    connectOrCreate?: ProduitCreateOrConnectWithoutProduits_magasinsInput
+    connect?: ProduitWhereUniqueInput
+  }
+
+  export type MagasinsCreateNestedOneWithoutProduits_magasinsInput = {
+    create?: XOR<MagasinsCreateWithoutProduits_magasinsInput, MagasinsUncheckedCreateWithoutProduits_magasinsInput>
+    connectOrCreate?: MagasinsCreateOrConnectWithoutProduits_magasinsInput
+    connect?: MagasinsWhereUniqueInput
+  }
+
+  export type ProduitUpdateOneRequiredWithoutProduits_magasinsInput = {
+    create?: XOR<ProduitCreateWithoutProduits_magasinsInput, ProduitUncheckedCreateWithoutProduits_magasinsInput>
+    connectOrCreate?: ProduitCreateOrConnectWithoutProduits_magasinsInput
+    upsert?: ProduitUpsertWithoutProduits_magasinsInput
+    connect?: ProduitWhereUniqueInput
+    update?: XOR<ProduitUpdateWithoutProduits_magasinsInput, ProduitUncheckedUpdateWithoutProduits_magasinsInput>
+  }
+
+  export type MagasinsUpdateOneRequiredWithoutProduits_magasinsInput = {
+    create?: XOR<MagasinsCreateWithoutProduits_magasinsInput, MagasinsUncheckedCreateWithoutProduits_magasinsInput>
+    connectOrCreate?: MagasinsCreateOrConnectWithoutProduits_magasinsInput
+    upsert?: MagasinsUpsertWithoutProduits_magasinsInput
+    connect?: MagasinsWhereUniqueInput
+    update?: XOR<MagasinsUpdateWithoutProduits_magasinsInput, MagasinsUncheckedUpdateWithoutProduits_magasinsInput>
   }
 
   export type NestedStringFilter = {
@@ -6293,6 +7507,24 @@ export namespace Prisma {
     actif?: BoolNullableFilter | boolean | null
   }
 
+  export type produits_magasinsCreateWithoutRef_produitsInput = {
+    ref_magasins: MagasinsCreateNestedOneWithoutProduits_magasinsInput
+  }
+
+  export type produits_magasinsUncheckedCreateWithoutRef_produitsInput = {
+    code_magasin: string
+  }
+
+  export type produits_magasinsCreateOrConnectWithoutRef_produitsInput = {
+    where: produits_magasinsWhereUniqueInput
+    create: XOR<produits_magasinsCreateWithoutRef_produitsInput, produits_magasinsUncheckedCreateWithoutRef_produitsInput>
+  }
+
+  export type produits_magasinsCreateManyRef_produitsInputEnvelope = {
+    data: Enumerable<produits_magasinsCreateManyRef_produitsInput>
+    skipDuplicates?: boolean
+  }
+
   export type OffreCreateWithoutProduitInput = {
     code: string
     libelle: string
@@ -6313,6 +7545,30 @@ export namespace Prisma {
   export type OffreCreateManyProduitInputEnvelope = {
     data: Enumerable<OffreCreateManyProduitInput>
     skipDuplicates?: boolean
+  }
+
+  export type produits_magasinsUpsertWithWhereUniqueWithoutRef_produitsInput = {
+    where: produits_magasinsWhereUniqueInput
+    update: XOR<produits_magasinsUpdateWithoutRef_produitsInput, produits_magasinsUncheckedUpdateWithoutRef_produitsInput>
+    create: XOR<produits_magasinsCreateWithoutRef_produitsInput, produits_magasinsUncheckedCreateWithoutRef_produitsInput>
+  }
+
+  export type produits_magasinsUpdateWithWhereUniqueWithoutRef_produitsInput = {
+    where: produits_magasinsWhereUniqueInput
+    data: XOR<produits_magasinsUpdateWithoutRef_produitsInput, produits_magasinsUncheckedUpdateWithoutRef_produitsInput>
+  }
+
+  export type produits_magasinsUpdateManyWithWhereWithoutRef_produitsInput = {
+    where: produits_magasinsScalarWhereInput
+    data: XOR<produits_magasinsUpdateManyMutationInput, produits_magasinsUncheckedUpdateManyWithoutProduits_magasinsInput>
+  }
+
+  export type produits_magasinsScalarWhereInput = {
+    AND?: Enumerable<produits_magasinsScalarWhereInput>
+    OR?: Enumerable<produits_magasinsScalarWhereInput>
+    NOT?: Enumerable<produits_magasinsScalarWhereInput>
+    code?: StringFilter | string
+    code_magasin?: StringFilter | string
   }
 
   export type OffreUpsertWithWhereUniqueWithoutProduitInput = {
@@ -6345,12 +7601,14 @@ export namespace Prisma {
     code: string
     libelle: string
     commentaires?: string | null
+    produits_magasins?: produits_magasinsCreateNestedManyWithoutRef_produitsInput
   }
 
   export type ProduitUncheckedCreateWithoutOffresInput = {
     code: string
     libelle: string
     commentaires?: string | null
+    produits_magasins?: produits_magasinsUncheckedCreateNestedManyWithoutRef_produitsInput
   }
 
   export type ProduitCreateOrConnectWithoutOffresInput = {
@@ -6367,12 +7625,14 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
     commentaires?: NullableStringFieldUpdateOperationsInput | string | null
+    produits_magasins?: produits_magasinsUpdateManyWithoutRef_produitsInput
   }
 
   export type ProduitUncheckedUpdateWithoutOffresInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
     commentaires?: NullableStringFieldUpdateOperationsInput | string | null
+    produits_magasins?: produits_magasinsUncheckedUpdateManyWithoutRef_produitsInput
   }
 
   export type PartenaireCreateWithoutClientsInput = {
@@ -6403,6 +7663,116 @@ export namespace Prisma {
   export type PartenaireUncheckedUpdateWithoutClientsInput = {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type produits_magasinsCreateWithoutRef_magasinsInput = {
+    ref_produits: ProduitCreateNestedOneWithoutProduits_magasinsInput
+  }
+
+  export type produits_magasinsUncheckedCreateWithoutRef_magasinsInput = {
+    code: string
+  }
+
+  export type produits_magasinsCreateOrConnectWithoutRef_magasinsInput = {
+    where: produits_magasinsWhereUniqueInput
+    create: XOR<produits_magasinsCreateWithoutRef_magasinsInput, produits_magasinsUncheckedCreateWithoutRef_magasinsInput>
+  }
+
+  export type produits_magasinsCreateManyRef_magasinsInputEnvelope = {
+    data: Enumerable<produits_magasinsCreateManyRef_magasinsInput>
+    skipDuplicates?: boolean
+  }
+
+  export type produits_magasinsUpsertWithWhereUniqueWithoutRef_magasinsInput = {
+    where: produits_magasinsWhereUniqueInput
+    update: XOR<produits_magasinsUpdateWithoutRef_magasinsInput, produits_magasinsUncheckedUpdateWithoutRef_magasinsInput>
+    create: XOR<produits_magasinsCreateWithoutRef_magasinsInput, produits_magasinsUncheckedCreateWithoutRef_magasinsInput>
+  }
+
+  export type produits_magasinsUpdateWithWhereUniqueWithoutRef_magasinsInput = {
+    where: produits_magasinsWhereUniqueInput
+    data: XOR<produits_magasinsUpdateWithoutRef_magasinsInput, produits_magasinsUncheckedUpdateWithoutRef_magasinsInput>
+  }
+
+  export type produits_magasinsUpdateManyWithWhereWithoutRef_magasinsInput = {
+    where: produits_magasinsScalarWhereInput
+    data: XOR<produits_magasinsUpdateManyMutationInput, produits_magasinsUncheckedUpdateManyWithoutProduits_magasinsInput>
+  }
+
+  export type ProduitCreateWithoutProduits_magasinsInput = {
+    code: string
+    libelle: string
+    commentaires?: string | null
+    offres?: OffreCreateNestedManyWithoutProduitInput
+  }
+
+  export type ProduitUncheckedCreateWithoutProduits_magasinsInput = {
+    code: string
+    libelle: string
+    commentaires?: string | null
+    offres?: OffreUncheckedCreateNestedManyWithoutProduitInput
+  }
+
+  export type ProduitCreateOrConnectWithoutProduits_magasinsInput = {
+    where: ProduitWhereUniqueInput
+    create: XOR<ProduitCreateWithoutProduits_magasinsInput, ProduitUncheckedCreateWithoutProduits_magasinsInput>
+  }
+
+  export type MagasinsCreateWithoutProduits_magasinsInput = {
+    code: string
+    nom?: string | null
+    ville?: string | null
+    codepostal?: string | null
+  }
+
+  export type MagasinsUncheckedCreateWithoutProduits_magasinsInput = {
+    code: string
+    nom?: string | null
+    ville?: string | null
+    codepostal?: string | null
+  }
+
+  export type MagasinsCreateOrConnectWithoutProduits_magasinsInput = {
+    where: MagasinsWhereUniqueInput
+    create: XOR<MagasinsCreateWithoutProduits_magasinsInput, MagasinsUncheckedCreateWithoutProduits_magasinsInput>
+  }
+
+  export type ProduitUpsertWithoutProduits_magasinsInput = {
+    update: XOR<ProduitUpdateWithoutProduits_magasinsInput, ProduitUncheckedUpdateWithoutProduits_magasinsInput>
+    create: XOR<ProduitCreateWithoutProduits_magasinsInput, ProduitUncheckedCreateWithoutProduits_magasinsInput>
+  }
+
+  export type ProduitUpdateWithoutProduits_magasinsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    libelle?: StringFieldUpdateOperationsInput | string
+    commentaires?: NullableStringFieldUpdateOperationsInput | string | null
+    offres?: OffreUpdateManyWithoutProduitInput
+  }
+
+  export type ProduitUncheckedUpdateWithoutProduits_magasinsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    libelle?: StringFieldUpdateOperationsInput | string
+    commentaires?: NullableStringFieldUpdateOperationsInput | string | null
+    offres?: OffreUncheckedUpdateManyWithoutProduitInput
+  }
+
+  export type MagasinsUpsertWithoutProduits_magasinsInput = {
+    update: XOR<MagasinsUpdateWithoutProduits_magasinsInput, MagasinsUncheckedUpdateWithoutProduits_magasinsInput>
+    create: XOR<MagasinsCreateWithoutProduits_magasinsInput, MagasinsUncheckedCreateWithoutProduits_magasinsInput>
+  }
+
+  export type MagasinsUpdateWithoutProduits_magasinsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    codepostal?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type MagasinsUncheckedUpdateWithoutProduits_magasinsInput = {
+    code?: StringFieldUpdateOperationsInput | string
+    nom?: NullableStringFieldUpdateOperationsInput | string | null
+    ville?: NullableStringFieldUpdateOperationsInput | string | null
+    codepostal?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type ClientsCreateManyRef_partenairesInput = {
@@ -6445,10 +7815,26 @@ export namespace Prisma {
     actif?: NullableBoolFieldUpdateOperationsInput | boolean | null
   }
 
+  export type produits_magasinsCreateManyRef_produitsInput = {
+    code_magasin: string
+  }
+
   export type OffreCreateManyProduitInput = {
     code: string
     libelle: string
     dateDerniereModification?: Date | string | null
+  }
+
+  export type produits_magasinsUpdateWithoutRef_produitsInput = {
+    ref_magasins?: MagasinsUpdateOneRequiredWithoutProduits_magasinsInput
+  }
+
+  export type produits_magasinsUncheckedUpdateWithoutRef_produitsInput = {
+    code_magasin?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type produits_magasinsUncheckedUpdateManyWithoutProduits_magasinsInput = {
+    code_magasin?: StringFieldUpdateOperationsInput | string
   }
 
   export type OffreUpdateWithoutProduitInput = {
@@ -6467,6 +7853,18 @@ export namespace Prisma {
     code?: StringFieldUpdateOperationsInput | string
     libelle?: StringFieldUpdateOperationsInput | string
     dateDerniereModification?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  }
+
+  export type produits_magasinsCreateManyRef_magasinsInput = {
+    code: string
+  }
+
+  export type produits_magasinsUpdateWithoutRef_magasinsInput = {
+    ref_produits?: ProduitUpdateOneRequiredWithoutProduits_magasinsInput
+  }
+
+  export type produits_magasinsUncheckedUpdateWithoutRef_magasinsInput = {
+    code?: StringFieldUpdateOperationsInput | string
   }
 
 

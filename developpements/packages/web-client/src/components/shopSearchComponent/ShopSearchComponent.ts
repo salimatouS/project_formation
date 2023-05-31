@@ -72,7 +72,7 @@ export default defineComponent({
         const initialFormState: SearchShopDto = {
             labelLike: '',
             codeLike: '',
-            codepostalLike:''
+            codepostalLike: ''
         };
 
         const initialPagination: IPagination = {
@@ -99,7 +99,7 @@ export default defineComponent({
         let currentSearchParams: SearchShopDto = {
             labelLike: '',
             codeLike: '',
-            codepostalLike:''
+            codepostalLike: ''
         };
 
         const columns = [
@@ -139,15 +139,15 @@ export default defineComponent({
                 format: (val: string) => `${val}`,
                 sortable: true,
             },
-            /* {
+            {
                 name: 'nombreOffre',
                 required: true,
                 label: 'nbreOffre',
                 align: 'rigth',
-                field: (row: any) => row._count.offres,//recuperation de la valeur de l'offre
+                field: (row: any) => row._count.produits_magasins,//recuperation de la valeur de l'offre
                 format: (val: string) => `${val}`,
                 sortable: true,
-            }, */
+            },
         ];
 
         async function doPagination(props: any) {
@@ -174,7 +174,7 @@ export default defineComponent({
                 criterias: {
                     labelLike: form.labelLike,
                     codeLike: form.codeLike,
-                    codepostalLike:form.codepostalLike
+                    codepostalLike: form.codepostalLike
 
                 },
                 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access

@@ -2,7 +2,6 @@ import { LoggerService } from '@formation/servers-lib/dist/services'
 import { AbstractController } from '@formation/servers-lib/dist/utils'
 import {
   CodeLabelResultDto,
-  IPaginatedListDto,
   ISearchDto,
   OffreReferenceResultDto,
   ProductDto,
@@ -56,10 +55,10 @@ export class RefsController extends AbstractController {
     @Query('codeProduit') codeProduit?: string): Promise<WorkDone<OffreReferenceResultDto[]>> {
     return this.refsService.searchOffreReference(parseInt(codeCampagne, 10), null, codeProduit)
   }
-//partie PRODUITS
+  //partie PRODUITS
   @Get('/products')
   //@ApiQuery({})
-  async getProductListByCriterias(@Query() searchCriterias?: ISearchDto<SearchProductDto>): Promise<WorkDone <ProductDto[]>> {
+  async getProductListByCriterias(@Query() searchCriterias?: ISearchDto<SearchProductDto>): Promise<WorkDone<ProductDto[]>> {
     const criterias = AbstractController.parseSearchDtoFromQuery<SearchProductDto>(searchCriterias)
     return this.refsService.getProductListByCriterias(criterias)
 
@@ -89,19 +88,11 @@ export class RefsController extends AbstractController {
     return this.refsService.deleteProduit(code);
   }
 
-  
-
- /*  @Get('/listProduits')
-  async getListProduits(): Promise<WorkDone<ProductDto[]>> {
-    return this.refsService.getListProduits()
-  } */
-
-
   //partie SHOP
 
   @Get('/shop')
   @ApiQuery({})
-  async getShopListByCriterias(@Query() searchCriterias?: ISearchDto<SearchShopDto>): Promise<WorkDone <ShopDto[]>> {
+  async getShopListByCriterias(@Query() searchCriterias?: ISearchDto<SearchShopDto>): Promise<WorkDone<ShopDto[]>> {
     const criterias = AbstractController.parseSearchDtoFromQuery<SearchShopDto>(searchCriterias)
     return this.refsService.getShopListByCriterias(criterias)
 
@@ -131,5 +122,5 @@ export class RefsController extends AbstractController {
     return this.refsService.deleteShop(code);
   }
 
-  
+
 }

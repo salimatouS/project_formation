@@ -9,26 +9,25 @@
 </template>
 
 <script>
-import { defineComponent,reactive} from 'vue';
+import { defineComponent, reactive } from 'vue';
 import { refsApiService } from 'src/boot/api';
 
 export default defineComponent({
   name: 'ProductList',
   setup() {
+    const product = reactive([]);
 
-  const product = reactive([]);
+    async function afficherProduit() {
+      const wd = await refsApiService.getListProduits();
 
-  async function afficherProduit() {
-    const wd = await refsApiService.getListProduits();
-
-    if (wd.isOk) {
-      product.code=wd.data.code;
-      product.libelle = wd.data.libelle
-    } 
-  }
-  return {
-    afficherProduit,
-  };
+      if (wd.isOk) {
+        product.code = wd.data.code;
+        product.libelle = wd.data.libelle;
+      }
+    }
+    return {
+      afficherProduit,
+    };
   },
 });
 </script>
@@ -39,4 +38,3 @@ export default defineComponent({
   max-width: 500px;
 }
 </style>
-

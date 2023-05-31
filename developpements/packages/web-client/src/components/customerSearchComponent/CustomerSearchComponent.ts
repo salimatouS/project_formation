@@ -64,10 +64,10 @@ export default defineComponent({
     }
   },
   setup() {
-    
-  
+
+
     const formChangedManager = { ...defineFormChangedManager() }
-    
+
     let allFichierPartenaires: CodeLabelResultDto[] = []
 
     onBeforeMount(async () => {
@@ -88,7 +88,7 @@ export default defineComponent({
       ville: '',
       dateDerniereCommande: new Date(),
       actif: true
-      
+
     });
 
     const searchAllResponse = ref<IPaginatedListDto<CustomerSearchResultDto>>({ list: [], rowsNumber: 0 })
@@ -125,6 +125,7 @@ export default defineComponent({
 
     const rows = ref([])
     const loading = ref(false)
+    
 
     let currentSearchParams: SearchCustomerDto = {
       codeFichierPartenaire: '',
@@ -199,30 +200,31 @@ export default defineComponent({
         align: 'center',
         field: (row: CustomerSearchResultDto) => row.codeFichierPartenaire,
         format: (val: string) => `${val}`,
-        sortable: true
+        sortable: true,
+    
       },
       {
         name: 'actif',
         required: false,
         label: 'Actif',
         align: 'center',
-       /*  field: (row: CustomerSearchResultDto) => {
-          return {
-            value: row.actif,
-            classes: row.actif ? 'text-negative' : ''
-          };
-        }, */
-        field: (row: CustomerSearchResultDto) => String(row.actif), 
-        format: (val: boolean)=> val.toString(),
+        /*  field: (row: CustomerSearchResultDto) => {
+           return {
+             value: row.actif,
+             classes: row.actif ? 'text-negative' : ''
+           };
+         }, */
+        field: (row: CustomerSearchResultDto) => String(row.actif),
+        format: (val: boolean) => val.toString(),
         sortable: true
       }
     ]
-    
+
 
     async function doPagination(props: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       pagination.value = props.pagination
-    
+
       // get all rows if "All" (0) is selected
       pagination.value.rowsPerPage =
         pagination.value.rowsPerPage === 0
@@ -236,7 +238,7 @@ export default defineComponent({
       }
 
       await _doSearchAll(searchAllParams);
-      
+
     }
 
     async function doSearchAll() {
@@ -251,7 +253,7 @@ export default defineComponent({
           ville: form.ville,
           dateDerniereCommandeFrom: form.dateDerniereCommandeFrom,
           dateDerniereCommandeTo: form.dateDerniereCommandeTo,
-          actif:form.actif
+          actif: form.actif
         },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         pagination: initialPagination
@@ -317,7 +319,7 @@ export default defineComponent({
       })
     }
 
-    
+
 
     return {
       doSearchAll,
@@ -327,7 +329,7 @@ export default defineComponent({
       textValidatorToFixed3,
       doPagination,
       searchAllResponse,
-      descending:false,
+      descending: false,
       form,
       columns,
       confirm: ref(false),
@@ -339,18 +341,18 @@ export default defineComponent({
       filterFichPart,
       ...formChangedManager,
 
-      
+
     }
   },
 
   methods: {
-    
 
     onRowClickClient(evt: any, row: CustomerSearchResultDto) {
       void this.$router.push(`customers/client/${row.chronoClient}`);
-    
-    },   
 
+    },
+
+    //une requete est envoyée a customerservice en appelant la methode create client
     async creerClient() {
 
       const wd = await customersApiService.createClient(this.client);
@@ -362,15 +364,15 @@ export default defineComponent({
       this.confirm = false;
 
     },
-    
-    customSort(sortBy:string) {
+
+    customSort(sortBy: string) {
       const data = [...this.rows]
-    
+
       if (sortBy) {
         data.sort((a, b) => {
           const x = this.descending ? b : a
           const y = this.descending ? a : b
-    
+
           if (sortBy === 'name') {
             // Tri des chaînes de caractères
             return x[sortBy] > y[sortBy] ? 1 : x[sortBy] < y[sortBy] ? -1 : 0
@@ -388,7 +390,7 @@ export default defineComponent({
       // Utilisez la fonction orderBy pour trier les données en fonction du nom de la colonne et de l'ordre de tri
       this.rows = customSort(this.rows, columnName, descending );
     }, */
-    
+
   },
   computed: {
     formattedDate: {
@@ -396,7 +398,7 @@ export default defineComponent({
         // Convert the Date object to a string representation
         return this.client.dateDerniereCommande.toISOString();
       },
-      set(value:string) {
+      set(value: string) {
         // Convert the string back to a Date object
         this.client.dateDerniereCommande = new Date(value);
       }

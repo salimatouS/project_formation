@@ -19,10 +19,11 @@ model Partenaire {
 }
 
 model Produit {
-  code         String  @id @db.VarChar
-  libelle      String  @db.VarChar
-  commentaires String? @db.VarChar(255)
-  offres       Offre[] @relation("offre_produits")
+  code              String              @id @db.VarChar
+  libelle           String              @db.VarChar
+  commentaires      String?             @db.VarChar(255)
+  produits_magasins produits_magasins[] @relation("produits_magasinsToref_produits")
+  offres            Offre[]             @relation("offre_produits")
 
   @@map("ref_produits")
 }
@@ -53,10 +54,20 @@ model Clients {
 }
 
 model Magasins {
-  code       String  @id @db.VarChar(10)
-  nom        String? @db.VarChar(255)
-  ville      String? @db.VarChar(255)
-  codepostal String? @db.VarChar(10)
+  code              String              @id @map("code_magasin") @db.VarChar(10)
+  nom               String?             @db.VarChar(255)
+  ville             String?             @db.VarChar(255)
+  codepostal        String?             @db.VarChar(10)
+  produits_magasins produits_magasins[] @relation("produits_magasinsToref_magasins")
 
-    @@map("ref_magasins")
+  @@map("ref_magasins")
+}
+
+model produits_magasins {
+  code         String   @db.VarChar(10)
+  code_magasin String   @db.VarChar(10)
+  ref_produits Produit  @relation("produits_magasinsToref_produits", fields: [code], references: [code], onDelete: NoAction, onUpdate: NoAction)
+  ref_magasins Magasins @relation("produits_magasinsToref_magasins", fields: [code_magasin], references: [code], onDelete: NoAction, onUpdate: NoAction)
+
+  @@id([code_magasin, code], map: "pk_magasins_produits")
 }

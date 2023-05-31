@@ -11,9 +11,7 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-          Iorga - PROJET DE FIN DE FORMATION
-        </q-toolbar-title>
+        <q-toolbar-title> Iorga - PROJET DE FIN DE FORMATION </q-toolbar-title>
 
         <div>v 0.1</div>
       </q-toolbar>

@@ -16,7 +16,7 @@ import {
   displayNotification,
   NotificationStatusEnum,
 } from '../../services/common/notification.service';
-//import { useRoute , useRouter} from 'vue-router';
+
 
 /**
  * Composant permettant la détection des changement dans les form afin de gérer l'accès à certaine partie (ex: bouton rechercher)
@@ -72,8 +72,8 @@ export default defineComponent({
     // Define the initial state of the form
     const initialFormState: SearchProductDto = {
       labelLike: '',
-      codeLike:'',
-      codepostalLike:''
+      codeLike: '',
+      codepostalLike: ''
     };
 
     const initialPagination: IPagination = {
@@ -99,8 +99,8 @@ export default defineComponent({
 
     let currentSearchParams: SearchProductDto = {
       labelLike: '',
-      codeLike:'',
-      codepostalLike:''
+      codeLike: '',
+      codepostalLike: ''
     };
 
     const columns = [
@@ -127,12 +127,13 @@ export default defineComponent({
         required: true,
         label: 'nbreOffre',
         align: 'rigth',
-        field: (row:any) => row._count.offres,//recuperation de la valeur de l'offre
+        field: (row: any) => row._count.offres,//recuperation de la valeur de l'offre
         format: (val: string) => `${val}`,
         sortable: true,
       },
     ];
 
+    //Cette fonction est appelée lorsque la pagination de la table est modifiée. Elle met à jour la valeur de la variable pagination avec les nouvelles informations de pagination. Si l'option "All" est sélectionnée, elle modifie le nombre de lignes par page pour afficher toutes les lignes. Ensuite, elle appelle la fonction _doSearchAll pour effectuer une recherche avec les nouveaux paramètres de pagination.
     async function doPagination(props: any) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       pagination.value = props.pagination;
@@ -152,20 +153,21 @@ export default defineComponent({
       await _doSearchAll(searchAllParams);
     }
 
+    //est appelé lorsqu'on soumet formulaire de recherche, recupère les critères de recherche à partir du formulaire puis crée un objet searchAllParams qui contient les criteres de recherche
     async function doSearchAll() {
       const searchAllParams: ISearchDto<SearchProductDto> = {
         criterias: {
           labelLike: form.labelLike,
-          codeLike:form.codeLike,
-          codepostalLike:form.codepostalLike
-        
+          codeLike: form.codeLike,
+          codepostalLike: form.codepostalLike
+
         },
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
         pagination: initialPagination,
       };
 
       currentSearchParams = searchAllParams.criterias as SearchProductDto;
-
+      
       if (!doCheckForSearch(searchAllParams)) {
         displayNotification(
           NotificationStatusEnum.WARNING,
@@ -209,7 +211,7 @@ export default defineComponent({
     // Reset the form to it's initial state
     function resetForm() {
       Object.assign(form, initialFormState);
-    }    
+    }
 
     return {
       doSearchAll,
@@ -230,13 +232,15 @@ export default defineComponent({
   },
 
   methods: {
-    //permet
+    //permet de creer de rediriger vers la page detailProduit lors du clic sur une ligne produit
     onRowClick(evt: any, row: ProductDto) {
       //void this.$router.push({path:`produits/${row.code}`}) equivalent à :
       void this.$router.push(`produits/${row.code}`);
-      //void this.$router.push(`productList`)
+
     },
 
+
+    //
     async creerProduit() {
 
       const wd = await refsApiService.createProduit(this.product);
@@ -245,7 +249,7 @@ export default defineComponent({
         console.log('Produit créé');
       }
       this.confirm = false;
-      
+
     },
   },
 });

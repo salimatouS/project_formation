@@ -16,12 +16,12 @@ export abstract class AbstractApiService {
   private readonly _axiosInstance: AxiosInstance
   private readonly _serviceApiBaseUrl
 
-  protected constructor (axiosInstance: AxiosInstance, serviceApiBaseUrl: string) {
+  protected constructor(axiosInstance: AxiosInstance, serviceApiBaseUrl: string) {
     this._axiosInstance = axiosInstance
     this._serviceApiBaseUrl = serviceApiBaseUrl
   }
 
-  private static _catchHandler<R> (error: AxiosError): WorkDone<R> | Promise<WorkDone<R>> {
+  private static _catchHandler<R>(error: AxiosError): WorkDone<R> | Promise<WorkDone<R>> {
     let message = error && error.message ? error.message : 'Unknown Error (2)'
     if (error.response && error.response.data) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -31,7 +31,7 @@ export abstract class AbstractApiService {
     return WorkDone.buildError<R>(message)
   }
 
-  private static _thenHandler<R> (response: AxiosResponse<WorkDone<R>>): WorkDone<R> | Promise<WorkDone<R>> {
+  private static _thenHandler<R>(response: AxiosResponse<WorkDone<R>>): WorkDone<R> | Promise<WorkDone<R>> {
     // Check if the response isOK
     if (response && response.data && response.data.isOk === true) {
       if (response.data.successMessage) {
@@ -53,7 +53,7 @@ export abstract class AbstractApiService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  protected async doGet<R> (serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
+  protected async doGet<R>(serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
     if (!serviceUri.startsWith('/')) {
       serviceUri = '/' + serviceUri
     }
@@ -72,7 +72,7 @@ export abstract class AbstractApiService {
     }
   }
 
-  protected async doPost<R> (serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
+  protected async doPost<R>(serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
     if (!serviceUri.startsWith('/')) {
       serviceUri = '/' + serviceUri
     }
@@ -91,7 +91,7 @@ export abstract class AbstractApiService {
     }
   }
 
-  protected async doPut<R> (serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
+  protected async doPut<R>(serviceUri: string, params?: any, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
     if (!serviceUri.startsWith('/')) {
       serviceUri = '/' + serviceUri
     }
@@ -110,7 +110,7 @@ export abstract class AbstractApiService {
     }
   }
 
-  protected async doDelete<R> (serviceUri: string, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
+  protected async doDelete<R>(serviceUri: string, config?: AxiosRequestConfig): Promise<WorkDone<R>> {
     if (!serviceUri.startsWith('/')) {
       serviceUri = '/' + serviceUri
     }
@@ -121,7 +121,7 @@ export abstract class AbstractApiService {
       }
     }, config)
     try {
-      const resp = await this._axiosInstance.delete<WorkDone<R>>(`${this._serviceApiBaseUrl}${serviceUri}`,runConfig)
+      const resp = await this._axiosInstance.delete<WorkDone<R>>(`${this._serviceApiBaseUrl}${serviceUri}`, runConfig)
       return AbstractApiService._thenHandler(resp)
     }
     catch (err) {

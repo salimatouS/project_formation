@@ -80,32 +80,27 @@
           label="Créer un produit"
           @click="confirm = true"
         />
+        <!-- v-model confirm lie la valeur du dialogue a la propriété confirm. Le dialogue est affiché quand confirm est true -->
         <q-dialog v-model="confirm" persistent>
           <q-card class="bg-cyan-1">
             <q-card-section>
-  
-                <q-input v-model="product.code" label="Code du produit" />
-                <q-input
-                  v-model="product.libelle"
-                  id="libelle"
-                  
-                />
-              
-                <q-input
-                  v-model="product.commentaires"
-                  id="commentaires"
-                  label="commentaires"
-                />
+              <q-input v-model="product.code" label="Code du produit" />
+              <q-input v-model="product.libelle" id="libelle" />
 
-                <q-btn
-                  flat
-                  type="submit"
-                  label="Créer"
-                  @click="creerProduit"
-                  v-close-popup
-                />
-                <q-btn flat type="button" label="Annuler" v-close-popup />
-  
+              <q-input
+                v-model="product.commentaires"
+                id="commentaires"
+                label="commentaires"
+              />
+
+              <q-btn
+                flat
+                type="submit"
+                label="Créer"
+                @click="creerProduit"
+                v-close-popup
+              />
+              <q-btn flat type="button" label="Annuler" v-close-popup />
             </q-card-section>
           </q-card>
         </q-dialog>

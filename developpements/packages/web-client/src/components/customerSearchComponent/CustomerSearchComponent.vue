@@ -195,7 +195,6 @@
           <div class="row justify-end">
             <!--:disable="!isFormChanged()"-->
             <q-btn
-            
               color="primary"
               icon="fa fa-search"
               label="Rechercher"
@@ -227,16 +226,20 @@
         @request="doPagination"
         @row-click="onRowClickClient"
         :sort-method="customSort"
-
       >
-      <template v-slot:body-cell-actif="props">
-      <q-td :props="props">
-        <div :class="{ 'bg-green': props.row.actif, 'bg-red': !props.row.actif }">
-          {{ props.row.actif }}
-        </div>
-      </q-td>
-    </template>
-   <!--  <template v-slot:[`top-right`]="props">
+        <template v-slot:body-cell-actif="props">
+          <q-td :props="props">
+            <div
+              :class="{
+                'bg-green': props.row.actif,
+                'bg-red': !props.row.actif,
+              }"
+            >
+              {{ props.row.actif }}
+            </div>
+          </q-td>
+        </template>
+        <!--  <template v-slot:[`top-right`]="props">
   <q-th
     v-for="column in columns"
     :key="column.name"
@@ -246,8 +249,6 @@
     {{ column.label }}
   </q-th>
 </template> -->
-
-
       </q-table>
     </div>
   </div>
@@ -273,13 +274,56 @@
               id="dateDerniereCommande"
               label="Date derniere commande"
             />
-            <q-input
+             <q-input
               v-model="client.codeFichierPartenaire"
               t
               id="codeFichierPartenaire"
               label="code Partenaire"
             />
+            <!-- <q-input
+              v-model="form.codeFichierPartenaire"
+              :lazy-rules="true"
+              :rules="[mandatoryValidator]"
+              class="col-12 col-md-4"
+              emit-value
+              hint="Recherche possible (contient)"
+              input-debounce="0"
+              label="Fichier partenaire *"
+              map-options
+              option-value="code"
+              stack-label
+              use-input
+              @filter="filterFichPart"
+              @update:model-value="doOnFormChanged"
+            />
+            <q-select
+              v-model="form.codeFichierPartenaire"
+              :lazy-rules="true"
+              :options="fichPartOptions"
+              :rules="[mandatoryValidator]"
+              class="col-12 col-md-4"
+              emit-value
+              hint="Recherche possible (contient)"
+              input-debounce="0"
+              label="Fichier partenaire *"
+              map-options
+              option-value="code"
+              stack-label
+              use-input
+              @filter="filterFichPart"
+              @update:model-value="doOnFormChanged"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    Aucun fichier partenaire trouvé
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select> -->
+
             <q-toggle v-model="client.actif" id="actif" label="actif" />
+
             <q-btn
               flat
               type="submit"
@@ -297,5 +341,4 @@
 
 <script lang="ts" src="./CustomerSearchComponent.ts"></script>
 <style lang="scss" src="./CustomerSearchComponent.scss"></style>
-:sort-method="customSort"
-binary-state-sort
+:sort-method="customSort" binary-state-sort

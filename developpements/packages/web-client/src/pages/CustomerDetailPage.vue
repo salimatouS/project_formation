@@ -1,7 +1,6 @@
 <template>
   <q-page padding>
-    <span class="text-subtitle1"
-      ><!-- {{ product.libelle }} -->
+    <span class="text-subtitle1">
       Fiche Detail Client {{ client.chronoClient }}
     </span>
 
@@ -67,36 +66,36 @@
               type="submit"
               label="Supprimer"
             />
-            <q-input
+            <!-- <q-input
               v-model="client.chronoClient"
               label="code client"
               type="text"
               id="chronoClient"
               class="bg-grey-3"
-            />
+            /> -->
             <q-input
-              v-model="client.prenom"
+              v-model="editedClient.prenom"
               label="prénom"
               type="text"
               id="prenom"
               class="bg-grey-3"
             />
             <q-input
-              v-model="client.nom"
+              v-model="editedClient.nom"
               label="nom"
               type="text"
               id="nom"
               class="bg-grey-3"
             />
             <q-input
-              v-model="client.codePostal"
+              v-model="editedClient.codePostal"
               type="text"
               label="code postal"
               id="codePostal"
               class="bg-grey-3"
             />
             <q-input
-              v-model="client.ville"
+              v-model="editedClient.ville"
               label="ville"
               type="text"
               id="ville"
@@ -109,19 +108,20 @@
               label="Date derniere commande"
               class="bg-grey-3"
             />
-            <!--  <q-input
-                v-model="client.dateDerniereCommande"
-                type="text"
-                id="dateDerniereCommande"
-                class="bg-grey-3"
-              /> -->
-            <q-input
-              v-model="client.codeFichierPartenaire"
+            
+            <q-toggle v-model="editedClient.actif"
+            true-value="true"
+            false-value="false"
+            id="actif" 
+            label="actif" />
+            
+            <!-- <q-input
+              v-model="editedClient.codeFichierPartenaire"
               type="text"
               id="codeFichierPartenaire"
               label="codeFichierPartenaire"
               class="bg-grey-3"
-            />
+            /> -->
           </q-form>
         </q-card-actions>
       </q-card>
@@ -138,7 +138,7 @@
 import { defineComponent, onBeforeMount, reactive } from 'vue';
 import { customersApiService } from 'src/boot/api';
 import { useRoute, useRouter } from 'vue-router';
-//import { date } from 'quasar';
+import { isBoolean } from 'lodash';
 
 export default defineComponent({
   name: 'CustomerDetailPage',
@@ -153,31 +153,38 @@ export default defineComponent({
       ville: '',
       dateDerniereCommande: new Date(),
       codeFichierPartenaire: '',
-      actif: true
+      actif: true,
     });
 
+    const editedClient = reactive({
+      prenom: '',
+      nom: '',
+      codePostal: '',
+      ville: '',
+      codeFichierPartenaire: '',
+      actif: true,
+      
+    });
+   
+    
+    
     async function modifClient() {
-      const wd = await customersApiService.updateClient(client);
+      const updateClient={
+        chronoClient: client.chronoClient,
+        //prenom: editedClient.prenom != '' ? editedClient.prenom : client.prenom,
+        prenom: editedClient.prenom, 
+        nom: editedClient.nom, 
+        codePostal: editedClient.codePostal,
+        ville: editedClient.ville,
+        dateDerniereCommande: client.dateDerniereCommande,
+        codeFichierPartenaire: editedClient.codeFichierPartenaire,
+        actif: editedClient.actif
+      }
+      const wd = await customersApiService.updateClient(updateClient);
       if (wd.isOk && wd.data) {
         return client;
       }
     }
-
-    /*  async function supClient() {
-        const wd = await customersApiService.deleteClient(client.chronoClient);
-  
-        if (wd.isOk) {
-          console.log('Client supprimé');
-          router
-            .push({ path: '/customers' })
-            .then(() => {
-              console.log('ok');
-            })
-            .catch(() => {
-              console.log('ko');
-            });
-        }
-      } */
 
     async function supClient() {
       const confirmed = window.confirm(
@@ -199,31 +206,44 @@ export default defineComponent({
         }
       }
     }
-
-    /*On récupère les paramètres de la route courante, appelle une méthode asynchrone pour récupérer les données d'un produit à partir de son code, 
-        puis met à jour les propriétés de l'objet "product" avec les données récupérées. */
+    function toggleActif(){
+      editedClient.actif = !editedClient.actif
+    }
+    
+    /*On récupère les paramètres de la route courante, appelle une méthode asynchrone pour récupérer les données d'un client à partir de son code, 
+        puis met à jour les propriétés de l'objet "client" avec les données récupérées. */
     onBeforeMount(async () => {
       const route = useRoute();
-      const detailClient = await customersApiService.getClientById(
+      const wd = await customersApiService.getClientById(
         String(route.params.chronoClient),
       );
 
-      if (detailClient.isOk && detailClient.data) {
-        console.log(detailClient);
-        client.chronoClient = detailClient.data.chronoClient;
-        client.prenom = detailClient.data.prenom;
-        client.nom = detailClient.data.nom;
-        client.codePostal = detailClient.data.codePostal;
-        client.ville = detailClient.data.ville;
-        client.dateDerniereCommande = detailClient.data.dateDerniereCommande;
-        client.codeFichierPartenaire = detailClient.data.codeFichierPartenaire;
+      if (wd.isOk && wd.data) {
+        console.log(wd);
+        client.chronoClient = wd.data.chronoClient;
+        client.prenom = wd.data.prenom;
+        client.nom = wd.data.nom;
+        client.codePostal = wd.data.codePostal;
+        client.ville = wd.data.ville;
+        client.dateDerniereCommande = wd.data.dateDerniereCommande;
+        client.codeFichierPartenaire = wd.data.codeFichierPartenaire;
+        client.actif=wd.data.actif
+
+        editedClient.prenom = wd.data.prenom;
+        editedClient.nom = wd.data.nom;
+        editedClient.codePostal = wd.data.codePostal;
+        editedClient.ville = wd.data.ville;
+        editedClient.codeFichierPartenaire = wd.data.codeFichierPartenaire;
+        editedClient.actif = wd.data.actif;
       }
     });
 
     return {
       client,
+      editedClient,
       modifClient,
       supClient,
+      toggleActif
     };
   },
   computed: {

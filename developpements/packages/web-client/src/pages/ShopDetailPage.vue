@@ -95,47 +95,54 @@ export default defineComponent({
     const router = useRouter();
     const shop = reactive({ code: '', nom: '', codepostal: '', ville: '' });
 
-     async function modifShop() {
-        const wd = await refsApiService.updateShop(shop);
-        if (wd.isOk && wd.data) {
-          return shop.nom;
-        }
+    async function modifShop() {
+      const wd = await refsApiService.updateShop(shop);
+      if (wd.isOk && wd.data) {
+        return shop.nom;
       }
-  
-      async function supShop() {
-        const confirmed = window.confirm(
-          'Êtes-vous sûr de vouloir supprimer ce magasin ?',
-        );
-        if (confirmed) {
-          const wd = await refsApiService.deleteShop(shop.code);
-  
-          if (wd.isOk) {
-            console.log('Magasin supprimé');
-            router
-              .push({ path: '../shop' })
-              .then(() => {
-                console.log('ok');
-              })
-              .catch(() => {
-                console.log('ko');
-              });
-          }
-        }
-      }
+    }
 
-    /*On récupère les paramètres de la route courante, appelle une méthode asynchrone pour récupérer les données d'un produit à partir de son code, 
-        puis met à jour les propriétés de l'objet "product" avec les données récupérées. */
+    async function supShop() {
+      const confirmed = window.confirm(
+        'Êtes-vous sûr de vouloir supprimer ce magasin ?',
+      );
+      if (confirmed) {
+        const wd = await refsApiService.deleteShop(shop.code);
+
+        if (wd.isOk) {
+          console.log('Magasin supprimé');
+          router
+            .push({ path: '../shop' })
+            .then(() => {
+              console.log('ok');
+            })
+            .catch(() => {
+              console.log('ko');
+            });
+        }
+      }
+    }
+
+    /*On récupère les paramètres de la route courante, appelle une méthode asynchrone pour récupérer les données d'un magasin à partir de son code, 
+        puis met à jour les propriétés de l'objet "shop" avec les données récupérées. */
     onBeforeMount(async () => {
+      //execution avant que le composant ne soit monté
       const route = useRoute();
-      const detailShop = await refsApiService.getMagasinsByCode(
+      const wd = await refsApiService.getShopByCode(
         String(route.params.code),
       );
-      if (detailShop.isOk && detailShop.data) {
-        console.log(detailShop);
-        shop.code = detailShop.data.code;
-        shop.nom = detailShop.data.nom;
-        shop.codepostal = detailShop.data.codepostal;
-        shop.ville = detailShop.data.ville;
+      if (wd.isOk && wd.data) {
+        console.log(wd);
+        shop.code = wd.data.code;
+        shop.nom = wd.data.nom;
+        if (wd.data.codepostal !== undefined) {
+          shop.codepostal = wd.data.codepostal;
+        }
+        if (wd.data.ville !== undefined) {
+          shop.ville = wd.data.ville;
+        }
+        //shop.codepostal = wd.data.codepostal;
+        //shop.ville = wd.data.ville;
       }
     });
 

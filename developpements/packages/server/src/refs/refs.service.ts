@@ -104,28 +104,6 @@ export class RefsService {
     return WorkDone.buildOk(offreReference);
   }
 
-  /* async getProducts(searchTerm: string): Promise<WorkDone<ProductDto[]>> {
-    //const filter = '%voile%'
-    const dbProducts = await this.prismaService.produit.findMany({
-      where: {
-        libelle: {
-          contains: searchTerm,
-          mode: 'insensitive',
-        },
-      },
-      orderBy: {
-        libelle: 'asc',
-      },
-    });
-    
-
-    if (!dbProducts) {
-      return WorkDone.buildError(
-        'une erreur est survenue durant la recuperation des produits',
-      );
-    }
-    return WorkDonhypere.buildOk(dbProducts);
-  } */
 
   async getProduitByCode(code: string): Promise<WorkDone<ProductDto>> {
     const dbProducts = await this.prismaService.produit.findUnique({
@@ -224,23 +202,6 @@ export class RefsService {
     return WorkDone.buildOk(dbProducts);
   }
 
-  /* async getListProduits(): Promise<WorkDone<ProductDto[]>> {
-
-    const dbProducts = await this.prismaService.produit.findMany({
-      orderBy: {
-        libelle: 'asc',
-      },
-    });
-
-
-    if (!dbProducts) {
-      return WorkDone.buildError(
-        'une erreur est survenue durant la recuperation des produits',
-      );
-    }
-    return WorkDone.buildOk(dbProducts);
-  } */
-
   //Partie SHOP
 
    async getShopListByCriterias(
@@ -264,6 +225,9 @@ export class RefsService {
           startsWith: searchCriterias.criterias.codepostalLike,
           mode: 'insensitive',
         },
+      },
+      include: {
+        _count: true
       },
 
       orderBy: {
